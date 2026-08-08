@@ -25,7 +25,7 @@ The description is the machine-readable trigger for a skill. It states the actio
 
 ### Context load
 
-Context load is the text and attention cost that a skill adds before it runs.
+Context load is the text and effort that a skill adds before it runs.
 
 ### Cognitive load
 
@@ -47,7 +47,8 @@ A reference is information that the agent reads when a branch needs it.
 
 ### Information hierarchy
 
-The information hierarchy ranks content by when the agent needs it. Put steps first, shared reference second, and branch-only reference behind direct pointers.
+The information hierarchy ranks content by when the agent needs it. Put steps first.
+Put shared reference second. Put branch-only reference behind direct pointers.
 
 ### Progressive disclosure
 
@@ -59,13 +60,14 @@ A single source of truth gives each instruction, definition, or contract one aut
 
 ### Granularity
 
-Granularity shows how a design divides work across skills and reference files. Split content only when the split improves invocation or execution.
+Granularity shows how a design divides work across skills and reference files.
+Split content only when the split improves invocation or execution.
 
 ## Quality
 
 ### Predictability
 
-Predictability is the degree to which a skill produces the same process on each run. The output can still change with the request.
+Predictability is the degree to which a skill produces the same process on each run. The output changes with the request.
 
 ### Main word
 
@@ -81,7 +83,7 @@ Premature completion ends a step before it meets its criterion.
 
 ### Duplication
 
-Duplication assigns one meaning to more than one owner. This increases context cost and can make copies disagree.
+Duplication assigns one meaning to more than one owner. This adds text and makes copies disagree.
 
 ### Stale text
 
@@ -89,7 +91,7 @@ Stale text remains after the skill or repository changes.
 
 ### Excess length
 
-Excess length is skill text that is longer than needed, even when each line is current. Use progressive disclosure or a justified skill split.
+Excess length is skill text that is longer than needed. Use progressive disclosure or a justified skill split.
 
 ### Instruction with no effect
 
@@ -115,7 +117,7 @@ The static boundary forbids forms, user comments, authentication, cookies, track
 
 ### Production artifact
 
-The production artifact is the built output that can deploy to `/home/eklipse/public_html`.
+The production artifact is the built output that is ready to deploy to `/home/eklipse/public_html`.
 
 ### Temporary artifact
 

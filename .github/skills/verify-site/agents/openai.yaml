@@ -2,3 +2,6 @@ interface:
   display_name: "Verify Site"
   short_description: "Check the built site in a real browser"
   default_prompt: "Use $verify-site to verify the eklipse production site with browser and static-policy evidence."
+
+policy:
+  allow_implicit_invocation: false

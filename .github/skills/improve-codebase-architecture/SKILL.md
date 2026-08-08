@@ -1,11 +1,15 @@
 ---
 name: improve-codebase-architecture
-description: "Review eklipse architecture for clear ownership and module boundaries. Use for hidden coupling, weak test seams, unclear responsibility, or structural change reviews."
+description: "Review eklipse architecture for ownership, module boundaries, coupling, and test seams."
 ---
 
 # Improve eklipse architecture
 
-Review the architecture in read-only mode by default. Find the smallest boundary that hides real complexity. Do not edit code unless the user authorizes the change.
+Review the architecture in read-only mode by default. Find the smallest boundary that hides real complexity.
+Do not edit code unless the user authorizes the change.
+
+Use this skill only after an explicit architecture review request. It inspects a broad source area.
+It proposes structural changes after it finds direct evidence.
 
 ## Terms
 
@@ -19,7 +23,8 @@ Review the architecture in read-only mode by default. Find the smallest boundary
 - The **deletion test** asks what complexity remains after you remove a candidate.
 - The **leverage test** asks how much caller knowledge a boundary removes.
 
-Use project terms from `PRODUCT.md`, `DESIGN.md`, and the owning source files. Keep exact names such as class names, IDs, selectors, and paths.
+Use project terms from `PRODUCT.md`, `DESIGN.md`, and the owning source files.
+Keep exact names such as class names, IDs, selectors, and paths.
 
 ## 1. Establish the contract and scope
 
@@ -34,7 +39,7 @@ Use project terms from `PRODUCT.md`, `DESIGN.md`, and the owning source files. K
 
 ## 2. Map the eklipse architecture
 
-Use these ownership signals as a starting point. Verify each signal in the current files.
+Verify these ownership signals in the current files.
 
 - `PRODUCT.md` owns product facts and the static-site boundary.
 - `DESIGN.md` owns implemented visual tokens and layout rules when it exists.
@@ -57,11 +62,15 @@ Use these ownership signals as a starting point. Verify each signal in the curre
 5. Apply the leverage test to each surviving candidate.
    Completion criterion: The candidate reduces caller knowledge without moving the same complexity.
 
-Do not create a framework, service, state layer, or abstraction only to name one operation. Keep the static boundary and current vanilla JavaScript stack.
+Do not create a framework, service, state layer, or abstraction for one operation.
+Keep the static boundary and current vanilla JavaScript stack.
 
 ## 3. Present architecture candidates
 
-For each candidate, report these fields:
+1. Prepare one candidate for each confirmed boundary problem.
+   Completion criterion: Each candidate has a source problem and a stated boundary.
+
+2. Report each candidate with these fields:
 
 - **Files**: Name every involved file and source owner.
 - **Problem**: State the measured navigation, ownership, coupling, or test cost.
@@ -69,10 +78,17 @@ For each candidate, report these fields:
 - **Change**: State the proposed responsibility shift.
 - **Benefits**: State the expected locality, leverage, and test effects.
 - **Contract impact**: Name each product, design, security, or deployment rule affected.
-- **Verification**: Name the check that can prove the change.
+- **Verification**: Name the check that proves the change.
 - **Strength**: Use `Strong`, `Worth exploring`, or `Speculative`.
 
-Rank one recommendation first and give its evidence. Do not propose detailed interfaces or code before the user selects a candidate. Ask which candidate the user wants to explore.
+Completion criterion: Each candidate has all eight fields.
+
+3. Rank one recommendation first and give its evidence.
+   Completion criterion: The first recommendation has direct evidence.
+4. Do not propose detailed interfaces or code before the user selects a candidate.
+   Completion criterion: No unselected candidate has an implementation proposal.
+5. Ask which candidate the user wants to explore.
+   Completion criterion: The user receives one clear selection question.
 
 The review branch is complete when every candidate has file evidence, a cost, a boundary, a verification method, and a strength.
 
@@ -111,4 +127,6 @@ The review branch is complete when every candidate has file evidence, a cost, a 
 
 ## Completion criterion
 
-The architecture review is complete when the selected scope has mapped ownership, traced flow evidence, rejected shallow candidates, and one ranked recommendation. A selected candidate is complete when its interface, alternatives, contract impact, and verification method are recorded.
+The architecture review is complete when the selected scope has mapped ownership, traced flow evidence,
+rejected shallow candidates, and one ranked recommendation.
+A selected candidate is complete when its interface, alternatives, contract impact, and verification method are recorded.

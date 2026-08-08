@@ -6,4 +6,5 @@ Tests must protect a distinct public contract.
 - Keep tests for the Bandcamp link allowlist, absence of user-input and unapproved frame surfaces, and the complete eleven-release catalog.
 - Do not weaken tests to accommodate prose or style cleanup.
 - Add no test unless it catches a distinct regression in an owned requirement.
-- After any test edit, run the focused test and `npm test`.
+- Run the focused test after any test edit.
+- Run `npm test` after the focused test.

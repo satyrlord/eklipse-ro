@@ -1,11 +1,13 @@
 ---
 name: create-skill
-description: "Create or revise an eklipse repository skill. Use when you add a skill, change its trigger, restructure references, review quality, or validate the package."
+description: "Create or revise eklipse repository skills. Use for triggers, references, quality reviews, or package validation."
 ---
 
 # Create predictable skills
 
-A skill gives an agent a predictable process. It does not require the same output on every run.
+A skill gives an agent a predictable process. The output changes with the request.
+
+Use this skill only after an explicit user request. It changes a skill package or its trigger.
 
 Read [GLOSSARY.md](GLOSSARY.md) when a term in this workflow needs a definition.
 
@@ -13,11 +15,11 @@ Read [GLOSSARY.md](GLOSSARY.md) when a term in this workflow needs a definition.
 
 1. Read `AGENTS.md`, `.github/skills/SKILLS.md`, the complete current skill, and relevant product documents.
    Completion criterion: You know the repository rules, current user changes, and the skill owner.
-2. Collect concrete request examples for each valid branch.
+2. Record one concrete request example for each valid branch.
    Completion criterion: Each branch has a trigger, output, boundary, and failure case.
-3. Decide whether the skill can be model-invoked or needs explicit user invocation.
+3. Choose model invocation or explicit user invocation for the skill.
    Completion criterion: The invocation choice has a stated risk-based reason.
-4. Keep explicit user invocation for risky workflows. Use it for product changes and deliberate reviews.
+4. Require explicit user invocation for product changes and deliberate reviews.
    Completion criterion: The skill does not run an expansive workflow without user intent.
 
 ## 2. Design the information hierarchy
@@ -25,7 +27,7 @@ Read [GLOSSARY.md](GLOSSARY.md) when a term in this workflow needs a definition.
 1. Put ordered actions in `SKILL.md`.
    Completion criterion: The required process has one clear order.
 2. End each step with a checkable completion criterion.
-   Completion criterion: The agent can distinguish complete work from incomplete work.
+   Completion criterion: The agent distinguishes complete work from incomplete work.
 3. Keep rules that every branch needs in `SKILL.md`.
    Completion criterion: No required branch depends on hidden core instructions.
 4. Move branch-only facts and examples to direct reference files.
@@ -33,7 +35,7 @@ Read [GLOSSARY.md](GLOSSARY.md) when a term in this workflow needs a definition.
 5. Keep each rule in one authoritative place.
    Completion criterion: No instruction or definition has a duplicate owner.
 
-Keep reference files one level below `SKILL.md`. Add a contents list to a reference file longer than 100 lines.
+Keep reference files beside `SKILL.md`. Add a contents list to each reference file longer than 100 lines.
 
 ## 3. Write the skill
 
@@ -42,17 +44,17 @@ Keep reference files one level below `SKILL.md`. Add a contents list to a refere
 2. Use imperative sentences for procedures.
    Completion criterion: Each numbered step has one action.
 3. Apply the [repository STE contract](../../../AGENTS.md#writing-style).
-   Completion criterion: The prose passes the repository STE self-lint.
+   Completion criterion: The prose uses active voice, short sentences, plain words, no contractions, no semicolons, and no emoji.
 4. Preserve code, identifiers, paths, and command syntax.
    Completion criterion: Prose edits do not change technical tokens.
-5. Remove stale text, duplication, excess length, and instructions with no effect.
+5. Remove stale text, duplicated rules, excess length, and instructions with no effect.
    Completion criterion: Each remaining sentence changes behavior or supplies required reference.
 6. Ground the skill in this static site.
    Completion criterion: The skill does not import Electron, audio, database, analytics, or unrelated product rules.
-7. Use `PRODUCT.md` and official Bandcamp evidence when a skill handles release facts or catalog content.
+7. Use `PRODUCT.md` and official Bandcamp pages as evidence for release or catalog facts.
    Completion criterion: The skill does not invent facts or weaken the static-site security boundary.
 
-If an output branch needs a different style, keep the style in that branch. State the branch and its limit in the skill.
+If a branch needs a different output style, state the branch and its limit in the skill.
 
 ## 4. Select bundled resources
 
@@ -78,8 +80,10 @@ If an output branch needs a different style, keep the style in that branch. Stat
 5. Re-read the complete package after validation.
    Completion criterion: No trigger, criterion, reference, or STE defect remains.
 
-For complex or substantially changed skills, use a clean context for forward tests when available. Give the test agent the request and raw artifacts. Do not give the expected answer.
+For a complex skill or a skill with a large change, run a forward test in a clean context when that context is available.
+Give the test agent the request and raw artifacts. Do not give the expected answer.
 
 ## Completion criterion
 
-The work is complete when every branch has a precise trigger and a checkable result. All package and STE checks pass. Each line has one owner and a clear purpose.
+The work is complete when every branch has a precise trigger and a checkable result.
+All package and STE checks pass. Each line has one owner and a clear purpose.

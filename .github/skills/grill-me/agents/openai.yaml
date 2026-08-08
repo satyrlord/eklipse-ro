@@ -1,0 +1,7 @@
+interface:
+  display_name: "Grill Me"
+  short_description: "Resolve one product decision at a time"
+  default_prompt: "Use $grill-me to resolve one eklipse product or design decision at a time."
+
+policy:
+  allow_implicit_invocation: false
