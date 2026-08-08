@@ -12,7 +12,8 @@ It asks questions and updates durable documents only with edit authority.
 
 ## 1. Prepare the decision
 
-1. Explore the repository and official eklipse Bandcamp pages before you ask about facts they provide.
+1. Explore the repository and official eklipse Bandcamp pages before you ask
+   about facts they provide.
    Completion criterion: Evidence settles every factual question.
 2. List unresolved parent decisions before child decisions.
    Completion criterion: The next decision has no unresolved parent.
@@ -43,4 +44,5 @@ It asks questions and updates durable documents only with edit authority.
 
 ## Completion criterion
 
-The grill is complete when the design or implementation plan has no unresolved dependency that requires a builder to reinterpret it.
+The grill is complete when the design or implementation plan has no unresolved
+dependency that requires a builder to reinterpret it.

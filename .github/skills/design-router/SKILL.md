@@ -27,7 +27,7 @@ explicitly asks for a restyle or a specific aesthetic.
 translate the theme through the eklipse constraints below. The result must keep
 the eklipse named rules and the static-site security boundary.
 
-**eklipse constraints**
+### eklipse constraints
 
 - Keep the site static and read-only. Add no forms, comments, authentication,
   cookies, analytics, trackers, databases, APIs, or server-side code.
@@ -53,7 +53,7 @@ Themes closer to the Gravitational Press world:
 
 | Slug | Reason |
 | --- | --- |
-| `impeccable` | Graphic editorial-poster look, cream and burnt orange, amber accent |
+| `impeccable` | Editorial-poster look with cream and burnt orange |
 | `editorial` | Magazine-style serif layouts, elegant reading |
 | `modern` | Contemporary editorial, serif type, minimal palettes |
 | `basic` | Print-inspired editorial grids |
@@ -69,11 +69,21 @@ Themes further from the eklipse world:
 
 | Slug | Reason |
 | --- | --- |
-| `sega`, `pacman`, `tetris`, `lingo`, `fiction` | Arcade and children-book worlds |
-| `material`, `ant`, `enterprise`, `roku`, `stitch`, `levels`, `agentic`, `corporate`, `professional`, `shadcn`, `codex`, `mono` | Web-app, dashboard, and developer-tool worlds |
-| `neumorphism`, `claymorphism`, `skeumorphism`, `glassmorphism`, `perspective` | Soft or 3D surface effects that break flat sharp fields |
+| `sega`, `pacman`, `tetris` | Arcade worlds |
+| `lingo`, `fiction` | Children's worlds |
+| `material`, `ant`, `enterprise` | Web-app and dashboard worlds |
+| `roku`, `stitch`, `levels` | Web-app and dashboard worlds |
+| `agentic`, `corporate` | Web-app and dashboard worlds |
+| `professional`, `shadcn` | Web-app and developer-tool worlds |
+| `codex`, `mono` | Developer-tool worlds |
+| `neumorphism`, `claymorphism` | Soft 3D surface effects |
+| `skeumorphism`, `glassmorphism` | Soft 3D surface effects |
+| `perspective` | 3D effects that break flat sharp fields |
 | `bento` | Card grids that the eklipse world refuses |
-| `doodle`, `sketch`, `friendly`, `vibrant`, `colorful`, `expressive`, `creative`, `storytelling`, `immersive`, `cafe` | Friendly and playful worlds that dilute the rave editorial identity |
+| `doodle`, `sketch`, `friendly` | Friendly and playful worlds |
+| `vibrant`, `colorful`, `expressive` | Friendly and playful worlds |
+| `creative`, `storytelling` | Playful story worlds |
+| `immersive`, `cafe` | Worlds that dilute the rave editorial identity |
 
 ## How to use this router
 
@@ -95,20 +105,22 @@ If the user names a style that matches a slug exactly (e.g. "neobrutalism",
 ## Catalog
 
 ### Minimal & clean
+
 | Slug | When to pick |
-|---|---|
+| --- | --- |
 | `minimal` | Maximum whitespace, restrained color, stripped-back clarity |
 | `clean` | Simple, legible, low-clutter general-purpose UI |
 | `sleek` | Modern minimalism with subtle interactions and tight spacing |
 | `spacious` | Generous whitespace and breathing grid layouts |
-| `geometric` | Precise shapes, neutral colors, structure that stays out of the way |
-| `codex` | Radically minimal blank-canvas, black as the only color, typography-led |
+| `geometric` | Precise shapes, neutral colors, quiet structure |
+| `codex` | Minimal blank canvas, black color, typography-led |
 | `shadcn` | shadcn/ui-style monochrome, utility-first components |
 | `flat` | Two-dimensional, vibrant flat colors, no shadows or 3D |
 
 ### Professional & enterprise
+
 | Slug | When to pick |
-|---|---|
+| --- | --- |
 | `professional` | Trustworthy business-ready design |
 | `corporate` | Brand-aligned enterprise patterns and structured grids |
 | `ant` | Data-dense enterprise web apps (Ant Design flavor) |
@@ -119,8 +131,9 @@ If the user names a style that matches a slug exactly (e.g. "neobrutalism",
 | `agentic` | AI/chat-first interfaces, delegated task flows |
 
 ### Editorial & print
+
 | Slug | When to pick |
-|---|---|
+| --- | --- |
 | `editorial` | Magazine-style serif layouts, elegant reading |
 | `modern` | Contemporary editorial, serif type, minimal palettes |
 | `basic` | Print-inspired books/magazines/reports, editorial grids |
@@ -128,12 +141,13 @@ If the user names a style that matches a slug exactly (e.g. "neobrutalism",
 | `claude` | Research-journal aesthetic on warm ivory, near-black slate ink |
 | `refined` | Curated minimal with elegant serifs, understated palettes |
 | `square` | Delicate typography, polished, sophisticated |
-| `impeccable` | Graphic editorial-poster look, cream + burnt orange, amber accent |
+| `impeccable` | Editorial-poster look, cream and burnt orange |
 | `terracotta` | Sun-baked clay tones, cream surfaces, display serif headlines |
 
 ### Premium & dramatic
+
 | Slug | When to pick |
-|---|---|
+| --- | --- |
 | `premium` | Apple-inspired precision and polish |
 | `power` | High-end dark monochrome, bold headings |
 | `bold` | Heavyweight type, high contrast, commanding layouts |
@@ -145,8 +159,9 @@ If the user names a style that matches a slug exactly (e.g. "neobrutalism",
 | `mono` | Monospace hacker-chic, compact and high-contrast |
 
 ### Playful & friendly
+
 | Slug | When to pick |
-|---|---|
+| --- | --- |
 | `friendly` | Rounded, soft pastels, approachable |
 | `lingo` | Duolingo-like bright colors, tactile 3D borders |
 | `creative` | Character-driven landing pages, expressive type |
@@ -158,11 +173,12 @@ If the user names a style that matches a slug exactly (e.g. "neobrutalism",
 | `sketch` | Pencil-sketch on cream paper, teal accents |
 | `cafe` | Cozy warm tones, relaxed browsing feel |
 | `storytelling` | Narrative-driven emotional journeys |
-| `immersive` | Exhibit-style interactive storytelling on one brand-colored canvas |
+| `immersive` | Interactive stories on one brand-colored canvas |
 
 ### Effects & materials
+
 | Slug | When to pick |
-|---|---|
+| --- | --- |
 | `glassmorphism` | Frosted glass, blur, translucent layers |
 | `claymorphism` | Puffy clay-like 3D rounded shapes |
 | `neumorphism` | Soft extruded elements, monochrome shadows |
@@ -173,8 +189,9 @@ If the user names a style that matches a slug exactly (e.g. "neobrutalism",
 | `material` | Google Material Design system |
 
 ### Retro & raw
+
 | Slug | When to pick |
-|---|---|
+| --- | --- |
 | `retro` | Vintage typography and nostalgic palettes |
 | `vintage` | 1950s–90s nostalgia, grain, pixel touches |
 | `dithered` | Dot-pattern retro rendering, limited palette |
@@ -185,17 +202,19 @@ If the user names a style that matches a slug exactly (e.g. "neobrutalism",
 | `sega` | Arcade pixel typeface, chunky pressed buttons |
 | `tetris` | Block-game colors, bold display fonts |
 | `artistic` | High-contrast expressive creative typography |
-| `pulse` | Thick borders, geometric shapes, high-contrast colors conveying motion and vitality |
+| `pulse` | Thick borders, geometric shapes, and high-contrast colors |
 
 ### Layout-driven
+
 | Slug | When to pick |
-|---|---|
+| --- | --- |
 | `bento` | Modular bento-grid card layouts |
 | `contemporary` | Current-era minimalism, bento grids, dark mode |
 
 ## Quick defaults
 
-- eklipse site UI → Gravitational Press in `DESIGN.md`. Use a catalog theme only on explicit request.
+- eklipse site UI → Gravitational Press in `DESIGN.md`. Use a catalog theme
+  only on explicit request.
 - Dashboard/SaaS app → `clean`, `ant`, or `enterprise` (dark)
 - Marketing/landing page → `modern`, `creative`, or `impeccable`
 - Dev tool → `shadcn`, `mono`, or `codex`

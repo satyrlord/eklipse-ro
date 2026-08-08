@@ -5,21 +5,29 @@ description: "Add, remove, or revise eklipse catalog releases from official Band
 
 # Update Catalog
 
-Update the catalog from official eklipse Bandcamp evidence. Do not infer release facts from unrelated music databases or search snippets.
+Update the catalog from official eklipse Bandcamp evidence. Do not infer
+release facts from unrelated music databases or search snippets.
 
-Use this skill only after an explicit catalog-change request. It changes product copy, assets, links, and release policy tests.
+Use this skill only after an explicit catalog-change request. It changes
+product copy, assets, links, and release policy tests.
 
 ## 1. Establish the change
 
-1. Read `AGENTS.md`, `PRODUCT.md`, `index.html`, `tests/static-policy.test.mjs`, and `package.json`.
-   Completion criterion: Product rules, catalog markup, tests, and commands are available.
+1. Read `AGENTS.md`, `PRODUCT.md`, `index.html`,
+   `tests/static-policy.test.mjs`, and `package.json`.
+   Completion criterion: Product rules, catalog markup, tests, and commands are
+   available.
 2. Inspect the current status and preserve unrelated changes.
-   Completion criterion: Unrelated dirty or staged work is recorded and remains outside the change.
-3. Identify the release title, official album URL, chronology position, cover asset, and ledger or archive classification.
-   Completion criterion: Each requested release field has a value or an evidence gap.
+   Completion criterion: Unrelated dirty or staged work is recorded and
+   remains outside the change.
+3. Identify the release title, official album URL, chronology position, cover
+   asset, and ledger or archive classification.
+   Completion criterion: Each requested release field has a value or an
+   evidence gap.
 4. Use the official Bandcamp project or album page as the fact source.
    Completion criterion: Each release fact has an official source.
-5. Stop and report missing evidence when the official page does not prove a required fact.
+5. Stop and report missing evidence when the official page does not prove a
+   required fact.
    Completion criterion: No unproved release fact enters the catalog.
 
 ## 2. Apply the catalog rules
@@ -36,16 +44,20 @@ Use this skill only after an explicit catalog-change request. It changes product
    Completion criterion: Each player source has the required prefix.
 6. Keep archive originals link-only.
    Completion criterion: No archive original has a player.
-7. Self-host new cover artwork under `public/assets/covers/` when the user provides or authorizes the asset.
+7. Self-host new cover artwork under `public/assets/covers/` when the user
+   provides or authorizes the asset.
    Completion criterion: Each new cover has an authorized local asset.
 8. Give each cover useful alternative text and stable dimensions.
-   Completion criterion: Each edited cover has useful `alt`, `width`, and `height` values.
+   Completion criterion: Each edited cover has useful `alt`, `width`, and
+   `height` values.
 9. Update `PRODUCT.md` when the release count, chronology, or catalog evidence changes.
    Completion criterion: Product documentation matches the changed catalog contract.
-10. Update tests only when a changed public requirement needs a distinct regression check.
+10. Update tests only when a changed public requirement needs a distinct
+    regression check.
     Completion criterion: Each test edit protects one changed public requirement.
 
-Do not invent descriptions, genres, metrics, quotes, prices, availability, or catalog identifiers.
+Do not invent descriptions, genres, metrics, quotes, prices, availability, or
+catalog identifiers.
 
 ## 3. Validate the change
 
@@ -66,4 +78,5 @@ Do not invent descriptions, genres, metrics, quotes, prices, availability, or ca
 
 ## Completion criterion
 
-The catalog update is complete when official facts, markup, assets, tests, product documentation, and validation evidence agree.
+The catalog update is complete when official facts, markup, assets, tests,
+product documentation, and validation evidence agree.

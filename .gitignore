@@ -11,3 +11,6 @@ tmp/
 .codex/
 .agents/
 graphify-out/
+coverage/
+.nyc_output/
+playwright-report/

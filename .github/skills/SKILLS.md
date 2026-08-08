@@ -5,9 +5,9 @@ Use the skill that matches the user request.
 | Skill | Use for |
 | --- | --- |
 | `create-skill` | Create or revise a repository skill package. |
-| `design-router` | Map a UI request to the eklipse system or a bundled design theme. |
-| `improve-codebase-architecture` | Review module boundaries and code ownership. |
-| `run-quality-gate` | Run or repair the complete static-site gate. |
+| `design-router` | Select the eklipse system or a design theme. |
+| `improve-codebase-architecture` | Review module boundaries. |
+| `run-quality-gate` | Run or repair the static-site gate. |
 | `verify-site` | Verify the production build in a real browser. |
 | `update-catalog` | Add or revise releases from official Bandcamp evidence. |
 | `full-code-review` | Review source, markup, styles, tests, and contracts. |

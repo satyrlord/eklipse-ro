@@ -3,5 +3,5 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/eklipse/public_html/
     - /bin/mkdir -p "$DEPLOYPATH"
-    - /bin/rm -rf "$DEPLOYPATH/assets"
+    - /bin/rm -rf "$DEPLOYPATH/assets" "$DEPLOYPATH/.htaccess" "$DEPLOYPATH/404.css" "$DEPLOYPATH/404.html" "$DEPLOYPATH/index.html"
     - /bin/cp -a dist/. "$DEPLOYPATH"

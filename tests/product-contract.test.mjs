@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vitest";
 import { archiveReleaseLedger, currentReleaseLedger } from "./helpers/release-ledger.mjs";
 import { attribute, document, elements, hasClass, html, textContent } from "./helpers/site-fixture.mjs";
 

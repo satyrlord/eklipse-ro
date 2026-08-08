@@ -1,4 +1,20 @@
 import { expect, test } from "@playwright/test";
+import { mkdir, writeFile } from "node:fs/promises";
+import { resolve } from "node:path";
+
+test.afterEach(async ({ page }, testInfo) => {
+  if (process.env.VITE_COVERAGE !== "true") {
+    return;
+  }
+
+  const coverage = await page.evaluate(() => globalThis.__coverage__);
+  expect(coverage, "the browser build must expose Istanbul coverage").toBeTruthy();
+
+  const outputDirectory = process.env.NYC_OUTPUT_DIR ?? "tmp/coverage/browser/.nyc_output";
+  const safeTestId = testInfo.testId.replace(/[^a-z0-9.-]+/gi, "-");
+  await mkdir(outputDirectory, { recursive: true });
+  await writeFile(resolve(outputDirectory, `${process.pid}-${testInfo.workerIndex}-${safeTestId}.json`), JSON.stringify(coverage));
+});
 
 const viewports = [
   { name: "narrow mobile", width: 320, height: 800 },
@@ -156,6 +172,37 @@ test("images and player metadata resolve from the production page", async ({ pag
   assertNoLocalErrors();
 });
 
+test("the daisyUI action theme preserves the eklipse control contract", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const assertNoLocalErrors = await openSite(page);
+
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "eklipse");
+  const action = page.locator(".primary-action").first();
+  await expect(action).toHaveClass(/\bbtn-primary\b/);
+
+  const style = await action.evaluate((node) => {
+    const computed = getComputedStyle(node);
+    return {
+      backgroundColor: computed.backgroundColor,
+      borderRadius: computed.borderRadius,
+      boxShadow: computed.boxShadow,
+      color: computed.color,
+      display: computed.display,
+      minHeight: Number.parseFloat(computed.minHeight),
+    };
+  });
+
+  expect(style).toEqual({
+    backgroundColor: "rgb(255, 103, 72)",
+    borderRadius: "0px",
+    boxShadow: "none",
+    color: "rgb(8, 7, 6)",
+    display: "flex",
+    minHeight: 56,
+  });
+  assertNoLocalErrors();
+});
+
 test("reduced motion removes smooth scrolling and decorative movement", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -181,5 +228,34 @@ test("reduced motion removes smooth scrolling and decorative movement", async ({
   expect(before.thresholdGlowTransform).toBe("none");
   expect(before.gravityRingsTransform).toBe("none");
   expect(after).toEqual({ gravityX: before.gravityX, gravityY: before.gravityY });
+  assertNoLocalErrors();
+});
+
+test("live reduced-motion changes stop and resume pointer movement", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const assertNoLocalErrors = await openSite(page);
+  const threshold = page.locator(".threshold");
+  const bounds = await threshold.boundingBox();
+  expect(bounds).not.toBeNull();
+
+  const gravity = () =>
+    threshold.evaluate((node) => ({
+      x: Number.parseFloat(getComputedStyle(node).getPropertyValue("--gravity-x")),
+      y: Number.parseFloat(getComputedStyle(node).getPropertyValue("--gravity-y")),
+    }));
+
+  await page.mouse.move(bounds.x + bounds.width * 0.75, bounds.y + bounds.height * 0.2);
+  await expect.poll(gravity).not.toEqual({ x: 56, y: 24 });
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect.poll(gravity).toEqual({ x: 56, y: 24 });
+  await page.mouse.move(bounds.x + bounds.width * 0.15, bounds.y + bounds.height * 0.7);
+  await page.waitForTimeout(50);
+  expect(await gravity()).toEqual({ x: 56, y: 24 });
+
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.mouse.move(bounds.x + bounds.width * 0.8, bounds.y + bounds.height * 0.45);
+  await expect.poll(gravity).not.toEqual({ x: 56, y: 24 });
   assertNoLocalErrors();
 });

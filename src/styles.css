@@ -1,3 +1,42 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: false;
+  include: button;
+  logs: false;
+}
+
+@plugin "daisyui/theme" {
+  name: "eklipse";
+  default: true;
+  prefersdark: true;
+  color-scheme: "dark";
+  --color-base-100: #080706;
+  --color-base-200: #12100d;
+  --color-base-300: #0d1b1a;
+  --color-base-content: #f8ead0;
+  --color-primary: #ff6748;
+  --color-primary-content: #080706;
+  --color-secondary: #68d7e6;
+  --color-secondary-content: #080706;
+  --color-accent: #a689e6;
+  --color-accent-content: #080706;
+  --color-neutral: #0a1024;
+  --color-neutral-content: #eef4ff;
+  --color-info: #68d7e6;
+  --color-success: #9eb792;
+  --color-warning: #e6b85e;
+  --color-error: #ed7963;
+  --radius-selector: 0rem;
+  --radius-field: 0rem;
+  --radius-box: 0rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
 :root {
   color-scheme: dark;
   --void: #080706;
@@ -402,6 +441,9 @@ img {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   transition: background-color 180ms ease-out, color 180ms ease-out;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .primary-action:hover {

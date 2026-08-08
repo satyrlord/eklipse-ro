@@ -1,5 +1,6 @@
 import "./styles.css";
 import "./release-sequence.css";
+import { calculateGravityPoint, calculatePageProgress, mostVisibleSectionId } from "./runtime";
 
 const root = document.documentElement;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -10,8 +11,7 @@ let progressFrame = 0;
 
 function updatePageProgress() {
   progressFrame = 0;
-  const scrollRange = document.documentElement.scrollHeight - window.innerHeight;
-  const progress = scrollRange > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollRange)) : 0;
+  const progress = calculatePageProgress(window.scrollY, document.documentElement.scrollHeight, window.innerHeight);
   root.style.setProperty("--page-progress", progress.toFixed(4));
 }
 
@@ -26,9 +26,9 @@ window.addEventListener("resize", requestProgressUpdate, { passive: true });
 window.addEventListener("pageshow", requestProgressUpdate);
 requestProgressUpdate();
 
-const threshold = document.querySelector(".threshold");
+const threshold = document.querySelector<HTMLElement>(".threshold");
 
-if (threshold && !reducedMotion.matches) {
+if (threshold) {
   let pointerFrame = 0;
   let pointerX = 56;
   let pointerY = 24;
@@ -39,41 +39,62 @@ if (threshold && !reducedMotion.matches) {
     threshold.style.setProperty("--gravity-y", `${pointerY.toFixed(2)}%`);
   };
 
-  threshold.addEventListener("pointermove", (event) => {
-    const bounds = threshold.getBoundingClientRect();
-    pointerX = ((event.clientX - bounds.left) / bounds.width) * 100;
-    pointerY = ((event.clientY - bounds.top) / bounds.height) * 100;
+  const requestGravityPaint = () => {
     if (!pointerFrame) {
       pointerFrame = window.requestAnimationFrame(paintGravity);
     }
-  });
+  };
 
-  threshold.addEventListener("pointerleave", () => {
+  const resetGravity = () => {
     pointerX = 56;
     pointerY = 24;
-    if (!pointerFrame) {
-      pointerFrame = window.requestAnimationFrame(paintGravity);
+    requestGravityPaint();
+  };
+
+  threshold.addEventListener("pointermove", (event) => {
+    if (reducedMotion.matches) {
+      return;
+    }
+
+    const bounds = threshold.getBoundingClientRect();
+    const point = calculateGravityPoint(event.clientX, event.clientY, bounds);
+    pointerX = point.x;
+    pointerY = point.y;
+    requestGravityPaint();
+  });
+
+  threshold.addEventListener("pointerleave", resetGravity);
+  reducedMotion.addEventListener("change", () => {
+    if (reducedMotion.matches) {
+      if (pointerFrame) {
+        window.cancelAnimationFrame(pointerFrame);
+        pointerFrame = 0;
+      }
+      resetGravity();
     }
   });
 }
 
-const sectionLinks = new Map(
-  [...document.querySelectorAll('.site-nav a[href^="#"]')].map((link) => [link.getAttribute("href").slice(1), link]),
-);
+const sectionLinks = new Map<string, HTMLAnchorElement>();
+
+for (const link of document.querySelectorAll<HTMLAnchorElement>('.site-nav a[href^="#"]')) {
+  const sectionId = link.hash.slice(1);
+  if (sectionId) {
+    sectionLinks.set(sectionId, link);
+  }
+}
 
 if (sectionLinks.size > 0 && "IntersectionObserver" in window) {
   const sectionObserver = new IntersectionObserver(
     (entries) => {
-      const active = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((left, right) => right.intersectionRatio - left.intersectionRatio)[0];
+      const activeSectionId = mostVisibleSectionId(entries);
 
-      if (!active) {
+      if (!activeSectionId) {
         return;
       }
 
       for (const [sectionId, link] of sectionLinks) {
-        if (sectionId === active.target.id) {
+        if (sectionId === activeSectionId) {
           link.setAttribute("aria-current", "true");
         } else {
           link.removeAttribute("aria-current");

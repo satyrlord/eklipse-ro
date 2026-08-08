@@ -7,13 +7,15 @@ description: "Write an eklipse handoff with verified state and the next action. 
 
 Write the minimum state that a fresh agent needs to continue the current task.
 
-Use this skill only after an explicit handoff request or when the user asks to pause work. It writes a durable temporary artifact.
+Use this skill only after an explicit handoff request or when the user asks to
+pause work. It writes a durable temporary artifact.
 
 ## 1. Critique the current state
 
 1. Inspect `git status --short`, the complete diff, and recent history.
    Completion criterion: The state snapshot has status, diff, and history evidence.
-2. Record each low-confidence fact with one concrete verification command or procedure.
+2. Record each low-confidence fact with one concrete verification command or
+   procedure.
    Completion criterion: Each low-confidence fact has one verification method.
 3. List skipped, incomplete, and postponed work.
    Completion criterion: No unfinished work is hidden from the next agent.
@@ -47,7 +49,8 @@ Link to `PRODUCT.md`, `AGENTS.md`, tests, diffs, and other owning files.
 Do not copy their contents.
 Completion criterion: The handoff links to owners without duplicating their text.
 
-Do not include credentials, personal data, conversation history, dead ends, or unsupported claims.
+Do not include credentials, personal data, conversation history, dead ends, or
+unsupported claims.
 Completion criterion: The handoff contains no prohibited content.
 
 ## 3. Check the handoff
@@ -61,11 +64,13 @@ Completion criterion: The handoff contains no prohibited content.
 4. Confirm that the next action has enough context to start without clarification.
    Completion criterion: No clarification question is required to start.
 5. Run an available Markdown check on the saved file.
-   Completion criterion: The Markdown result is recorded, including an unavailable-check status.
+   Completion criterion: The Markdown result is recorded, including an
+   unavailable-check status.
 
 Report the saved path and every unavailable check.
 Completion criterion: The report identifies the artifact and all unavailable checks.
 
 ## Completion criterion
 
-The handoff is complete when it gives a fresh agent the task, verified state, owners, blockers, and exact next action.
+The handoff is complete when it gives a fresh agent the task, verified state,
+owners, blockers, and exact next action.

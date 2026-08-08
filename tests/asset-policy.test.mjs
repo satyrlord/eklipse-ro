@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
-import test from "node:test";
+import { test } from "vitest";
 import { attribute, document, elements, notFoundDocument } from "./helpers/site-fixture.mjs";
 
 const fontStylesheetPath = "/assets/fonts.css";

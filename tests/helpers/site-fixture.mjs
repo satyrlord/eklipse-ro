@@ -1,29 +1,26 @@
 import { readFile } from "node:fs/promises";
-import { parse } from "parse5";
+import { JSDOM } from "jsdom";
 
 export const html = await readFile(new URL("../../index.html", import.meta.url), "utf8");
-export const document = parse(html);
+export const document = new JSDOM(html).window.document;
+export const cpanel = await readFile(new URL("../../.cpanel.yml", import.meta.url), "utf8");
 export const htaccess = await readFile(new URL("../../public/.htaccess", import.meta.url), "utf8");
 export const notFoundHtml = await readFile(new URL("../../public/404.html", import.meta.url), "utf8");
-export const notFoundDocument = parse(notFoundHtml);
+export const notFoundDocument = new JSDOM(notFoundHtml).window.document;
 
 export function elements(node, name) {
-  const matches = node.nodeName === name ? [node] : [];
-  return matches.concat((node.childNodes ?? []).flatMap((child) => elements(child, name)));
+  const matches = node.nodeName.toLowerCase() === name ? [node] : [];
+  return matches.concat([...node.children].flatMap((child) => elements(child, name)));
 }
 
 export function attribute(node, name) {
-  return node.attrs?.find((item) => item.name === name)?.value;
+  return node.getAttribute?.(name) ?? undefined;
 }
 
 export function hasClass(node, name) {
-  return (attribute(node, "class") ?? "").split(/\s+/).includes(name);
+  return node.classList?.contains(name) ?? false;
 }
 
 export function textContent(node) {
-  if (node.nodeName === "#text") {
-    return node.value;
-  }
-
-  return (node.childNodes ?? []).map((child) => textContent(child)).join("");
+  return node.textContent ?? "";
 }

@@ -7,7 +7,8 @@ description: "Review an eklipse change set for ownership, facts, accessibility, 
 
 Run a read-only review by default. Edit files only when the user requests repairs.
 
-Use this skill only after an explicit review request. It inspects a broad change set.
+Use this skill only after an explicit review request. It inspects a broad
+change set.
 It repairs only approved findings.
 
 ## 1. Establish the scope
@@ -16,7 +17,8 @@ It repairs only approved findings.
    Completion criterion: The repository rules and current changes are available.
 2. Inspect the complete status and unrelated dirty files.
    Completion criterion: Unrelated files are recorded and outside the review scope.
-3. Assign each changed file an owner such as product, markup, styles, runtime, tests, deployment, or generated output.
+3. Assign each changed file an owner such as product, markup, styles, runtime,
+   tests, deployment, or generated output.
    Completion criterion: Every changed file has one owner.
 4. Read each changed file with its callers, consumers, tests, and owning document.
    Completion criterion: Each changed file has source, contract, and test evidence.
@@ -29,10 +31,13 @@ Check these contracts:
 - The artist name stays `eklipse` and album titles stay exact.
 - External anchors stay on the Bandcamp allowlist.
 - Iframes use the official Bandcamp player exception only for ledger releases.
-- The site remains static, read-only, self-hosted where practical, and free of tracking or data submission.
-- HTML uses semantic landmarks, useful image alternatives, visible focus, and keyboard access.
+- The site remains static, read-only, and self-hosted where practical. It has no
+  tracking or data submission.
+- HTML uses semantic landmarks, useful image alternatives, visible focus, and
+  keyboard access.
 - Reduced-motion behavior remains available.
-- CSS and JavaScript stay direct and do not add identity wrappers or scattered special cases.
+- CSS and JavaScript stay direct. They do not add identity wrappers or
+  scattered special cases.
 - Shared layout rules have one owner and do not duplicate product policy.
 - Source changes do not edit generated `dist/` output by hand.
 - Tests protect a distinct public contract and do not weaken a current requirement.
@@ -43,7 +48,8 @@ Check these contracts:
 1. Order findings by severity.
    Completion criterion: The report lists the highest-risk finding first.
 
-2. Give each finding a file location, concrete risk, evidence, and smallest actionable fix.
+2. Give each finding a file location, concrete risk, evidence, and smallest
+   actionable fix.
    Completion criterion: Each finding has all four fields.
 
 3. Report only findings that have direct evidence.
@@ -67,4 +73,5 @@ Check these contracts:
 ## Completion criterion
 
 The review is complete when every in-scope file and contract has evidence.
-Every finding has a fix or an explicit deferral. Authorized repairs pass the quality gate.
+Every finding has a fix or an explicit deferral. Authorized repairs pass the
+quality gate.

@@ -1,23 +1,29 @@
-
 <!-- TYPEUI_SH_MANAGED_START -->
+
 # Doodle Design System Skill (Universal)
 
 ## Mission
 
-You are an expert design-system guideline author for Doodle.
-Create practical, implementation-ready guidance that can be directly used by engineers and designers.
+You are an expert design-system guideline author for Doodle. Create practical,
+implementation-ready guidance that can be directly used by engineers and
+designers.
 
 ## Brand
 
-a creative, playful, and informal style that utilizes doodles, sketches, handwritten fonts, and imperfect lines to foster emotional connection and a raw, artistic feel
+a creative, playful, and informal style that utilizes doodles, sketches,
+handwritten fonts, and imperfect lines to foster emotional connection and a raw,
+artistic feel
 
 ## Style Foundations
 
 - Visual style: playful
-- Typography scale: 14/16/18/24/32/40 | Fonts: primary=Delius Swash Caps, display=Delius Swash Caps, mono=JetBrains Mono | weights=100, 200, 300, 400, 500, 600, 700, 800, 900
-- Color palette: primary, secondary, neutral, success, warning, danger | Tokens: primary=#49B6E5, secondary=#263D5B, success=#16A34A, warning=#D97706, danger=#DC2626, surface=#FFFFFF, text=#111827
+- Typography scale: 14/16/18/24/32/40 | Fonts: primary=Delius Swash Caps,
+  display=Delius Swash Caps, mono=JetBrains Mono | weights=100, 200, 300, 400,
+  500, 600, 700, 800, 900
+- Color palette: primary, secondary, neutral, success, warning, danger | Tokens:
+  primary=#49B6E5, secondary=#263D5B, success=#16A34A, warning=#D97706,
+  danger=#DC2626, surface=#FFFFFF, text=#111827
 - Spacing scale: 4/8/12/16/24/32
-
 
 ## Accessibility
 
@@ -43,7 +49,8 @@ concise, confident, helpful
 
 - Follow the foundations first, then component consistency.
 - When uncertain, prioritize accessibility and clarity over novelty.
-- Provide concrete defaults and explain trade-offs when alternatives are possible.
+- Provide concrete defaults and explain trade-offs when alternatives are
+  possible.
 - Keep guidance opinionated, concise, and implementation-focused.
 
 ## Guideline Authoring Workflow
@@ -69,39 +76,44 @@ When generating design-system guidance, use this structure:
 
 ## Component Rule Expectations
 
-- Define required states: default, hover, focus-visible, active, disabled, loading, error (as relevant).
+- Define required states: default, hover, focus-visible, active, disabled,
+  loading, error (as relevant).
 - Describe interaction behavior for keyboard, pointer, and touch.
 - State spacing, typography, and color-token usage explicitly.
-- Include responsive behavior and edge cases (long labels, empty states, overflow).
+- Include responsive behavior and edge cases (long labels, empty states,
+  overflow).
 
 ## Quality Gates
 
-- No rule should depend on ambiguous adjectives alone; anchor each rule to a token, threshold, or example.
+- No rule should depend on ambiguous adjectives alone; anchor each rule to a
+  token, threshold, or example.
 - Every accessibility statement must be testable in implementation.
 - Prefer system consistency over one-off local optimizations.
-- Flag conflicts between aesthetics and accessibility, then prioritize accessibility.
+- Flag conflicts between aesthetics and accessibility, then prioritize
+  accessibility.
 
 ## Example Constraint Language
 
 - Use "must" for non-negotiable rules and "should" for recommendations.
 - Pair every do-rule with at least one concrete don't-example.
-- If introducing a new pattern, include migration guidance for existing components.
+- If introducing a new pattern, include migration guidance for existing
+  components.
 
 <!-- TYPEUI_SH_MANAGED_END -->
 
-
 ## Design intent (from DESIGN.md)
-
 
 ## Overview
 
-Hand-drawn, sketch-like style with doodles, handwritten fonts, and imperfect lines for a playful, informal feel.
+Hand-drawn, sketch-like style with doodles, handwritten fonts, and imperfect
+lines for a playful, informal feel.
 
-## Style Foundations
+## DESIGN.md Style Foundations
 
 - **Visual style:** playful
 - **Typography scale:** 14/16/18/24/32/40
-- **Typography fonts:** primary=Delius Swash Caps, display=Delius Swash Caps, mono=JetBrains Mono
+- **Typography fonts:** primary=Delius Swash Caps, display=Delius Swash Caps,
+  mono=JetBrains Mono
 - **Typography weights:** 100, 200, 300, 400, 500, 600, 700, 800, 900
 - **Color palette:** primary, secondary, neutral, success, warning, danger
 - **Spacing scale:** 4/8/12/16/24/32
@@ -115,4 +127,5 @@ Hand-drawn, sketch-like style with doodles, handwritten fonts, and imperfect lin
 - **Danger (#DC2626):** Token from style foundations.
 - **Surface (#FFFFFF):** Token from style foundations.
 - **Text (#111827):** Token from style foundations.
-- **Neutral (#FFFFFF):** Derived from the surface token for official format compatibility.
+- **Neutral (#FFFFFF):** Derived from the surface token for official format
+  compatibility.
