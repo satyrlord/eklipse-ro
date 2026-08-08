@@ -34,3 +34,8 @@ test("DESIGN.md color tokens match the styles.css custom properties", () => {
     assert.ok(styles.includes(declaration), `styles.css must declare ${declaration} from DESIGN.md`);
   }
 });
+
+test("section fields expose the persistent backdrop at 50 percent opacity", () => {
+  assert.ok(styles.includes("--section-field-opacity: 0.5;"));
+  assert.doesNotMatch(styles, /url\("\/assets\/covers\//, "album covers must not appear in CSS backgrounds");
+});

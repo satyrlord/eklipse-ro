@@ -44,10 +44,12 @@ remain in a clearly labeled archive.
 ## Capabilities and Constraints
 
 - One responsive single-page experience with a space theme.
+- One self-hosted vector black-hole field stays sharp at all viewport sizes.
 - The album title stays on one row at every viewport size.
 - Reduce the album title font size when it cannot fit on one row.
 - English is the sole interface and metadata language.
-- A short project description and a section for every Bandcamp album.
+- A short project description and a short description in every current release
+  section.
 - No comments, forms, authentication, analytics, or user input.
 - No server-side application code.
 - Outbound links go only to official eklipse Bandcamp pages.
@@ -59,7 +61,8 @@ remain in a clearly labeled archive.
 - Location: Brasov, Romania.
 - Origin: Iasi, Romania, in 2001.
 - Space is the main visual subject.
-- Official Bandcamp artwork is the primary visual evidence.
+- Official Bandcamp artwork is the primary release evidence. It is not a page
+  background.
 
 ## Available Evidence
 

@@ -37,6 +37,21 @@ test("the current-release ledger keeps exact URLs, titles, chronology, and playe
   assert.deepEqual(actual, currentReleaseLedger);
 });
 
+test("each current release has one description between its title and player", () => {
+  const releases = elements(document, "article").filter((article) => hasClass(article, "release-spread"));
+
+  for (const release of releases) {
+    const copy = elements(release, "div").find((node) => hasClass(node, "release-copy"));
+    const children = [...copy.children];
+    const titleIndex = children.findIndex((node) => node.nodeName === "H3");
+    const descriptionIndex = children.findIndex((node) => node.nodeName === "P");
+    const playerIndex = children.findIndex((node) => node.nodeName === "IFRAME");
+
+    assert.ok(descriptionIndex > titleIndex, `${normalizedText(children[titleIndex])} needs a description after its title`);
+    assert.ok(playerIndex > descriptionIndex, `${normalizedText(children[titleIndex])} needs its player after the description`);
+  }
+});
+
 test("the archive ledger keeps exact URLs, titles, labels, and no players", () => {
   const releases = elements(document, "article").filter((article) => hasClass(article, "afterimage-release"));
   const actual = releases.map((release) => ({
@@ -47,7 +62,7 @@ test("the archive ledger keeps exact URLs, titles, labels, and no players", () =
 
   assert.deepEqual(actual, archiveReleaseLedger);
   assert.equal(releases.flatMap((release) => elements(release, "iframe")).length, 0);
-  assert.equal(elements(document, "img").length, 12);
+  assert.equal(elements(document, "img").length, 11);
 });
 
 test("the cover-led editorial journey keeps every catalog stage", () => {
@@ -61,9 +76,18 @@ test("the cover-led editorial journey keeps every catalog stage", () => {
   assert.equal(elements(document, "h1").length, 1);
 });
 
+test("the black-hole backdrop uses no album cover or decorative red points", () => {
+  assert.equal(elements(document, "svg").filter((svg) => hasClass(svg, "space-backdrop")).length, 1);
+  assert.doesNotMatch(html, /gravity-map__points/);
+
+  const spine = elements(document, "svg").find((svg) => hasClass(svg, "release-spine"));
+  assert.ok(spine, "the release spine must exist");
+  assert.equal(elements(spine, "circle").length, 0);
+});
+
 test("Romanian place names and the supported Moonstone relation stay accurate", () => {
   assert.match(html, /started in Iasi in 2001 and now based in Brasov/);
-  assert.match(html, /The remastered version of the 2008 album <em>Moon<\/em>\./);
+  assert.match(html, /A deluxe remaster of the 2008 album <em>Moon<\/em>, combining remastered originals with new tracks\./);
 });
 
 test("the design carries no decorative taglines, subtitles, or section numbering", () => {

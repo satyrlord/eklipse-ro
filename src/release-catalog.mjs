@@ -89,7 +89,8 @@ export const currentReleaseMarkup = {
     dateLabel: "17 September 2024",
     heading: "Moonstone",
     coverAlt: "Moonstone album cover",
-    description: "<p>The remastered version of the 2008 album <em>Moon</em>.</p>",
+    description:
+      "<p>A deluxe remaster of the 2008 album <em>Moon</em>, combining remastered originals with new tracks.</p>",
   },
   Sunfire: {
     slug: "sunfire",
@@ -120,6 +121,8 @@ export const currentReleaseMarkup = {
     dateLabel: "9 October 2021",
     heading: "Empty Spaces Here",
     coverAlt: "Empty Spaces Here album cover",
+    description:
+      "<p>Twenty tracks move through ambient, breakbeat, breaktrance, neoclassical, and retrowave territory.</p>",
   },
   Idolatry: {
     slug: "idolatry",
@@ -129,6 +132,8 @@ export const currentReleaseMarkup = {
     dateLabel: "29 April 2020",
     heading: "Idolatry",
     coverAlt: "Idolatry album cover",
+    description:
+      "<p>Twelve tracks combine ambient, breakbeat, breaktrance, neoclassical, and retrowave elements.</p>",
   },
   Illusions: {
     slug: "illusions",
@@ -138,6 +143,8 @@ export const currentReleaseMarkup = {
     dateLabel: "8 March 2011",
     heading: "Illusions",
     coverAlt: "Illusions album cover",
+    description:
+      "<p>A twelve-track electronic release shaped by drum and bass, ambient, breakbeat, neoclassical, and retrowave.</p>",
   },
   "Introspection II": {
     slug: "introspection-ii",
@@ -147,6 +154,8 @@ export const currentReleaseMarkup = {
     dateLabel: "8 March 2010",
     heading: "Introspection II",
     coverAlt: "Introspection II album cover",
+    description:
+      "<p>Fourteen tracks span ambient, breakbeat, breaktrance, neoclassical, and retrowave.</p>",
   },
 };
 

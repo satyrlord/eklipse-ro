@@ -117,6 +117,71 @@ test("archive covers keep the documented desktop and mobile geometry", async ({ 
   assertNoLocalErrors();
 });
 
+test("release details stay vertically centered against their covers on desktop", async ({ page }) => {
+  const alignmentAt = async (viewport) => {
+    await page.setViewportSize(viewport);
+    return page.locator(".release-spread").evaluateAll((releases) =>
+      releases.map((release) => {
+        const cover = release.querySelector(".release-visual img").getBoundingClientRect();
+        const details = release.querySelector(".release-copy").getBoundingClientRect();
+        return {
+          coverCenterY: cover.top + cover.height / 2,
+          detailsCenterY: details.top + details.height / 2,
+          title: release.querySelector("h3").textContent.replace(/\s+/g, " ").trim(),
+        };
+      }),
+    );
+  };
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const assertNoLocalErrors = await openSite(page);
+
+  for (const viewport of [
+    { width: 1440, height: 900 },
+    { width: 820, height: 900 },
+    { width: 761, height: 900 },
+  ]) {
+    const releases = await alignmentAt(viewport);
+    for (const release of releases) {
+      expect(Math.abs(release.coverCenterY - release.detailsCenterY), release.title).toBeLessThanOrEqual(1);
+    }
+  }
+  assertNoLocalErrors();
+});
+
+test("every release description separates its title from its player", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const assertNoLocalErrors = await openSite(page);
+
+  for (const viewport of [
+    { width: 1440, height: 900 },
+    { width: 820, height: 900 },
+    { width: 480, height: 900 },
+  ]) {
+    await page.setViewportSize(viewport);
+    const releases = await page.locator(".release-spread").evaluateAll((nodes) =>
+      nodes.map((release) => {
+        const title = release.querySelector("h3").getBoundingClientRect();
+        const description = release.querySelector(".release-copy > p").getBoundingClientRect();
+        const player = release.querySelector(".bandcamp-player").getBoundingClientRect();
+        return {
+          descriptionBottom: description.bottom,
+          descriptionTop: description.top,
+          playerTop: player.top,
+          titleBottom: title.bottom,
+          titleText: release.querySelector("h3").textContent.replace(/\s+/g, " ").trim(),
+        };
+      }),
+    );
+
+    for (const release of releases) {
+      expect(release.descriptionTop, release.titleText).toBeGreaterThan(release.titleBottom);
+      expect(release.playerTop, release.titleText).toBeGreaterThan(release.descriptionBottom);
+    }
+  }
+  assertNoLocalErrors();
+});
+
 test("keyboard focus and fragment navigation remain visible and functional", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   const assertNoLocalErrors = await openSite(page);
@@ -172,6 +237,49 @@ test("images and player metadata resolve from the production page", async ({ pag
   assertNoLocalErrors();
 });
 
+test("the vector backdrop remains visible and the threshold wordmark stays inside its section", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const assertNoLocalErrors = await openSite(page);
+
+  await expect(page.locator(".space-backdrop")).toBeVisible();
+  const surfaces = await page
+    .locator(".threshold, .project-section, .sequence-header, .release-spread, .afterimage, .event-horizon")
+    .evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).backgroundColor));
+  const surfaceAlphas = surfaces.map((color) => Number(color.match(/(?:,|\/)\s*([\d.]+)\)?$/)?.[1]));
+  expect(surfaceAlphas.every((alpha) => alpha === 0.5)).toBe(true);
+
+  const lockupGeometry = () => page.locator(".threshold").evaluate((threshold) => {
+    const lockup = threshold.querySelector(".threshold-lockup").getBoundingClientRect();
+    const section = threshold.getBoundingClientRect();
+    const release = threshold.querySelector(".threshold-release").getBoundingClientRect();
+    const wordmark = threshold.querySelector(".threshold-wordmark").getBoundingClientRect();
+    return {
+      lockupBottom: lockup.bottom,
+      lockupTop: lockup.top,
+      releaseCenterY: release.top + release.height / 2,
+      releaseLeft: release.left,
+      sectionBottom: section.bottom,
+      sectionTop: section.top,
+      wordmarkCenterY: wordmark.top + wordmark.height / 2,
+      wordmarkRight: wordmark.right,
+    };
+  });
+
+  const desktopLockup = await lockupGeometry();
+  expect(desktopLockup.lockupTop).toBeGreaterThanOrEqual(desktopLockup.sectionTop);
+  expect(desktopLockup.lockupBottom).toBeLessThanOrEqual(desktopLockup.sectionBottom);
+  expect(desktopLockup.wordmarkRight).toBeLessThanOrEqual(desktopLockup.releaseLeft);
+  expect(Math.abs(desktopLockup.wordmarkCenterY - desktopLockup.releaseCenterY)).toBeLessThanOrEqual(1);
+
+  await page.setViewportSize({ width: 555, height: 411 });
+  const shortLockup = await lockupGeometry();
+  expect(shortLockup.lockupTop).toBeGreaterThanOrEqual(shortLockup.sectionTop);
+  expect(shortLockup.lockupBottom).toBeLessThanOrEqual(shortLockup.sectionBottom);
+  expect(shortLockup.wordmarkRight).toBeLessThanOrEqual(shortLockup.releaseLeft);
+  expect(Math.abs(shortLockup.wordmarkCenterY - shortLockup.releaseCenterY)).toBeLessThanOrEqual(1);
+  assertNoLocalErrors();
+});
+
 test("the daisyUI action theme preserves the eklipse control contract", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   const assertNoLocalErrors = await openSite(page);
@@ -212,8 +320,8 @@ test("reduced motion removes smooth scrolling and decorative movement", async ({
     gravityX: getComputedStyle(node).getPropertyValue("--gravity-x"),
     gravityY: getComputedStyle(node).getPropertyValue("--gravity-y"),
     scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior,
-    animationDuration: getComputedStyle(node.querySelector(".threshold-art")).animationDuration,
-    thresholdGlowTransform: getComputedStyle(node.querySelector(".threshold-art"), "::after").transform,
+    animationDuration: getComputedStyle(document.querySelector(".black-hole__mass")).animationDuration,
+    blackHoleTransform: getComputedStyle(document.querySelector(".black-hole__mass")).transform,
     gravityRingsTransform: getComputedStyle(node.querySelector(".gravity-map__rings")).transform,
   }));
   await page.mouse.move(800, 250);
@@ -225,7 +333,7 @@ test("reduced motion removes smooth scrolling and decorative movement", async ({
 
   expect(before.scrollBehavior).toBe("auto");
   expect(Number.parseFloat(before.animationDuration)).toBeLessThanOrEqual(0.000001);
-  expect(before.thresholdGlowTransform).toBe("none");
+  expect(before.blackHoleTransform).toBe("none");
   expect(before.gravityRingsTransform).toBe("none");
   expect(after).toEqual({ gravityX: before.gravityX, gravityY: before.gravityY });
   assertNoLocalErrors();

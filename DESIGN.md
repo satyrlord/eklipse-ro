@@ -1,7 +1,7 @@
 ---
 name: "eklipse Gravitational Press"
 description:
-  "A cover-led black-hole rave editorial system for the eklipse catalog."
+  "A vector black-hole rave editorial system for the eklipse catalog."
 colors:
   ember: "#ff6748"
   ember-deep: "#a93225"
@@ -23,7 +23,7 @@ colors:
 typography:
   wordmark:
     fontFamily: "Syne, Trebuchet MS, sans-serif"
-    fontSize: "clamp(7rem, 21vw, 21rem)"
+    fontSize: "clamp(2rem, 10vw, 10rem)"
     fontWeight: 800
     lineHeight: 0.62
     letterSpacing: "-0.04em"
@@ -77,8 +77,8 @@ typography:
     footer-wordmark: "1.15rem"
     mobile-wordmark: "1.25rem"
     mobile-nav: "0.62rem"
-    mobile-threshold-min: "5.2rem"
-    mobile-threshold-max: "9rem"
+    mobile-threshold-min: "1.5rem"
+    mobile-threshold-max: "7.6rem"
     mobile-nav-compact: "0.57rem"
 rounded:
   sharp: "0"
@@ -87,6 +87,7 @@ spacing:
   page-gutter: "max(4vw, calc((100vw - 1500px) / 2))"
   mobile-gutter: "1.25rem"
   spread-block: "clamp(7rem, 11vw, 11rem)"
+  section-field-opacity: "0.5"
 components:
   primary-action:
     backgroundColor: "{colors.ember}"
@@ -104,7 +105,7 @@ components:
     rounded: "{rounded.sharp}"
     height: "44px"
   release-spread:
-    backgroundColor: "{colors.soot}"
+    backgroundColor: "rgb(18 16 13 / 0.5)"
     textColor: "{colors.bone-bright}"
     rounded: "{rounded.sharp}"
     padding: "{spacing.spread-block} {spacing.page-gutter}"
@@ -120,15 +121,15 @@ components:
 ### Creative North Star: "Gravitational Press"
 
 Gravitational Press is a black-hole rave world built as an editorial sequence.
-The current, finish-reviewed implementation uses the latest album cover as a
-threshold, then moves through eight cover-led release spreads, an archive
-afterimage, and a final event horizon. It refuses the framed-cover artist
-template and generic card grids.
+The implementation uses one persistent vector black-hole field as the threshold
+and page backdrop. It then moves through eight cover-led release spreads, an
+archive afterimage, and a final event horizon. It refuses the framed-cover
+artist template and generic card grids.
 
-The world combines dark cover-derived fields, ember actions, exposed print
-seams, radial registration paths, and large album plates. The cover art supplies
-each section's local color. Interface elements stay direct and sharp so the
-artwork remains the main evidence.
+The world combines a geometric event core, a lensed accretion disk, dark
+cover-derived fields, ember actions, exposed print seams, radial paths, and
+large album plates. Each section uses its local field at 50% opacity so the
+black hole remains visible. Cover art supplies local color and release evidence.
 
 This document records the implemented system. Typography uses two display voices
 so the page can move from ambient space to rave pressure without leaving the
@@ -136,8 +137,10 @@ Gravitational Press world.
 
 **Key Characteristics:**
 
-- Full-scale album art leads each stage.
-- Radial paths, registration points, and thin rules connect the sequence.
+- A persistent vector black hole leads the page. Full-scale album art leads each
+  release stage.
+- Radial paths and thin rules connect the sequence. Decorative red points are
+  not part of the system.
 - A serif ambient voice and a geometric pressure voice create the main
   structural tension.
 - Utility labels are compact, uppercase, and widely tracked.
@@ -148,13 +151,13 @@ Gravitational Press world.
 ## Colors
 
 The palette uses near-black fields with cover-derived moss, blue, violet, teal,
-and solar accents. Ember remains the global action signal for primary controls,
-progress, and registration points.
+and solar accents. Ember remains the global action signal for primary controls
+and progress.
 
 ### Primary
 
 - **Event Ember** (`#ff6748`): Use for primary actions, the page-progress line,
-  registration points, and the global outbound emphasis.
+  and the global outbound emphasis.
 - **Deep Ember** (`#a93225`): Use for strong warm emphasis when a cover field
   needs a darker ember note.
 
@@ -178,9 +181,10 @@ progress, and registration points.
 - **Registration Rule** (`rgb(234 217 184 / 0.4)`): Use for quiet seams and
   dividers on dark fields.
 
-Section fields are dark by contract. `project-field` and `project-accent` take
-moss and ember notes from Introspection I. `catalog-field` and `catalog-accent`
-take ink blue and cyan from Nostalgia. `archive-field` and `archive-accent` take
+Section fields are dark and use 50% opacity by contract. `project-field` and
+`project-accent` take moss and ember notes from Introspection I. `catalog-field`
+and `catalog-accent` take ink blue and cyan from Nostalgia. `archive-field` and
+`archive-accent` take
 graphite and violet from the original-edition covers. `horizon-field` and
 `horizon-accent` take black and solar orange from Sun. Release spreads keep
 their own cover-derived local fields. Do not promote a one-off cover color into
@@ -188,8 +192,8 @@ a global action token.
 
 ### Color Rules
 
-**The Ember Action Rule.** Ember identifies global action, progress, and
-registration. Do not use it as a large page background.
+**The Ember Action Rule.** Ember identifies global action and progress. Do not
+use it as a large page background.
 
 **The Cover Leads Rule.** Every major section stays dark and takes its local
 atmosphere from the cover that leads it. The global action and navigation system
@@ -221,8 +225,8 @@ dates, and actions feel registered and technical.
 
 ### Hierarchy
 
-- **Threshold Wordmark** (Syne 800, `clamp(7rem, 21vw, 21rem)`, 0.62): Use once
-  as the pressure mark in the first viewport.
+- **Threshold Wordmark** (Syne 800, `clamp(2rem, 10vw, 10rem)`, 0.62): Use
+  once as a separate pressure mark opposite the threshold release block.
 - **Ambient Display** (Georgia 400, `clamp(3rem, 6vw, 6rem)`, 0.9): Use for the
   project statement, threshold release title, and archive heading.
 - **Pressure Headline** (Syne 800, `clamp(2.75rem, 5.8vw, 5.75rem)`, 0.84): Use
@@ -243,15 +247,18 @@ role.
 
 The desktop system uses a fluid page width capped at 1500px and a 12-column
 release grid. Each release spread is at least one small viewport high. Covers
-and copy alternate across the grid, with deliberate overlaps on selected
-releases. A continuous SVG spine and large circular registration paths connect
-the spreads.
+and copy alternate across the grid. The vertical center of each complete release
+details block aligns with the vertical center of its cover. Selected releases
+keep deliberate horizontal overlaps. A continuous SVG spine and large circular
+registration paths connect the spreads.
 
-The first viewport is a full-bleed threshold. The cover uses two masked image
-layers to keep both the black hole and the ruined city readable. The oversized
-wordmark sits low across the field. The release title, summary, and actions hold
-at the right edge. The project section stays dark and shifts into moss and teal
-from the Introspection covers before the catalog descends into ink blue.
+The first viewport is a full-bleed threshold over the persistent vector field.
+The black hole uses an event core, photon ring, lensed arcs, and an asymmetric
+accretion disk. The wordmark stays separate from the release information. Its
+vertical center aligns with the vertical center of the complete release block.
+The release title, summary, and actions hold at the right edge. The project
+section stays dark and shifts into moss and teal before the catalog descends
+into ink blue.
 
 The archive is an aligned three-cover coda on a graphite field. The original
 covers share one row and one baseline on desktop, then use one equal-width
@@ -301,9 +308,9 @@ horizon, not to generic containers.
 
 Controls, players, copy panels, and section seams use sharp rectangular geometry
 with no corner radius. Circles and ellipses are reserved for orbital geometry:
-black-hole rings, project registration marks, spine points, and the final event
-horizon. Fine one-pixel rules create print seams. Outbound icons use square line
-caps and miter joins.
+black-hole rings, the project orbital mark, and the final event horizon. Fine
+one-pixel rules create print seams. Outbound icons use square line caps and miter
+joins.
 
 ### Shape Rules
 
@@ -380,7 +387,7 @@ generic containers for text or icons.
 - The threshold radial field follows pointer position through
   requestAnimationFrame and returns to its origin on pointer leave.
 - IntersectionObserver sets the active Project or Releases route.
-- The threshold cover arrives from a dark, blurred, enlarged state over 1100ms.
+- The black-hole mass arrives from a smaller, dim state over 1100ms.
   Radial paths draw in over 1300ms after a 120ms delay.
 - Cover hover transitions use ease-out for color and
   `cubic-bezier(0.16, 1, 0.3, 1)` for scale or lift.
@@ -407,6 +414,8 @@ must not interrupt the reading sequence and it must stop under reduced motion.
 
 ### Do
 
+- **Do** keep the vector black-hole field visible through every 50% section
+  field.
 - **Do** let official cover art control the local release atmosphere.
 - **Do** keep the main Bandcamp action clear in the threshold and event horizon.
 - **Do** preserve semantic headings, navigation, outbound labels, keyboard
@@ -421,8 +430,8 @@ must not interrupt the reading sequence and it must stop under reduced motion.
 - **Don't** add rounded cards, pills, bento grids, glass surfaces, or generic
   software-layout patterns.
 - **Don't** frame every cover in the same repeated card treatment.
-- **Don't** replace official album art with generated imagery or stock
-  photography.
+- **Don't** use official album art as a page background or replace it with
+  generated imagery or stock photography.
 - **Don't** invent navigation routes, release facts, product claims, or inactive
   controls.
 - **Don't** let the pressure voice replace body copy or factual metadata. Keep

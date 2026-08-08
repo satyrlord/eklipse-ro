@@ -18,6 +18,59 @@
       </symbol>
     </svg>
 
+    <svg class="space-backdrop" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <radialGradient id="space-field" cx="56%" cy="30%" r="78%">
+          <stop offset="0" stop-color="#15110e" />
+          <stop offset="0.34" stop-color="#08090d" />
+          <stop offset="0.72" stop-color="#030407" />
+          <stop offset="1" stop-color="#010102" />
+        </radialGradient>
+        <radialGradient id="gravity-well">
+          <stop offset="0" stop-color="#000" />
+          <stop offset="0.42" stop-color="#000" />
+          <stop offset="0.62" stop-color="#080706" />
+          <stop offset="0.82" stop-color="#28150e" stop-opacity="0.42" />
+          <stop offset="1" stop-color="#080706" stop-opacity="0" />
+        </radialGradient>
+        <linearGradient id="accretion-flow" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#68d7e6" stop-opacity="0" />
+          <stop offset="0.16" stop-color="#68d7e6" stop-opacity="0.42" />
+          <stop offset="0.38" stop-color="#ead9b8" stop-opacity="0.8" />
+          <stop offset="0.58" stop-color="#ff713e" stop-opacity="0.96" />
+          <stop offset="0.78" stop-color="#e6b85e" stop-opacity="0.48" />
+          <stop offset="1" stop-color="#ff713e" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="photon-flow" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#68d7e6" stop-opacity="0.18" />
+          <stop offset="0.44" stop-color="#ead9b8" stop-opacity="0.86" />
+          <stop offset="0.72" stop-color="#ff713e" />
+          <stop offset="1" stop-color="#e6b85e" stop-opacity="0.24" />
+        </linearGradient>
+      </defs>
+      <rect width="1600" height="1000" fill="url(#space-field)" />
+      <g class="black-hole" transform="translate(900 300) rotate(-9)">
+        <g class="black-hole__mass">
+          <ellipse class="black-hole__halo" rx="510" ry="205" fill="url(#gravity-well)" opacity="0.78" />
+          <ellipse class="black-hole__orbit black-hole__orbit--outer" rx="560" ry="192" />
+          <ellipse class="black-hole__orbit black-hole__orbit--inner" rx="400" ry="132" />
+          <path class="black-hole__disk black-hole__disk--rear" d="M-470 0 A470 112 0 0 1 470 0" />
+          <path class="black-hole__lens black-hole__lens--upper" d="M-156 -16 C-128 -182 128 -182 156 -16" />
+          <path class="black-hole__lens black-hole__lens--lower" d="M-156 16 C-128 182 128 182 156 16" />
+          <circle class="black-hole__core" r="132" />
+          <circle class="black-hole__photon-ring" r="143" />
+          <path class="black-hole__disk black-hole__disk--front" d="M470 0 A470 112 0 0 1 -470 0" />
+          <path class="black-hole__hot-edge" d="M-410 18 A420 92 0 0 0 332 57" />
+        </g>
+      </g>
+      <g class="space-backdrop__rays">
+        <path d="M900 300 1490 70" />
+        <path d="M900 300 1590 520" />
+        <path d="M900 300 180 940" />
+        <path d="M900 300 230 10" />
+      </g>
+    </svg>
+
     <header class="site-header">
       <a class="wordmark" href="#top" aria-label="eklipse, back to top">eklipse</a>
       <nav class="site-nav" aria-label="Primary navigation">
@@ -29,10 +82,6 @@
 
     <main id="main">
       <section class="threshold" id="top" aria-labelledby="threshold-title">
-        <div class="threshold-art">
-          <img src="/assets/covers/introspection-i-remastered.jpg" alt="Introspection I (remastered edition) album cover" width="1200" height="1200" />
-        </div>
-
         <svg class="gravity-map" viewBox="0 0 1600 1000" preserveAspectRatio="none" aria-hidden="true">
           <g class="gravity-map__rings">
             <ellipse cx="905" cy="260" rx="215" ry="165" />
@@ -46,31 +95,27 @@
             <path d="M86 0 C175 245 294 426 570 602 S1120 785 1600 770" />
             <path d="M1505 0 C1430 250 1325 445 1130 590 S610 790 0 748" />
           </g>
-          <g class="gravity-map__points">
-            <circle cx="122" cy="173" r="5" />
-            <circle cx="1510" cy="91" r="5" />
-            <circle cx="810" cy="790" r="8" />
-          </g>
         </svg>
 
-        <h1 class="threshold-wordmark" id="threshold-title">eklipse</h1>
-
-        <div class="threshold-release">
-          <div class="threshold-release__title">
-            <h2>Introspection I</h2>
-            <p>Remastered edition · 2026</p>
-          </div>
-          <p class="threshold-summary">Underground electronic music from Romania. Ambient layers and syncopated beats meet piano, cello, and raving madness.</p>
-          <div class="threshold-actions">
-            <a class="primary-action btn btn-primary" href="https://eklipse-music.bandcamp.com/album/introspection-i-remastered-edition">Listen on Bandcamp <svg class="outbound-icon" aria-hidden="true"><use href="#arrow-out"></use></svg></a>
-            <a class="text-action" href="#releases">Enter the catalog</a>
+        <div class="threshold-lockup">
+          <h1 class="threshold-wordmark" id="threshold-title">eklipse</h1>
+          <div class="threshold-release">
+            <div class="threshold-release__title">
+              <h2>Introspection I</h2>
+              <p>Remastered edition · 2026</p>
+            </div>
+            <p class="threshold-summary">Underground electronic music from Romania. Ambient layers and syncopated beats meet piano, cello, and raving madness.</p>
+            <div class="threshold-actions">
+              <a class="primary-action btn btn-primary" href="https://eklipse-music.bandcamp.com/album/introspection-i-remastered-edition">Listen on Bandcamp <svg class="outbound-icon" aria-hidden="true"><use href="#arrow-out"></use></svg></a>
+              <a class="text-action" href="#releases">Enter the catalog</a>
+            </div>
           </div>
         </div>
       </section>
 
       <section class="project-section" id="project" aria-labelledby="project-title">
         <div class="project-mark" aria-hidden="true">
-          <span></span><span></span><span></span>
+          <span></span><span></span>
         </div>
         <div class="project-heading">
           <h2 id="project-title">Ambient layers.<br /><span>Raving madness.</span></h2>
@@ -89,16 +134,6 @@
         <div class="release-sequence">
           <svg class="release-spine" viewBox="0 0 1000 8000" preserveAspectRatio="none" aria-hidden="true">
             <path d="M170 0 C860 520 875 1040 260 1450 S90 2490 720 2920 S930 4010 250 4420 S70 5550 760 5930 S880 7160 360 8000" />
-            <g>
-              <circle cx="640" cy="780" r="12" />
-              <circle cx="260" cy="1700" r="12" />
-              <circle cx="705" cy="2750" r="12" />
-              <circle cx="345" cy="3710" r="12" />
-              <circle cx="690" cy="4770" r="12" />
-              <circle cx="285" cy="5740" r="12" />
-              <circle cx="720" cy="6720" r="12" />
-              <circle cx="360" cy="7660" r="12" />
-            </g>
           </svg>
           <!-- release-sequence:begin -->
           <article class="release-spread release-spread--introspection">

@@ -83,6 +83,7 @@
   --page-progress: 0;
   --focus: var(--bone-bright);
   --focus-contrast: var(--void);
+  --section-field-opacity: 0.5;
 }
 
 * {
@@ -98,6 +99,7 @@ html {
 }
 
 body {
+  position: relative;
   margin: 0;
   min-width: 0;
   overflow-x: clip;
@@ -109,6 +111,105 @@ body {
   line-height: 1.6;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
+}
+
+.space-backdrop {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+.black-hole__mass {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.black-hole__halo {
+  transform: scale(1.12, 1.5);
+  transform-origin: center;
+}
+
+.black-hole__orbit,
+.black-hole__disk,
+.black-hole__lens,
+.black-hole__photon-ring,
+.black-hole__hot-edge,
+.space-backdrop__rays path {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.black-hole__orbit {
+  stroke: rgb(234 217 184 / 0.16);
+  stroke-width: 1;
+}
+
+.black-hole__orbit--outer {
+  stroke-dasharray: 840 340;
+}
+
+.black-hole__orbit--inner {
+  stroke: rgb(104 215 230 / 0.16);
+  stroke-dasharray: 310 230;
+}
+
+.black-hole__disk {
+  stroke: url("#accretion-flow");
+  stroke-linecap: round;
+}
+
+.black-hole__disk--rear {
+  stroke-width: 44;
+  opacity: 0.58;
+}
+
+.black-hole__disk--front {
+  stroke-width: 28;
+  opacity: 0.92;
+}
+
+.black-hole__lens {
+  stroke: url("#photon-flow");
+  stroke-linecap: round;
+}
+
+.black-hole__lens--upper {
+  stroke-width: 13;
+  opacity: 0.54;
+}
+
+.black-hole__lens--lower {
+  stroke-width: 8;
+  opacity: 0.32;
+}
+
+.black-hole__core {
+  fill: #000;
+}
+
+.black-hole__photon-ring {
+  stroke: url("#photon-flow");
+  stroke-width: 5;
+}
+
+.black-hole__hot-edge {
+  stroke: var(--bone-bright);
+  stroke-width: 2;
+  opacity: 0.72;
+}
+
+.space-backdrop__rays path {
+  stroke: rgb(234 217 184 / 0.06);
+  stroke-width: 1;
 }
 
 ::selection {
@@ -241,11 +342,12 @@ img {
 }
 
 .threshold {
+  --threshold-column: min(29rem, 38vw);
   position: relative;
   min-height: 100svh;
   overflow: hidden;
   isolation: isolate;
-  background: var(--void);
+  background: rgb(8 7 6 / var(--section-field-opacity));
 }
 
 .threshold::before {
@@ -254,8 +356,8 @@ img {
   z-index: 1;
   inset: 0;
   background:
-    radial-gradient(circle at var(--gravity-x) var(--gravity-y), transparent 0 11%, rgb(8 7 6 / 0.08) 18%, rgb(8 7 6 / 0.55) 47%, rgb(8 7 6 / 0.9) 92%),
-    linear-gradient(90deg, rgb(8 7 6 / 0.5) 0%, transparent 34%, transparent 68%, rgb(8 7 6 / 0.62) 100%);
+    radial-gradient(circle at var(--gravity-x) var(--gravity-y), transparent 0 12%, rgb(8 7 6 / 0.08) 26%, rgb(8 7 6 / 0.36) 88%),
+    linear-gradient(90deg, rgb(8 7 6 / 0.32) 0%, transparent 34%, transparent 68%, rgb(8 7 6 / 0.38) 100%);
   pointer-events: none;
 }
 
@@ -271,49 +373,6 @@ img {
   border-radius: 50%;
   box-shadow: 0 34px 90px rgb(0 0 0 / 0.52);
   pointer-events: none;
-}
-
-.threshold-art {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  overflow: hidden;
-  background: var(--void);
-}
-
-.threshold-art::before,
-.threshold-art::after {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.threshold-art::before {
-  inset: 0 0 auto;
-  height: 43%;
-  background: url("/assets/covers/introspection-i-remastered.jpg") center 8% / 100% auto no-repeat;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0 64%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0 64%, transparent 100%);
-}
-
-.threshold-art::after {
-  inset: auto 0 0;
-  height: 74%;
-  background: url("/assets/covers/introspection-i-remastered.jpg") center bottom / 100% auto no-repeat;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 26%);
-  mask-image: linear-gradient(to bottom, transparent 0, #000 26%);
-}
-
-.threshold-art img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  object-fit: cover;
-  object-position: center 42%;
-  opacity: 0;
 }
 
 .gravity-map {
@@ -343,32 +402,31 @@ img {
   opacity: 0.42;
 }
 
-.gravity-map__points {
-  fill: var(--ember);
-}
-
-.threshold-wordmark {
-  position: absolute;
-  z-index: 3;
-  left: -0.035em;
-  bottom: 3vh;
-  margin: 0;
-  color: var(--bone);
-  font-family: var(--display-pressure);
-  font-size: clamp(7rem, 21vw, 21rem);
-  font-weight: 800;
-  line-height: 0.62;
-  letter-spacing: -0.04em;
-  text-shadow: 0 28px 70px rgb(0 0 0 / 0.55);
-  pointer-events: none;
-}
-
-.threshold-release {
+.threshold-lockup {
   position: absolute;
   z-index: 5;
   right: var(--gutter);
   bottom: clamp(7rem, 11vh, 10rem);
-  width: min(29rem, 38vw);
+  left: var(--gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--threshold-column);
+  gap: clamp(2rem, 5vw, 7rem);
+  align-items: center;
+}
+
+.threshold-wordmark {
+  margin: 0;
+  color: var(--bone);
+  font-family: var(--display-pressure);
+  font-size: clamp(2rem, 10vw, 10rem);
+  font-weight: 800;
+  line-height: 0.62;
+  letter-spacing: -0.04em;
+  text-shadow: 0 28px 70px rgb(0 0 0 / 0.55);
+}
+
+.threshold-release {
+  width: 100%;
   padding-top: 1.25rem;
   border-top: 1px solid var(--bone);
 }
@@ -476,7 +534,7 @@ img {
   background:
     radial-gradient(circle at 12% 38%, rgb(237 121 99 / 0.16), transparent 34%),
     radial-gradient(circle at 82% 68%, rgb(104 215 230 / 0.1), transparent 32%),
-    var(--project-field);
+    rgb(13 27 26 / var(--section-field-opacity));
   color: var(--project-fg);
 }
 
@@ -518,15 +576,6 @@ img {
   border: 0;
   border-top: 1px solid currentColor;
   border-radius: 0;
-}
-
-.project-mark span:nth-child(3) {
-  top: 48%;
-  left: 48%;
-  width: 4%;
-  aspect-ratio: 1;
-  background: var(--project-accent);
-  border-color: var(--project-accent);
 }
 
 .project-heading h2,
@@ -586,7 +635,7 @@ img {
   background:
     radial-gradient(circle at 82% 18%, rgb(166 137 230 / 0.18), transparent 34%),
     radial-gradient(circle at 10% 84%, rgb(114 214 194 / 0.1), transparent 30%),
-    var(--archive-field);
+    rgb(11 11 20 / var(--section-field-opacity));
   color: var(--archive-fg);
 }
 
@@ -749,7 +798,7 @@ img {
   overflow: hidden;
   background:
     radial-gradient(circle at 50% 42%, rgb(255 113 62 / 0.12), transparent 38%),
-    var(--horizon-field);
+    rgb(13 7 9 / var(--section-field-opacity));
   color: var(--bone-bright);
   text-align: center;
 }
@@ -818,7 +867,7 @@ img {
   justify-content: space-between;
   gap: 2rem;
   padding: 1.5rem var(--gutter);
-  background: var(--void);
+  background: rgb(8 7 6 / var(--section-field-opacity));
   color: var(--bone);
   font-family: var(--pressure);
   font-size: 0.72rem;
@@ -847,18 +896,18 @@ img {
   color: var(--ember);
 }
 
-.js-ready .threshold-art {
-  animation: threshold-arrival 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
+.js-ready .black-hole__mass {
+  animation: black-hole-arrival 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .js-ready .gravity-map__paths {
   animation: map-arrival 1300ms 120ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-@keyframes threshold-arrival {
+@keyframes black-hole-arrival {
   from {
-    filter: saturate(0.72) contrast(1.18) brightness(0.38) blur(8px);
-    transform: scale(1.08);
+    opacity: 0.28;
+    transform: scale(0.94);
   }
 }
 
@@ -874,8 +923,8 @@ img {
     --type-headline: clamp(1.25rem, 2.6vw, 2.3rem);
   }
 
-  .threshold-release {
-    width: min(31rem, 46vw);
+  .threshold {
+    --threshold-column: min(31rem, 46vw);
   }
 
   .threshold-release__title {
@@ -931,24 +980,8 @@ img {
 
   .threshold::before {
     background:
-      linear-gradient(180deg, rgb(8 7 6 / 0.06) 0%, rgb(8 7 6 / 0.18) 40%, rgb(8 7 6 / 0.92) 74%),
-      radial-gradient(circle at 58% 23%, transparent 0 9%, rgb(8 7 6 / 0.14) 24%, rgb(8 7 6 / 0.58) 72%);
-  }
-
-  .threshold-art img {
-    object-position: 54% 24%;
-  }
-
-  .threshold-art::before {
-    height: 42%;
-    background-position: 52% top;
-    background-size: auto 105vw;
-  }
-
-  .threshold-art::after {
-    height: 70%;
-    background-position: center bottom;
-    background-size: auto 118vw;
+      linear-gradient(180deg, rgb(8 7 6 / 0.04) 0%, rgb(8 7 6 / 0.12) 42%, rgb(8 7 6 / 0.5) 80%),
+      radial-gradient(circle at 58% 23%, transparent 0 10%, rgb(8 7 6 / 0.12) 30%, rgb(8 7 6 / 0.42) 78%);
   }
 
   .gravity-map {
@@ -956,19 +989,23 @@ img {
     left: -25%;
   }
 
-  .threshold-wordmark {
-    left: -0.02em;
-    bottom: 35%;
-    font-size: clamp(5.2rem, 24vw, 9rem);
-    line-height: 0.62;
+  .threshold-lockup {
+    bottom: 2rem;
+    grid-template-columns: minmax(8rem, 0.55fr) minmax(0, 1fr);
+    gap: clamp(1rem, 4vw, 2rem);
   }
 
   .threshold-release {
-    left: var(--gutter);
-    right: var(--gutter);
-    bottom: 2rem;
-    width: auto;
     padding-top: 1rem;
+  }
+
+  .threshold-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .primary-action {
+    width: 100%;
   }
 
   .threshold-release h2 {
@@ -1061,22 +1098,19 @@ img {
     font-size: 0.57rem;
   }
 
-  .threshold-actions {
-    align-items: stretch;
-    flex-direction: column;
+  .threshold-lockup {
+    grid-template-columns: 4.75rem minmax(0, 1fr);
+    gap: 0.75rem;
   }
 
-  .primary-action {
-    width: 100%;
+  .threshold-wordmark {
+    font-size: 1.5rem;
   }
 
   .text-action {
     padding-inline: 0.2rem;
   }
 
-  .threshold-wordmark {
-    bottom: 40%;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1093,8 +1127,13 @@ img {
     transition-duration: 0.001ms !important;
   }
 
-  .threshold-art::after,
+  .black-hole__mass,
   .gravity-map__rings {
     transform: none;
+  }
+
+  .black-hole__mass,
+  .gravity-map__paths {
+    animation-name: none !important;
   }
 }
