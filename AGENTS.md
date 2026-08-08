@@ -11,7 +11,7 @@
 
 - Keep the production site static and read-only.
 - Do not add forms, comments, authentication, cookies, analytics, trackers, databases, APIs, or server-side code.
-- Do not add runtime third-party scripts or embeds.
+- Do not add runtime third-party scripts or embeds. Sole exception: official Bandcamp album embed players (`https://bandcamp.com/EmbeddedPlayer/`) for the ledger releases; the archive originals stay link-only.
 - Outbound links are restricted to `https://eklipse-music.bandcamp.com/` and its `/album/` pages.
 - Internal fragment links are allowed for page navigation.
 - Self-host production assets whenever practical.

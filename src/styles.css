@@ -77,6 +77,9 @@ img { display: block; max-width: 100%; height: auto; }
 .release-spectrum { font-family: var(--display); letter-spacing: .06em; }
 .release-link { color: var(--cyan); font-family: var(--display); font-size: .88rem; font-weight: 700; line-height: 1; text-underline-offset: .4rem; letter-spacing: .08em; }
 
+.bandcamp-player { display: block; width: min(100%, 34rem); height: 7.5rem; margin: 0 0 2rem; border: 1px solid var(--line); background: var(--ink); }
+.release:nth-child(even) .bandcamp-player { margin-left: auto; }
+
 .archive-section { background: #0d151d; padding: 8rem 0; border-top: 1px solid var(--line); }
 .archive-heading { width: var(--page); margin: 0 auto 4rem; display: flex; align-items: end; justify-content: space-between; gap: 2rem; }
 .archive-heading p { margin: 0; color: var(--mist); }

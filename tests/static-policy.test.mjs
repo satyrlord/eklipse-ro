@@ -31,8 +31,15 @@ test("outbound links stay on the eklipse Bandcamp allowlist", () => {
 });
 
 test("the site exposes no user-input or embedded runtime surfaces", () => {
-  for (const tag of ["form", "input", "textarea", "select", "iframe", "object", "embed"]) {
+  for (const tag of ["form", "input", "textarea", "select", "object", "embed"]) {
     assert.equal(elements(document, tag).length, 0, `${tag} must not appear`);
+  }
+
+  const iframes = elements(document, "iframe");
+  assert.equal(iframes.length, 8, "each of the eight ledger releases carries a Bandcamp player");
+  for (const frame of iframes) {
+    const frameSrc = attribute(frame, "src");
+    assert.ok(frameSrc?.startsWith("https://bandcamp.com/EmbeddedPlayer/"), "iframes must be official Bandcamp embed players");
   }
 
   const scripts = elements(document, "script");
@@ -52,7 +59,7 @@ test("all eleven official releases are represented", () => {
 });
 
 test("Romanian place names and Moonstone remaster copy stay accurate", () => {
-  assert.match(html, /started in Iași in 2001 and now based in Brașov/);
+  assert.match(html, /started in Iasi in 2001 and now based in Brasov/);
   assert.match(html, /A deluxe remaster of the 2008 album <em>Moon<\/em>, combining remastered originals with new tracks\./);
 });
 
