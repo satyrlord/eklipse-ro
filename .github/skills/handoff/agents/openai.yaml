@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Handoff"
+  short_description: "Record exact state for the next agent"
+  default_prompt: "Use $handoff to record the current eklipse task, evidence, assumptions, and next action."

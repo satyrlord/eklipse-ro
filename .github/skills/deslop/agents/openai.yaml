@@ -1,0 +1,7 @@
+interface:
+  display_name: "Deslop"
+  short_description: "Remove unsupported site content"
+  default_prompt: "Use $deslop to remove unsupported or generated-sounding eklipse content without changing valid facts or behavior."
+
+policy:
+  allow_implicit_invocation: false

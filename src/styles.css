@@ -134,10 +134,10 @@ img { display: block; max-width: 100%; height: auto; }
   .site-nav { gap: 1.1rem; }
   .site-nav a { font-size: .78rem; }
   .hero { min-height: auto; }
-  .hero-inner { min-height: 100svh; grid-template-columns: minmax(0, 1fr); gap: 2rem; padding-top: 7rem; padding-bottom: 2.5rem; align-content: end; }
+  .hero-inner { min-height: 100svh; grid-template-columns: minmax(0, 1fr); gap: 2rem; padding-top: 7rem; padding-bottom: 2.5rem; align-content: start; }
   .hero-copy { min-width: 0; padding: 0; }
   .hero-summary { margin-block: 1.2rem 1.5rem; }
-  .hero-plate { width: min(100%, 480px); max-width: 100%; justify-self: center; order: -1; }
+  .hero-plate { width: min(100%, 480px); max-width: 100%; justify-self: center; }
   .hero::after { width: calc(100% - 2rem); top: 58%; }
   .project-section, .releases-section, .archive-section { padding-block: 6rem; }
   .project-grid { grid-template-columns: 1fr; gap: 2rem; }

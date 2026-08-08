@@ -1,0 +1,4 @@
+interface:
+  display_name: "Full Code Review"
+  short_description: "Review structure, contracts, and maintainability"
+  default_prompt: "Use $full-code-review to review the eklipse change set for simpler code and clear ownership."

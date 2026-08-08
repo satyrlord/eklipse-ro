@@ -1,0 +1,4 @@
+interface:
+  display_name: "Update Catalog"
+  short_description: "Add releases from official Bandcamp facts"
+  default_prompt: "Use $update-catalog to update the eklipse release catalog from official Bandcamp evidence."

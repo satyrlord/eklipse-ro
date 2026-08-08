@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Skill"
+  short_description: "Create and maintain repository skills"
+  default_prompt: "Use $create-skill to create or revise an eklipse repository skill with clear triggers and validation."

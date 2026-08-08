@@ -1,7 +1,6 @@
 ---
 name: deslop
-description: "Remove unsupported, synthetic, redundant, or generated-sounding content from the eklipse static site without changing valid facts, behavior, security boundaries, or album information."
-disable-model-invocation: true
+description: "Remove unsupported, synthetic, redundant, or generated-sounding content from the eklipse static site without changing valid facts, behavior, security boundaries, or album information. Use only when the user explicitly requests this cleanup."
 ---
 
 # Deslop
@@ -31,7 +30,8 @@ Load every applicable rule set before judging a file:
 - The artist name is `eklipse`, lowercase.
 - Bandcamp is the authority for project and release facts.
 - Do not invent catalog codes, coordinates, metrics, quotes, dates, genres, or narrative framing.
-- Do not remove the no-input, no-embed, and Bandcamp-only security boundaries.
+- Do not remove the no-user-input boundary or the Bandcamp-only outbound-link boundary.
+- Treat an iframe as valid only when its source starts with `https://bandcamp.com/EmbeddedPlayer/` and the release belongs to the ledger.
 - Edit source files, never generated `dist/` output.
 
 ## Completion

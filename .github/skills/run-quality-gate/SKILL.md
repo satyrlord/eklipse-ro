@@ -1,20 +1,57 @@
 ---
 name: run-quality-gate
-description: "Verify the eklipse static site before cPanel deployment. Use for quality gate, release readiness, security checks, responsive checks, or deployment validation."
+description: "Run or repair the eklipse static-site quality gate. Use for release readiness, build or test failures, security checks, responsive checks, or cPanel deployment validation."
 ---
 
 # Run Quality Gate
 
-Run each applicable gate in order and report objective PASS, FAIL, or N/A evidence.
+Run the applicable repository gates and report objective PASS, FAIL, BLOCKED, or N/A evidence.
 
-1. **Diagnostics:** collect whole-workspace VS Code diagnostics and fix valid findings.
-2. **Build:** run the repository production build and require a clean exit.
-3. **Tests:** run all repository tests and require a clean exit.
-4. **Link policy:** inspect built HTML and scripts; allow only internal fragments and `https://eklipse-music.bandcamp.com/` project or `/album/` URLs.
-5. **Input policy:** verify production output contains no forms, editable controls, comments, authentication, analytics, trackers, or data-submission code.
-6. **Asset policy:** verify production assets resolve and no runtime third-party script or iframe is present.
-7. **Browser QA:** inspect desktop and mobile rendering, keyboard focus, overflow, image loading, reduced motion, and console errors.
-8. **Security:** verify CSP and related static-site security headers are represented in deployable configuration.
-9. **Deployment artifact:** verify only intended production files are staged for `/home/eklipse/public_html` and no secrets are present.
+## 1. Select the mode
 
-Do not suppress failures. Stop at any gate that requires credentials or manual secret entry, and report the smallest next action.
+1. Use verify mode unless the user explicitly requests repairs.
+2. Keep verify mode read-only.
+3. In repair mode, capture the exact failure before editing.
+4. Repair the smallest in-scope root cause and rerun the failed gate.
+5. Do not add suppressions, exclusions, disabled rules, or lower thresholds.
+
+## 2. Discover the current gate
+
+1. Read `AGENTS.md`, `PRODUCT.md`, `package.json`, changed files, tests, and `public/.htaccess`.
+2. Read `package.json` before choosing a repository command.
+3. Inspect `git status --short` before a build.
+4. Build to an ignored `tmp/` output path when tracked `dist/` files are dirty.
+5. Mark each required check as configured, blocked, or not available.
+
+## 3. Run the gates
+
+Run these checks in order.
+
+1. Run `npm test`.
+2. Run `npm run build` when `dist/` is safe to regenerate.
+3. Otherwise run `npm run build -- --outDir tmp/quality-dist`.
+4. Check every external anchor against the Bandcamp allowlist.
+5. Allow internal fragment anchors.
+6. Allow only `https://bandcamp.com/EmbeddedPlayer/` iframe sources for ledger releases.
+7. Reject all other runtime third-party scripts, frames, forms, input controls, and data submission paths.
+8. Check that referenced images, fonts, stylesheets, and scripts resolve from self-hosted paths.
+9. Check `.htaccess` for the method, HTTPS, CSP, and security-header rules required by the project.
+10. Run real-browser QA for supported desktop and mobile widths.
+
+## 4. Check browser behavior
+
+Use [verify-site](../verify-site/SKILL.md) for the browser procedure.
+
+Check keyboard focus, skip-link behavior, fragment navigation, image loading, overflow, reduced motion, allowed Bandcamp frames, and console errors.
+
+A screenshot does not prove interaction or state. Add a semantic or computed-style assertion for every changed browser contract.
+
+## 5. Report the gate
+
+Report each command, procedure, status, and concise evidence.
+
+Separate pre-existing failures from failures caused by the scoped change.
+
+Report every unavailable browser, hosting, or credential-dependent check.
+
+Do not claim a cPanel result from local build evidence alone.

@@ -30,7 +30,7 @@ test("outbound links stay on the eklipse Bandcamp allowlist", () => {
   }
 });
 
-test("the site exposes no user-input or embedded runtime surfaces", () => {
+test("the site exposes no user-input or unauthorized runtime surfaces", () => {
   for (const tag of ["form", "input", "textarea", "select", "object", "embed"]) {
     assert.equal(elements(document, tag).length, 0, `${tag} must not appear`);
   }
