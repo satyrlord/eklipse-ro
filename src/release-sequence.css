@@ -47,6 +47,7 @@
 }
 
 .release-spread {
+  --release-player-gap: 2rem;
   --spread-bg: rgb(18 16 13 / var(--section-field-opacity));
   --spread-fg: var(--bone-bright);
   --spread-muted: var(--bone);
@@ -168,10 +169,11 @@
 }
 
 .bandcamp-player {
+  --release-player-offset: var(--release-player-gap);
   display: block;
-  width: min(100%, 34rem);
+  width: min(calc(100% - var(--release-player-offset)), 34rem);
   height: 7.5rem;
-  margin: 0 0 1.5rem;
+  margin: 0 0 1.5rem var(--release-player-offset);
   border: 1px solid color-mix(in srgb, var(--spread-fg) 35%, transparent);
   background: var(--void);
 }
@@ -205,6 +207,10 @@
   grid-column: 8 / 13;
   padding: 3rem 0 3rem 3rem;
   background: rgb(8 7 6 / 0.84);
+}
+
+.release-spread--introspection .bandcamp-player {
+  --release-player-offset: calc((100% + 3rem) / 5 + var(--release-player-gap) - 3rem);
 }
 
 .release-spread--moonstone {
@@ -259,6 +265,18 @@
   justify-self: start;
 }
 
+.release-spread--moonstone .bandcamp-player,
+.release-spread--idolatry .bandcamp-player,
+.release-spread--introspection-ii .bandcamp-player {
+  --release-player-offset: calc(100% / 5 + var(--release-player-gap));
+  margin: 0 var(--release-player-offset) 1.5rem 0;
+}
+
+.release-spread--nostalgia .bandcamp-player {
+  --release-player-offset: calc(100% / 5 + var(--release-player-gap) + 0.5rem);
+  margin: 0 var(--release-player-offset) 1.5rem 0;
+}
+
 .release-spread--empty-spaces {
   --spread-bg: rgb(11 21 19 / var(--section-field-opacity));
   --spread-fg: #f0dfbe;
@@ -307,6 +325,10 @@
   grid-column: 8 / 13;
   padding: 2.5rem;
   background: rgb(8 7 6 / 0.8);
+}
+
+.release-spread--illusions .bandcamp-player {
+  --release-player-offset: calc((100% + 5rem) / 5 + var(--release-player-gap) - 2.5rem);
 }
 
 .release-spread--introspection-ii {
@@ -393,5 +415,6 @@
 
   .bandcamp-player {
     width: 100%;
+    margin: 0 0 1.5rem;
   }
 }

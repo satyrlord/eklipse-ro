@@ -149,6 +149,42 @@ test("release details stay vertically centered against their covers on desktop",
   assertNoLocalErrors();
 });
 
+test("release players keep fixed clearance from covers on desktop", async ({ page }) => {
+  await page.setViewportSize({ width: 1259, height: 779 });
+  const assertNoLocalErrors = await openSite(page);
+
+  for (const viewport of [
+    { width: 1259, height: 779 },
+    { width: 1024, height: 900 },
+    { width: 820, height: 900 },
+    { width: 761, height: 900 },
+  ]) {
+    await page.setViewportSize(viewport);
+    const releases = page.locator(".release-spread");
+
+    for (let index = 0; index < await releases.count(); index += 1) {
+      const release = releases.nth(index);
+      await release.scrollIntoViewIfNeeded();
+      const image = release.locator(".release-visual img");
+      await expect.poll(() => image.evaluate((node) => (node as HTMLImageElement).complete && (node as HTMLImageElement).naturalWidth > 0)).toBe(true);
+    }
+
+    const clearances = await releases.evaluateAll((nodes) =>
+      nodes.map((release) => {
+        const cover = release.querySelector(".release-visual img")!.getBoundingClientRect();
+        const player = release.querySelector(".bandcamp-player")!.getBoundingClientRect();
+        const gap = cover.right <= player.left ? player.left - cover.right : cover.left >= player.right ? cover.left - player.right : -Math.min(cover.right - player.left, player.right - cover.left);
+        return { gap, title: release.querySelector("h3")!.textContent.replace(/\s+/g, " ").trim() };
+      }),
+    );
+
+    for (const clearance of clearances) {
+      expect(clearance.gap, `${clearance.title} at ${viewport.width}px`).toBeGreaterThanOrEqual(31);
+    }
+  }
+  assertNoLocalErrors();
+});
+
 test("every release description separates its title from its player", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   const assertNoLocalErrors = await openSite(page);

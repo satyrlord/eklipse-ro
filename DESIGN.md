@@ -365,8 +365,9 @@ generic containers for text or icons.
 - **Style:** Use the official player as a quiet 7.5rem-high strip below the
   release copy.
 - **Border:** Use a one-pixel tint of the local spread foreground.
-- **Constraint:** Keep the player subordinate to its cover and do not restyle
-  its remote contents.
+- **Constraint:** Keep a fixed 2rem minimum clearance between the player and the
+  cover on desktop. When the release stacks on mobile, return the player to the
+  full content width. Do not restyle its remote contents.
 
 ### Archive Afterimages
 
