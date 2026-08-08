@@ -10,6 +10,14 @@ colors:
   soot: "#12100d"
   bone: "#ead9b8"
   bone-bright: "#f8ead0"
+  project-field: "#0d1b1a"
+  project-accent: "#ed7963"
+  catalog-field: "#0a1024"
+  catalog-accent: "#68d7e6"
+  archive-field: "#0b0b14"
+  archive-accent: "#a689e6"
+  horizon-field: "#0d0709"
+  horizon-accent: "#ff713e"
   rule: "rgb(234 217 184 / 0.4)"
 typography:
   wordmark:
@@ -51,6 +59,8 @@ typography:
   scale:
     header-wordmark: "1.2rem"
     threshold-meta: "0.68rem"
+    threshold-title-min: "2.2rem"
+    threshold-title-max: "3.5rem"
     threshold-summary-max: "1.12rem"
     action: "0.8rem"
     text-action: "0.76rem"
@@ -59,7 +69,6 @@ typography:
     project-copy-max: "1.28rem"
     release-subline: "0.92rem"
     release-copy-max: "1.1rem"
-    spectrum: "0.88rem"
     archive-label: "0.76rem"
     archive-title-min: "1.8rem"
     archive-title-mid: "3.1rem"
@@ -113,7 +122,7 @@ components:
 
 Gravitational Press is a black-hole rave world built as an editorial sequence. The current, finish-reviewed implementation uses the latest album cover as a threshold, then moves through eight cover-led release spreads, an archive afterimage, and a final event horizon. It refuses the framed-cover artist template and generic card grids.
 
-The world combines soot-dark fields, warm paper neutrals, ember actions, exposed print seams, radial registration paths, and large album plates. The cover art supplies most of the local color. Interface elements stay direct and sharp so the artwork remains the main evidence.
+The world combines dark cover-derived fields, ember actions, exposed print seams, radial registration paths, and large album plates. The cover art supplies each section's local color. Interface elements stay direct and sharp so the artwork remains the main evidence.
 
 This document records the implemented system. Typography uses two display voices so the page can move from ambient space to rave pressure without leaving the Gravitational Press world.
 
@@ -124,16 +133,16 @@ This document records the implemented system. Typography uses two display voices
 - A serif ambient voice and a geometric pressure voice create the main structural tension.
 - Utility labels are compact, uppercase, and widely tracked.
 - Sharp semantic controls keep the route to Bandcamp clear.
-- Alternating dark and light fields create a long editorial rhythm.
+- One dark field runs through the journey. Each stage shifts hue from its cover art.
 
 ## Colors
 
-The palette uses warm light against near-black, with ember as the global action signal and cover-derived colors as local release fields.
+The palette uses near-black fields with cover-derived moss, blue, violet, teal, and solar accents. Ember remains the global action signal for primary controls, progress, and registration points.
 
 ### Primary
 
 - **Event Ember** (`#ff6748`): Use for primary actions, the page-progress line, registration points, and the global outbound emphasis.
-- **Deep Ember** (`#a93225`): Use for strong text emphasis on a bone field.
+- **Deep Ember** (`#a93225`): Use for strong warm emphasis when a cover field needs a darker ember note.
 
 ### Secondary
 
@@ -144,17 +153,19 @@ The palette uses warm light against near-black, with ember as the global action 
 
 - **Void** (`#080706`): Use for the page base, dark event-horizon fields, player backs, and dark focus contrast.
 - **Soot** (`#12100d`): Use as the default release-spread field when a cover does not set a local field.
-- **Bone** (`#ead9b8`): Use for warm paper sections, secondary dark-field text, and radial line work.
+- **Bone** (`#ead9b8`): Use for secondary dark-field text, threshold lettering, and radial line work.
 - **Bright Bone** (`#f8ead0`): Use for primary dark-field text, skip-link surfaces, and the ember action hover state.
 - **Registration Rule** (`rgb(234 217 184 / 0.4)`): Use for quiet seams and dividers on dark fields.
 
-Album-specific spread colors are local to their covers. Do not promote each one-off field into a global semantic color. Green is present mainly in the cover art, not as a current interface token.
+Section fields are dark by contract. `project-field` and `project-accent` take moss and ember notes from Introspection I. `catalog-field` and `catalog-accent` take ink blue and cyan from Nostalgia. `archive-field` and `archive-accent` take graphite and violet from the original-edition covers. `horizon-field` and `horizon-accent` take black and solar orange from Sun. Release spreads keep their own cover-derived local fields. Do not promote a one-off cover color into a global action token.
 
 ### Named Rules
 
 **The Ember Action Rule.** Ember identifies global action, progress, and registration. Do not use it as a large page background.
 
-**The Cover Leads Rule.** A release field can take color from its cover, but the global action and navigation system stays stable.
+**The Cover Leads Rule.** Every major section stays dark and takes its local atmosphere from the cover that leads it. The global action and navigation system stays stable.
+
+**The Dark Field Rule.** Keep project, catalog, release, archive, event-horizon, and footer backgrounds dark. Let album plates, text, and cover-derived accents carry the lightness.
 
 ## Typography
 
@@ -166,7 +177,7 @@ Album-specific spread colors are local to their covers. Do not promote each one-
 
 **Label Font:** Syne 600–700 (with Trebuchet MS and sans-serif fallbacks)
 
-**Character:** Georgia gives the project statement, threshold title, and archive afterimage an ambient editorial voice. Syne 800 makes the threshold wordmark, release names, section entries, and final action carry rave pressure. IBM Plex Sans keeps release facts and descriptions clear. Syne 600–700 makes navigation, dates, counters, and actions feel registered and technical.
+**Character:** Georgia gives the project statement, threshold title, and archive afterimage an ambient editorial voice. Syne 800 makes the threshold wordmark, release names, section entries, and final action carry rave pressure. IBM Plex Sans keeps release facts and descriptions clear. Syne 600–700 makes navigation, dates, and actions feel registered and technical.
 
 ### Hierarchy
 
@@ -174,7 +185,7 @@ Album-specific spread colors are local to their covers. Do not promote each one-
 - **Ambient Display** (Georgia 400, `clamp(3rem, 6vw, 6rem)`, 0.9): Use for the project statement, threshold release title, and archive heading.
 - **Pressure Headline** (Syne 800, `clamp(2.75rem, 5.8vw, 5.75rem)`, 0.84): Use for current release titles and final action statements.
 - **Body** (IBM Plex Sans 400, `1rem` minimum, 1.6–1.65): Use for project and release copy. Keep long text blocks at 60ch or less.
-- **Label** (Syne 600–700, `0.64rem–0.8rem`, `0.08em–0.14em`, uppercase): Use for navigation, dates, release counters, metadata, and actions. Use tabular numerals for dates and counters.
+- **Label** (Syne 600–700, `0.64rem–0.8rem`, `0.08em–0.14em`, uppercase): Use for navigation, dates, metadata, and actions. Use tabular numerals for dates.
 
 ### Named Rules
 
@@ -184,9 +195,9 @@ Album-specific spread colors are local to their covers. Do not promote each one-
 
 The desktop system uses a fluid page width capped at 1500px and a 12-column release grid. Each release spread is at least one small viewport high. Covers and copy alternate across the grid, with deliberate overlaps on selected releases. A continuous SVG spine and large circular registration paths connect the spreads.
 
-The first viewport is a full-bleed threshold. The cover uses two masked image layers to keep both the black hole and the ruined city readable. The oversized wordmark sits low across the field. The release title, summary, and actions hold at the right edge. The project section then changes to a bone field before the dark catalog sequence begins.
+The first viewport is a full-bleed threshold. The cover uses two masked image layers to keep both the black hole and the ruined city readable. The oversized wordmark sits low across the field. The release title, summary, and actions hold at the right edge. The project section stays dark and shifts into moss and teal from the Introspection covers before the catalog descends into ink blue.
 
-The archive is a staggered three-cover coda on bone. Its grid steps from a large first cover to smaller offset covers. The final event horizon centers one short heading and one primary action inside concentric rings.
+The archive is an aligned three-cover coda on a graphite field. The original covers share one row and one baseline on desktop, then use one equal-width column on mobile. Each cover carries a dark local plate with its own caption accent. The final event horizon centers one short heading and one primary action inside concentric rings.
 
 At 1000px, the release title and grid proportions compress. At 760px, the page gutter becomes 1.25rem, all release spreads become a single vertical column, the spine geometry moves behind the stack, players use the full width, and archive covers use three distinct widths. The header uses a near-solid dark field. At 430px, threshold actions stack and the primary action takes the full width. Touch targets remain at least 44px high.
 
@@ -203,7 +214,7 @@ The system is flat at the section level. It uses tonal field changes and overlap
 ### Shadow Vocabulary
 
 - **Cover Plate** (`0 36px 86px rgb(0 0 0 / 0.48)`): Use under current release covers on dark fields.
-- **Archive Plate** (`0 30px 70px rgb(8 7 6 / 0.28)`): Use under original-edition covers on bone.
+- **Archive Plate** (`0 30px 70px rgb(8 7 6 / 0.28)`): Use under original-edition covers on dark local plates.
 - **Threshold Type** (`0 28px 70px rgb(0 0 0 / 0.55)`): Use only behind the oversized threshold wordmark.
 - **Event Horizon** (`0 40px 110px rgb(91 22 12 / 0.42)`): Use inside the final concentric-ring field.
 
@@ -248,7 +259,7 @@ Controls, players, copy panels, and section seams use sharp rectangular geometry
 
 - **Topology:** One 12-column editorial field per current release, with a cover plate and a separate copy region.
 - **Cover:** Keep the full cover readable with `object-fit: contain`. Let selected spreads overlap copy through grid placement, not through a rounded card.
-- **Copy:** Use a short accent rule, date, serif release title, factual description or genre line, one Bandcamp player, and one album link.
+- **Copy:** Use a short accent rule, date, serif release title, optional factual description, one Bandcamp player, and one album link.
 - **Hover:** Current covers gain slight saturation and contrast and reduce to 98.8% scale.
 - **Focus:** The cover link and album link use the shared focus system.
 
@@ -260,8 +271,8 @@ Controls, players, copy panels, and section seams use sharp rectangular geometry
 
 ### Archive Afterimages
 
-- **Topology:** Three link-only covers in a staggered coda. Do not add players.
-- **Default:** Reduce color with a grayscale and contrast filter.
+- **Topology:** Three link-only covers in one aligned coda. Do not add players.
+- **Default:** Keep most cover color visible with a restrained grayscale and contrast filter.
 - **Hover:** Restore full color and move the plate up by 0.5rem.
 
 ### Event Horizon
@@ -282,7 +293,7 @@ Controls, players, copy panels, and section seams use sharp rectangular geometry
 
 - Use a three-pixel outline in the local focus color, offset by five pixels.
 - Add a seven-pixel contrast ring behind the outline.
-- On bone and gold fields, invert the focus pair to Void over Bright Bone. On dark fields, use Bright Bone over Void.
+- Keep focus pairs high contrast against each dark local field. Use the local accent for archive links and Bright Bone for global controls.
 - Keep the skip link hidden above the viewport until it receives focus.
 
 ### Named Rules
@@ -308,3 +319,4 @@ Controls, players, copy panels, and section seams use sharp rectangular geometry
 - **Don't** replace official album art with generated imagery or stock photography.
 - **Don't** invent navigation routes, release facts, product claims, or inactive controls.
 - **Don't** let the pressure voice replace body copy or factual metadata. Keep the ambient / pressure alternation intentional.
+- **Don't** add decorative taglines, heading subtitles, or section numbering. Keep every visible text factual and useful.
