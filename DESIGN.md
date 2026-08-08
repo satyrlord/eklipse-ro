@@ -12,24 +12,30 @@ colors:
   bone-bright: "#f8ead0"
   rule: "rgb(234 217 184 / 0.4)"
 typography:
+  wordmark:
+    fontFamily: "Syne, Trebuchet MS, sans-serif"
+    fontSize: "clamp(7rem, 21vw, 21rem)"
+    fontWeight: 800
+    lineHeight: 0.62
+    letterSpacing: "-0.04em"
   display:
     fontFamily: "Georgia, Times New Roman, serif"
-    fontSize: "clamp(3.25rem, 6.5vw, 6.5rem)"
+    fontSize: "clamp(3rem, 6vw, 6rem)"
     fontWeight: 400
     lineHeight: 0.9
-    letterSpacing: "-0.04em"
+    letterSpacing: "-0.035em"
   headline:
-    fontFamily: "Georgia, Times New Roman, serif"
-    fontSize: "clamp(3rem, 6.4vw, 6rem)"
-    fontWeight: 400
-    lineHeight: 0.9
-    letterSpacing: "-0.04em"
+    fontFamily: "Syne, Trebuchet MS, sans-serif"
+    fontSize: "clamp(2.75rem, 5.8vw, 5.75rem)"
+    fontWeight: 800
+    lineHeight: 0.84
+    letterSpacing: "-0.035em"
   title:
     fontFamily: "Georgia, Times New Roman, serif"
-    fontSize: "clamp(2.5rem, 4.4vw, 5rem)"
+    fontSize: "clamp(2.35rem, 4vw, 4.6rem)"
     fontWeight: 400
     lineHeight: 0.92
-    letterSpacing: "-0.035em"
+    letterSpacing: "-0.03em"
   body:
     fontFamily: "IBM Plex Sans, Segoe UI, sans-serif"
     fontSize: "1rem"
@@ -42,6 +48,28 @@ typography:
     fontWeight: 600
     lineHeight: 1
     letterSpacing: "0.09em"
+  scale:
+    header-wordmark: "1.2rem"
+    threshold-meta: "0.68rem"
+    threshold-summary-max: "1.12rem"
+    action: "0.8rem"
+    text-action: "0.76rem"
+    label-tight: "0.64rem"
+    project-copy-min: "1.05rem"
+    project-copy-max: "1.28rem"
+    release-subline: "0.92rem"
+    release-copy-max: "1.1rem"
+    spectrum: "0.88rem"
+    archive-label: "0.76rem"
+    archive-title-min: "1.8rem"
+    archive-title-mid: "3.1rem"
+    archive-title-max: "3.6rem"
+    footer-wordmark: "1.15rem"
+    mobile-wordmark: "1.25rem"
+    mobile-nav: "0.62rem"
+    mobile-threshold-min: "5.2rem"
+    mobile-threshold-max: "9rem"
+    mobile-nav-compact: "0.57rem"
 rounded:
   sharp: "0"
   orbital: "50%"
@@ -87,13 +115,13 @@ Gravitational Press is a black-hole rave world built as an editorial sequence. T
 
 The world combines soot-dark fields, warm paper neutrals, ember actions, exposed print seams, radial registration paths, and large album plates. The cover art supplies most of the local color. Interface elements stay direct and sharp so the artwork remains the main evidence.
 
-This document records the implemented system. It does not record unimplemented typography, color, or motion refinements.
+This document records the implemented system. Typography uses two display voices so the page can move from ambient space to rave pressure without leaving the Gravitational Press world.
 
 **Key Characteristics:**
 
 - Full-scale album art leads each stage.
 - Radial paths, registration points, and thin rules connect the sequence.
-- Oversized serif display type creates the main structural tension.
+- A serif ambient voice and a geometric pressure voice create the main structural tension.
 - Utility labels are compact, uppercase, and widely tracked.
 - Sharp semantic controls keep the route to Bandcamp clear.
 - Alternating dark and light fields create a long editorial rhythm.
@@ -130,26 +158,27 @@ Album-specific spread colors are local to their covers. Do not promote each one-
 
 ## Typography
 
-**Display Font:** Georgia (with Times New Roman and serif fallbacks)
+**Ambient Display Font:** Georgia (with Times New Roman and serif fallbacks)
+
+**Pressure Display Font:** Syne 800 (with Trebuchet MS and sans-serif fallbacks)
 
 **Body Font:** IBM Plex Sans (with Segoe UI and sans-serif fallbacks)
 
-**Label Font:** Syne (with Trebuchet MS and sans-serif fallbacks)
+**Label Font:** Syne 600–700 (with Trebuchet MS and sans-serif fallbacks)
 
-**Character:** Georgia gives the catalog a large press-like voice. IBM Plex Sans keeps release facts and descriptions clear. Syne makes navigation, dates, counters, and actions feel registered and technical.
+**Character:** Georgia gives the project statement, threshold title, and archive afterimage an ambient editorial voice. Syne 800 makes the threshold wordmark, release names, section entries, and final action carry rave pressure. IBM Plex Sans keeps release facts and descriptions clear. Syne 600–700 makes navigation, dates, counters, and actions feel registered and technical.
 
 ### Hierarchy
 
-- **Threshold Wordmark** (400, `clamp(7rem, 21vw, 21rem)`, 0.7): Use once as the main structural element in the first viewport.
-- **Display** (400, `clamp(3.25rem, 6.5vw, 6.5rem)`, 0.9): Use for major section statements and the final event-horizon heading.
-- **Headline** (400, `clamp(3rem, 6.4vw, 6rem)`, 0.9): Use for release titles. Keep the negative tracking and balanced wrapping.
-- **Title** (400, `clamp(2.5rem, 4.4vw, 5rem)`, 0.92): Use for the latest-release title.
-- **Body** (400, `1rem`, 1.6): Use for project and release copy. Keep long text blocks at no more than 65 characters per line.
-- **Label** (600, `0.72rem`, `0.09em`, uppercase): Use for navigation, dates, release counters, metadata, and utility text. Primary actions use Syne at 700.
+- **Threshold Wordmark** (Syne 800, `clamp(7rem, 21vw, 21rem)`, 0.62): Use once as the pressure mark in the first viewport.
+- **Ambient Display** (Georgia 400, `clamp(3rem, 6vw, 6rem)`, 0.9): Use for the project statement, threshold release title, and archive heading.
+- **Pressure Headline** (Syne 800, `clamp(2.75rem, 5.8vw, 5.75rem)`, 0.84): Use for current release titles and final action statements.
+- **Body** (IBM Plex Sans 400, `1rem` minimum, 1.6–1.65): Use for project and release copy. Keep long text blocks at 60ch or less.
+- **Label** (Syne 600–700, `0.64rem–0.8rem`, `0.08em–0.14em`, uppercase): Use for navigation, dates, release counters, metadata, and actions. Use tabular numerals for dates and counters.
 
 ### Named Rules
 
-**The Three Voices Rule.** Use Georgia for display, IBM Plex Sans for reading, and Syne for utility text. Do not substitute a future type direction until it exists in the implementation.
+**The Ambient / Pressure Rule.** Use Georgia when the sequence needs air and memory. Use Syne 800 when the sequence needs impact. Use IBM Plex Sans for reading and Syne 600–700 for utility text. Do not let one voice carry every role.
 
 ## Layout
 
@@ -278,4 +307,4 @@ Controls, players, copy panels, and section seams use sharp rectangular geometry
 - **Don't** frame every cover in the same repeated card treatment.
 - **Don't** replace official album art with generated imagery or stock photography.
 - **Don't** invent navigation routes, release facts, product claims, or inactive controls.
-- **Don't** treat unimplemented typography, palette, or motion refinements as current system tokens.
+- **Don't** let the pressure voice replace body copy or factual metadata. Keep the ambient / pressure alternation intentional.

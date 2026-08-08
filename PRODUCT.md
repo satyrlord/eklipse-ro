@@ -29,6 +29,7 @@ The site is a single-page promotional experience at eklipse.ro. Visitors learn a
 ## Capabilities and Constraints
 
 - One responsive single-page experience with a space theme.
+- The album title stays on a single row at every page size, device, or viewport. Reduce the album title font size when the title would not fit on one row.
 - English is the sole interface and metadata language.
 - A short project description and a section for every Bandcamp album.
 - No comments, forms, authentication, analytics, user input, or server-side application code.
