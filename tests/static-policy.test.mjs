@@ -57,7 +57,9 @@ test("Romanian place names and Moonstone remaster copy stay accurate", () => {
 });
 
 test("production HTTP policy rejects unsafe methods and hardens all site responses", () => {
+  assert.match(htaccess, /ErrorDocument 403 \/404\.html/);
   assert.match(htaccess, /ErrorDocument 404 \/404\.html/);
+  assert.match(htaccess, /ErrorDocument 405 \/404\.html/);
   assert.match(htaccess, /REQUEST_METHOD} !\^\(GET\|HEAD\)\$/);
   assert.match(htaccess, /Strict-Transport-Security "max-age=31536000"/);
   assert.match(htaccess, /Cross-Origin-Resource-Policy "same-origin"/);
