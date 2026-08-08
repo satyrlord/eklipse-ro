@@ -1,6 +1,6 @@
 # Data and Configuration Rules
 
-Compare data and configuration with `PRODUCT.md`, official Bandcamp pages, and the consuming source.
+Compare data and configuration with `PRODUCT.md`, official Bandcamp pages, and the source that uses them.
 
 - Remove placeholder or invented values from live content.
 - Correct artist names, album titles, dates, URLs, and paths against their authority.

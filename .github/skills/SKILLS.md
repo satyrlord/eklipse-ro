@@ -9,7 +9,7 @@ Use the skill that matches the user request.
 | `verify-site` | Verify the production build in a real browser. |
 | `update-catalog` | Add or revise releases from official Bandcamp evidence. |
 | `full-code-review` | Review source, markup, styles, tests, and contracts. |
-| `deslop` | Remove unsupported or generated-sounding content. |
+| `deslop` | Remove unsupported or synthetic content. |
 | `grill-me` | Resolve one product or design decision at a time. |
 | `handoff` | Record exact state for a fresh agent in `tmp/`. |
 

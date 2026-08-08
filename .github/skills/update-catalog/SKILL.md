@@ -13,7 +13,7 @@ Update the catalog from official eklipse Bandcamp evidence. Do not infer release
 2. Inspect the current status and preserve unrelated changes.
 3. Identify the release title, official album URL, chronology position, cover asset, and ledger or archive classification.
 4. Use the official Bandcamp project or album page as the fact source.
-5. Stop and report a blocker when the official page does not prove a required fact.
+5. Stop and report missing evidence when the official page does not prove a required fact.
 
 ## 2. Apply the catalog rules
 

@@ -1,6 +1,6 @@
 ---
 name: verify-site
-description: "Verify the eklipse production build in a real browser. Use for responsive layout, keyboard access, focus, image loading, Bandcamp player, console, security-policy, or release-readiness checks."
+description: "Verify the eklipse production build in a real browser. Use for layout, keyboard, focus, images, Bandcamp player, console, security policy, or release checks."
 ---
 
 # Verify Site
@@ -10,7 +10,7 @@ Verify observable behavior in the built static site. Stay read-only unless the u
 ## 1. Prepare the evidence
 
 1. Read `AGENTS.md`, `PRODUCT.md`, `package.json`, changed files, tests, and `public/.htaccess`.
-2. Inspect `git status --short` before building.
+2. Inspect `git status --short` before you build.
 3. Use `npm run build` when tracked `dist/` files are clean.
 4. Use `npm run build -- --outDir tmp/verify-<slug>` when tracked `dist/` files are dirty.
 5. Use `npm run preview -- --host 127.0.0.1 --port 4173 --strictPort` to serve the selected build.
@@ -37,7 +37,7 @@ If a required script or browser is unavailable, report the check as BLOCKED.
 5. Activate fragment links and confirm the target section becomes visible.
 6. Confirm every image loads and has useful alternative text.
 7. Confirm every visible Bandcamp player has the correct title and allowed source.
-8. Check overflow, clipped text, horizontal scrolling, and unexpected layout shift.
+8. Check overflow, clipped text, horizontal scroll, and unexpected layout shift.
 9. Repeat the visual checks with reduced motion enabled.
 10. Record console errors and unexpected network requests.
 
@@ -48,7 +48,7 @@ Use semantic assertions for focus, links, sources, text, and geometry. A screens
 1. Store screenshots and reports only under an ignored `tmp/verify-<slug>/` path.
 2. Stop the preview server and close the browser.
 3. Recheck `git status --short`.
-4. Report each assertion, result, blocker, and unverified claim.
+4. Report each check, result, blocker, and claim that you did not verify.
 
 Do not claim cPanel behavior, Bandcamp playback quality, or physical listening evidence from this procedure.
 

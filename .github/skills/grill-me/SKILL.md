@@ -1,17 +1,17 @@
 ---
 name: grill-me
-description: "Interview the user one decision at a time to stress-test an eklipse site plan or design before building. Use for grill requests or unresolved product and visual decisions."
+description: "Interview the user one decision at a time about an eklipse plan or design before you build. Use for grill requests or unresolved product decisions."
 ---
 
 # Grill Me
 
-Resolve a plan or design by walking its decision tree one branch at a time.
+Resolve a plan or design one branch at a time.
 
 ## Rules
 
-1. Explore the repository and official eklipse Bandcamp pages before asking anything they can answer.
+1. Explore the repository and official eklipse Bandcamp pages before you ask about anything they can answer.
 2. Ask exactly one question at a time in the active conversation.
-3. State the recommended answer and concise tradeoffs before asking.
+3. State the recommended answer and its effects before asking.
 4. Resolve parent decisions before child decisions.
 5. Incorporate each answer immediately and update the relevant durable document when the user gives edit authority.
 6. Never reopen a settled branch without new conflicting evidence.

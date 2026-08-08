@@ -29,7 +29,7 @@ Context load is the text and attention cost that a skill adds before it runs.
 
 ### Cognitive load
 
-Cognitive load is the effort that a user needs to remember and select a skill.
+Cognitive load is the effort needed to remember and select a skill.
 
 ## Structure
 
@@ -43,7 +43,7 @@ A completion criterion states the observable condition that ends a step or task.
 
 ### Reference
 
-A reference is supporting information that the agent reads when a branch needs it.
+A reference is information that the agent reads when a branch needs it.
 
 ### Information hierarchy
 
@@ -67,9 +67,9 @@ Granularity shows how a design divides work across skills and reference files. S
 
 Predictability is the degree to which a skill produces the same process on each run. The output can still change with the request.
 
-### Leading word
+### Main word
 
-A leading word is a compact concept that anchors invocation or execution.
+A main word is a short concept that anchors invocation or execution.
 
 ### Relevance
 
@@ -81,19 +81,19 @@ Premature completion ends a step before it meets its criterion.
 
 ### Duplication
 
-Duplication gives one meaning more than one owner. It increases context cost and can make copies disagree.
+Duplication assigns one meaning to more than one owner. This increases context cost and can make copies disagree.
 
-### Sediment
+### Stale text
 
-Sediment is stale text that remains after the skill or repository changes.
+Stale text remains after the skill or repository changes.
 
-### Sprawl
+### Excess length
 
-Sprawl is excess skill length, even when each line is current. Use progressive disclosure or a justified skill split.
+Excess length is skill text that is longer than needed, even when each line is current. Use progressive disclosure or a justified skill split.
 
-### No-op
+### Instruction with no effect
 
-A no-op instruction does not change agent behavior or supply required reference. Remove it.
+An instruction with no effect does not change agent behavior or supply a required reference. Remove it.
 
 ## eklipse terms
 

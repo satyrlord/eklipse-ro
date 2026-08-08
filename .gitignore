@@ -10,3 +10,4 @@ tmp/
 # GitHub Actions force-adds Vite output for cPanel deployment.
 .codex/
 .agents/
+graphify-out/
