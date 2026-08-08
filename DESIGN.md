@@ -177,6 +177,8 @@ Section fields are dark by contract. `project-field` and `project-accent` take m
 
 **Label Font:** Syne 600–700 (with Trebuchet MS and sans-serif fallbacks)
 
+`public/assets/fonts.css` owns the self-hosted Syne and IBM Plex Sans font files for the main page and the error page. Page-specific styles use the font names and weights. They do not define a second font source.
+
 **Character:** Georgia gives the project statement, threshold title, and archive afterimage an ambient editorial voice. Syne 800 makes the threshold wordmark, release names, section entries, and final action carry rave pressure. IBM Plex Sans keeps release facts and descriptions clear. Syne 600–700 makes navigation, dates, and actions feel registered and technical.
 
 ### Hierarchy
@@ -199,7 +201,7 @@ The first viewport is a full-bleed threshold. The cover uses two masked image la
 
 The archive is an aligned three-cover coda on a graphite field. The original covers share one row and one baseline on desktop, then use one equal-width column on mobile. Each cover carries a dark local plate with its own caption accent. The final event horizon centers one short heading and one primary action inside concentric rings.
 
-At 1000px, the release title and grid proportions compress. At 760px, the page gutter becomes 1.25rem, all release spreads become a single vertical column, the spine geometry moves behind the stack, players use the full width, and archive covers use three distinct widths. The header uses a near-solid dark field. At 430px, threshold actions stack and the primary action takes the full width. Touch targets remain at least 44px high.
+At 1000px, the release title and grid proportions compress. At 760px, the page gutter becomes 1.25rem, all release spreads become a single vertical column, the spine geometry moves behind the stack, players use the full width, and archive covers use one equal-width column. The header uses a near-solid dark field. At 430px, threshold actions stack and the primary action takes the full width. Touch targets remain at least 44px high.
 
 ### Named Rules
 

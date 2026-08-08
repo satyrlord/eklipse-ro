@@ -28,6 +28,8 @@ npm run dev       # start the Vite development server
 npm run build     # build a production bundle into dist/
 npm run preview   # preview the production build
 npm test          # run the static policy tests
+npm run test:browser  # build to tmp/ and run production-browser tests
+npm run ci        # run static and production-browser tests
 ```
 
 ## Structure
@@ -35,9 +37,14 @@ npm test          # run the static policy tests
 ```text
 index.html                 HTML entry point
 src/main.js                application script
-src/styles.css             global styles
+src/styles.css             global tokens, layout, focus, and motion
+src/release-sequence.css   current-release section styles
 public/                    static assets, 404 page, server configuration
-tests/static-policy.test.mjs   policy tests for the static site
+public/assets/fonts.css    shared self-hosted font declarations
+public/assets/licenses/    self-hosted font license texts
+tests/                     product, asset, security, and deployment policy tests
+tests/browser/             production-browser contract tests
+playwright.config.mjs      production-browser test configuration
 tmp/                       ignored working directory for temporary artifacts
 PRODUCT.md                 product contract
 AGENTS.md                  repository rules
@@ -45,7 +52,11 @@ AGENTS.md                  repository rules
 
 ## Tests
 
-`npm test` runs static policy tests with Node's built-in test runner. The tests verify the security boundary, including the outbound link allowlist and the absence of user-input surfaces.
+`npm test` runs the product, asset, security, and deployment policy tests with Node's built-in test runner. The tests use one shared parsed-document fixture. They do not inspect browser geometry through CSS source text.
+
+`npm run test:browser` builds to `tmp/browser-dist` and checks title fit, overflow, archive geometry, focus, reduced motion, assets, player metadata, local requests, and console errors in Chromium. The deployment workflow runs these tests before it rebuilds `dist/`.
+
+The [verify-site workflow](.github/skills/verify-site/SKILL.md) owns the broader manual production-browser check.
 
 ## Deployment
 
