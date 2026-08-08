@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "vitest";
-import { bandcampProjectUrl, currentReleaseLedger, releaseLedger } from "./helpers/release-ledger.mjs";
-import { attribute, cpanel, document, elements, htaccess, notFoundDocument, notFoundHtml } from "./helpers/site-fixture.mjs";
+import { bandcampProjectUrl, currentReleaseLedger, releaseLedger } from "./helpers/release-ledger.ts";
+import { attribute, cpanel, document, elements, htaccess, notFoundDocument, notFoundHtml } from "./helpers/site-fixture.ts";
 
 const allowedBandcampUrls = new Set([bandcampProjectUrl, ...releaseLedger.map((release) => release.href)]);
 
-function headerValue(name) {
+function headerValue(name: string) {
   const prefix = `Header always set ${name} `;
   const matches = htaccess
     .split(/\r?\n/)
@@ -13,12 +13,12 @@ function headerValue(name) {
     .filter((line) => line.startsWith(prefix));
   assert.equal(matches.length, 1, `${name} must have one value`);
 
-  const quotedValue = matches[0].slice(prefix.length);
+  const quotedValue = matches[0]!.slice(prefix.length);
   assert.match(quotedValue, /^"[^"]+"$/, `${name} must have one quoted value`);
   return quotedValue.slice(1, -1);
 }
 
-function assertAllowedAnchors(page, localPaths = new Set()) {
+function assertAllowedAnchors(page: Document, localPaths: Set<string> = new Set()) {
   const hrefs = elements(page, "a").map((link) => attribute(link, "href"));
 
   for (const href of hrefs) {
@@ -51,14 +51,14 @@ test("the site exposes no user-input or unauthorized runtime surfaces", () => {
   const playerIds = iframes.map((frame) => {
     const frameSrc = attribute(frame, "src");
     assert.ok(frameSrc?.startsWith("https://bandcamp.com/EmbeddedPlayer/"), "iframes must be official Bandcamp embed players");
-    return frameSrc.match(/\/album=(\d+)\//)?.[1];
+    return frameSrc!.match(/\/album=(\d+)\//)?.[1];
   });
   assert.deepEqual(playerIds, currentReleaseLedger.map((release) => release.playerId));
   assert.equal(new Set(playerIds).size, currentReleaseLedger.length, "each ledger release must use one distinct player");
 
   const scripts = elements(document, "script");
   assert.equal(scripts.length, 1);
-  assert.equal(attribute(scripts[0], "src"), "/src/main.ts");
+  assert.equal(attribute(scripts[0]!, "src"), "/src/main.ts");
 });
 
 test("production HTTP policy rejects unsafe methods and hardens all site responses", () => {

@@ -1,6 +1,21 @@
 export const bandcampProjectUrl = "https://eklipse-music.bandcamp.com/";
 
-export const currentReleaseLedger = [
+export interface CurrentReleaseLedgerEntry {
+  href: string;
+  title: string;
+  datetime: string;
+  playerId: string;
+}
+
+export interface ArchiveReleaseLedgerEntry {
+  href: string;
+  title: string;
+  label: string;
+}
+
+export type ReleaseLedgerEntry = CurrentReleaseLedgerEntry | ArchiveReleaseLedgerEntry;
+
+export const currentReleaseLedger: CurrentReleaseLedgerEntry[] = [
   {
     href: "https://eklipse-music.bandcamp.com/album/introspection-i-remastered-edition",
     title: "Introspection I (remastered edition)",
@@ -51,7 +66,7 @@ export const currentReleaseLedger = [
   },
 ];
 
-export const archiveReleaseLedger = [
+export const archiveReleaseLedger: ArchiveReleaseLedgerEntry[] = [
   {
     href: "https://eklipse-music.bandcamp.com/album/introspection-i-original-version",
     title: "Introspection I (original version)",
@@ -69,9 +84,27 @@ export const archiveReleaseLedger = [
   },
 ];
 
-export const releaseLedger = [...currentReleaseLedger, ...archiveReleaseLedger];
+export const releaseLedger: ReleaseLedgerEntry[] = [...currentReleaseLedger, ...archiveReleaseLedger];
 
-export const currentReleaseMarkup = {
+export interface CurrentReleaseMarkup {
+  slug: string;
+  cover: string;
+  coverWidth: number;
+  coverHeight: number;
+  dateLabel: string;
+  heading: string;
+  coverAlt?: string;
+  description?: string;
+}
+
+export interface ArchiveReleaseMarkup {
+  cover: string;
+  coverWidth: number;
+  coverHeight: number;
+  heading: string;
+}
+
+export const currentReleaseMarkup: Record<string, CurrentReleaseMarkup> = {
   "Introspection I (remastered edition)": {
     slug: "introspection",
     cover: "introspection-i-remastered.jpg",
@@ -159,7 +192,7 @@ export const currentReleaseMarkup = {
   },
 };
 
-export const archiveReleaseMarkup = {
+export const archiveReleaseMarkup: Record<string, ArchiveReleaseMarkup> = {
   "Introspection I (original version)": {
     cover: "introspection-i-original.jpg",
     coverWidth: 1200,

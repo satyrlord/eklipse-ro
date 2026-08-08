@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type ConsoleMessage, type Page, type Request, type Route } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
@@ -7,7 +7,7 @@ test.afterEach(async ({ page }, testInfo) => {
     return;
   }
 
-  const coverage = await page.evaluate(() => globalThis.__coverage__);
+  const coverage = await page.evaluate(() => (globalThis as { __coverage__?: unknown }).__coverage__);
   expect(coverage, "the browser build must expose Istanbul coverage").toBeTruthy();
 
   const outputDirectory = process.env.NYC_OUTPUT_DIR ?? "tmp/coverage/browser/.nyc_output";
@@ -28,25 +28,25 @@ const viewports = [
   { name: "desktop", width: 1440, height: 900 },
 ];
 
-async function openSite(page) {
-  const consoleErrors = [];
-  const localRequestFailures = [];
-  const pageErrors = [];
+async function openSite(page: Page) {
+  const consoleErrors: string[] = [];
+  const localRequestFailures: string[] = [];
+  const pageErrors: string[] = [];
 
-  page.on("console", (message) => {
+  page.on("console", (message: ConsoleMessage) => {
     if (message.type() === "error" && message.location().url.startsWith("http://127.0.0.1:4173")) {
       consoleErrors.push(message.text());
     }
   });
-  page.on("requestfailed", (request) => {
+  page.on("requestfailed", (request: Request) => {
     if (request.url().startsWith("http://127.0.0.1:4173")) {
       localRequestFailures.push(`${request.url()}: ${request.failure()?.errorText}`);
     }
   });
-  page.on("pageerror", (error) => {
+  page.on("pageerror", (error: Error) => {
     pageErrors.push(error.message);
   });
-  await page.route("https://bandcamp.com/**", (route) => route.abort());
+  await page.route("https://bandcamp.com/**", (route: Route) => route.abort());
   await page.goto("/", { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);
 
@@ -100,8 +100,8 @@ test("archive covers keep the documented desktop and mobile geometry", async ({ 
   );
   expect(Math.max(...desktop.map(({ top }) => top)) - Math.min(...desktop.map(({ top }) => top))).toBeLessThanOrEqual(1);
   expect(Math.max(...desktop.map(({ width }) => width)) - Math.min(...desktop.map(({ width }) => width))).toBeLessThanOrEqual(1);
-  expect(desktop[0].left).toBeLessThan(desktop[1].left);
-  expect(desktop[1].left).toBeLessThan(desktop[2].left);
+  expect(desktop[0]!.left).toBeLessThan(desktop[1]!.left);
+  expect(desktop[1]!.left).toBeLessThan(desktop[2]!.left);
 
   await page.setViewportSize({ width: 480, height: 900 });
   const mobile = await page.locator(".afterimage-release").evaluateAll((nodes) =>
@@ -112,22 +112,22 @@ test("archive covers keep the documented desktop and mobile geometry", async ({ 
   );
   expect(Math.max(...mobile.map(({ left }) => left)) - Math.min(...mobile.map(({ left }) => left))).toBeLessThanOrEqual(1);
   expect(Math.max(...mobile.map(({ width }) => width)) - Math.min(...mobile.map(({ width }) => width))).toBeLessThanOrEqual(1);
-  expect(mobile[0].top).toBeLessThan(mobile[1].top);
-  expect(mobile[1].top).toBeLessThan(mobile[2].top);
+  expect(mobile[0]!.top).toBeLessThan(mobile[1]!.top);
+  expect(mobile[1]!.top).toBeLessThan(mobile[2]!.top);
   assertNoLocalErrors();
 });
 
 test("release details stay vertically centered against their covers on desktop", async ({ page }) => {
-  const alignmentAt = async (viewport) => {
+  const alignmentAt = async (viewport: { width: number; height: number }) => {
     await page.setViewportSize(viewport);
     return page.locator(".release-spread").evaluateAll((releases) =>
       releases.map((release) => {
-        const cover = release.querySelector(".release-visual img").getBoundingClientRect();
-        const details = release.querySelector(".release-copy").getBoundingClientRect();
+        const cover = release.querySelector(".release-visual img")!.getBoundingClientRect();
+        const details = release.querySelector(".release-copy")!.getBoundingClientRect();
         return {
           coverCenterY: cover.top + cover.height / 2,
           detailsCenterY: details.top + details.height / 2,
-          title: release.querySelector("h3").textContent.replace(/\s+/g, " ").trim(),
+          title: release.querySelector("h3")!.textContent.replace(/\s+/g, " ").trim(),
         };
       }),
     );
@@ -161,15 +161,15 @@ test("every release description separates its title from its player", async ({ p
     await page.setViewportSize(viewport);
     const releases = await page.locator(".release-spread").evaluateAll((nodes) =>
       nodes.map((release) => {
-        const title = release.querySelector("h3").getBoundingClientRect();
-        const description = release.querySelector(".release-copy > p").getBoundingClientRect();
-        const player = release.querySelector(".bandcamp-player").getBoundingClientRect();
+        const title = release.querySelector("h3")!.getBoundingClientRect();
+        const description = release.querySelector(".release-copy > p")!.getBoundingClientRect();
+        const player = release.querySelector(".bandcamp-player")!.getBoundingClientRect();
         return {
           descriptionBottom: description.bottom,
           descriptionTop: description.top,
           playerTop: player.top,
           titleBottom: title.bottom,
-          titleText: release.querySelector("h3").textContent.replace(/\s+/g, " ").trim(),
+          titleText: release.querySelector("h3")!.textContent.replace(/\s+/g, " ").trim(),
         };
       }),
     );
@@ -222,12 +222,15 @@ test("images and player metadata resolve from the production page", async ({ pag
   for (let index = 0; index < (await images.count()); index += 1) {
     const image = images.nth(index);
     await image.scrollIntoViewIfNeeded();
-    await expect.poll(() => image.evaluate((node) => node.complete && node.naturalWidth > 0)).toBe(true);
+    await expect.poll(() => image.evaluate((node) => (node as HTMLImageElement).complete && (node as HTMLImageElement).naturalWidth > 0)).toBe(true);
     await expect(image).toHaveAttribute("alt", /\S/);
   }
 
   const players = await page.locator("iframe.bandcamp-player").evaluateAll((nodes) =>
-    nodes.map((node) => ({ title: node.title, source: node.src })),
+    nodes.map((node) => {
+      const frame = node as HTMLIFrameElement;
+      return { title: frame.title, source: frame.src };
+    }),
   );
   expect(players).toHaveLength(8);
   for (const player of players) {
@@ -249,10 +252,10 @@ test("the vector backdrop remains visible and the threshold wordmark stays insid
   expect(surfaceAlphas.every((alpha) => alpha === 0.5)).toBe(true);
 
   const lockupGeometry = () => page.locator(".threshold").evaluate((threshold) => {
-    const lockup = threshold.querySelector(".threshold-lockup").getBoundingClientRect();
+    const lockup = threshold.querySelector(".threshold-lockup")!.getBoundingClientRect();
     const section = threshold.getBoundingClientRect();
-    const release = threshold.querySelector(".threshold-release").getBoundingClientRect();
-    const wordmark = threshold.querySelector(".threshold-wordmark").getBoundingClientRect();
+    const release = threshold.querySelector(".threshold-release")!.getBoundingClientRect();
+    const wordmark = threshold.querySelector(".threshold-wordmark")!.getBoundingClientRect();
     return {
       lockupBottom: lockup.bottom,
       lockupTop: lockup.top,
@@ -320,9 +323,9 @@ test("reduced motion removes smooth scrolling and decorative movement", async ({
     gravityX: getComputedStyle(node).getPropertyValue("--gravity-x"),
     gravityY: getComputedStyle(node).getPropertyValue("--gravity-y"),
     scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior,
-    animationDuration: getComputedStyle(document.querySelector(".black-hole__mass")).animationDuration,
-    blackHoleTransform: getComputedStyle(document.querySelector(".black-hole__mass")).transform,
-    gravityRingsTransform: getComputedStyle(node.querySelector(".gravity-map__rings")).transform,
+    animationDuration: getComputedStyle(document.querySelector(".black-hole__mass")!).animationDuration,
+    blackHoleTransform: getComputedStyle(document.querySelector(".black-hole__mass")!).transform,
+    gravityRingsTransform: getComputedStyle(node.querySelector(".gravity-map__rings")!).transform,
   }));
   await page.mouse.move(800, 250);
   await page.waitForTimeout(50);
@@ -344,7 +347,7 @@ test("live reduced-motion changes stop and resume pointer movement", async ({ pa
   await page.setViewportSize({ width: 1440, height: 900 });
   const assertNoLocalErrors = await openSite(page);
   const threshold = page.locator(".threshold");
-  const bounds = await threshold.boundingBox();
+  const bounds = (await threshold.boundingBox())!;
   expect(bounds).not.toBeNull();
 
   const gravity = () =>

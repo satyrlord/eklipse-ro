@@ -3,4 +3,4 @@ export {
   bandcampProjectUrl,
   currentReleaseLedger,
   releaseLedger,
-} from "../../src/release-catalog.mjs";
+} from "../../src/release-catalog.ts";

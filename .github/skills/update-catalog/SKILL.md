@@ -13,8 +13,8 @@ product copy, assets, links, and release policy tests.
 
 ## 1. Establish the change
 
-1. Read `AGENTS.md`, `PRODUCT.md`, `src/release-catalog.mjs`,
-   `tests/static-policy.test.mjs`, and `package.json`.
+1. Read `AGENTS.md`, `PRODUCT.md`, `src/release-catalog.ts`,
+   `tests/static-policy.test.ts`, and `package.json`.
    Completion criterion: Product rules, the single catalog source, tests, and
    commands are available.
 2. Inspect the current status and preserve unrelated changes.
@@ -32,7 +32,7 @@ product copy, assets, links, and release policy tests.
 
 ## 2. Apply the catalog rules
 
-Edit only `src/release-catalog.mjs`. The build-time renderer expands
+Edit only `src/release-catalog.ts`. The build-time renderer expands
 `index.html` from it, so markup, tests, and links stay in sync.
 
 1. Preserve the exact Bandcamp title, capitalization, date, and chronology.

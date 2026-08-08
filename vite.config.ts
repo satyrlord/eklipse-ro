@@ -1,7 +1,7 @@
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import istanbul from "vite-plugin-istanbul";
-import { renderCatalog } from "./src/render-catalog.mjs";
+import { renderCatalog } from "./src/render-catalog.ts";
 
 export default defineConfig(() => {
   const coverageEnabled = process.env.VITE_COVERAGE === "true";

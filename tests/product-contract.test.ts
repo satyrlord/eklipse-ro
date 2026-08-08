@@ -1,13 +1,13 @@
 import assert from "node:assert/strict";
 import { test } from "vitest";
-import { archiveReleaseLedger, currentReleaseLedger } from "./helpers/release-ledger.mjs";
-import { attribute, document, elements, hasClass, html, textContent } from "./helpers/site-fixture.mjs";
+import { archiveReleaseLedger, currentReleaseLedger } from "./helpers/release-ledger.ts";
+import { attribute, document, elements, hasClass, html, textContent } from "./helpers/site-fixture.ts";
 
-function normalizedText(node) {
+function normalizedText(node: Element): string {
   return textContent(node).replace(/\s+/g, " ").trim();
 }
 
-function oneAlbumHref(article) {
+function oneAlbumHref(article: Element): string {
   const hrefs = new Set(
     elements(article, "a")
       .map((link) => attribute(link, "href"))
@@ -15,15 +15,15 @@ function oneAlbumHref(article) {
   );
 
   assert.equal(hrefs.size, 1, "each release must use one official album destination");
-  return [...hrefs][0];
+  return [...hrefs][0]!;
 }
 
 test("the current-release ledger keeps exact URLs, titles, chronology, and players", () => {
   const releases = elements(document, "article").filter((article) => hasClass(article, "release-spread"));
   const actual = releases.map((release) => {
-    const title = elements(release, "h3")[0];
-    const time = elements(release, "time")[0];
-    const player = elements(release, "iframe")[0];
+    const title = elements(release, "h3")[0]!;
+    const time = elements(release, "time")[0]!;
+    const player = elements(release, "iframe")[0]!;
     const playerId = attribute(player, "src")?.match(/\/album=(\d+)\//)?.[1];
 
     return {
@@ -41,14 +41,14 @@ test("each current release has one description between its title and player", ()
   const releases = elements(document, "article").filter((article) => hasClass(article, "release-spread"));
 
   for (const release of releases) {
-    const copy = elements(release, "div").find((node) => hasClass(node, "release-copy"));
+    const copy = elements(release, "div").find((node) => hasClass(node, "release-copy"))!;
     const children = [...copy.children];
     const titleIndex = children.findIndex((node) => node.nodeName === "H3");
     const descriptionIndex = children.findIndex((node) => node.nodeName === "P");
     const playerIndex = children.findIndex((node) => node.nodeName === "IFRAME");
 
-    assert.ok(descriptionIndex > titleIndex, `${normalizedText(children[titleIndex])} needs a description after its title`);
-    assert.ok(playerIndex > descriptionIndex, `${normalizedText(children[titleIndex])} needs its player after the description`);
+    assert.ok(descriptionIndex > titleIndex, `${normalizedText(children[titleIndex]!)} needs a description after its title`);
+    assert.ok(playerIndex > descriptionIndex, `${normalizedText(children[titleIndex]!)} needs its player after the description`);
   }
 });
 
@@ -56,8 +56,8 @@ test("the archive ledger keeps exact URLs, titles, labels, and no players", () =
   const releases = elements(document, "article").filter((article) => hasClass(article, "afterimage-release"));
   const actual = releases.map((release) => ({
     href: oneAlbumHref(release),
-    title: normalizedText(elements(release, "strong")[0]),
-    label: normalizedText(elements(release, "small").find((node) => hasClass(node, "archive-subtitle"))),
+    title: normalizedText(elements(release, "strong")[0]!),
+    label: normalizedText(elements(release, "small").find((node) => hasClass(node, "archive-subtitle"))!),
   }));
 
   assert.deepEqual(actual, archiveReleaseLedger);

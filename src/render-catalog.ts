@@ -1,15 +1,16 @@
-import { archiveReleaseLedger, archiveReleaseMarkup, currentReleaseLedger, currentReleaseMarkup } from "./release-catalog.mjs";
+import { archiveReleaseLedger, archiveReleaseMarkup, currentReleaseLedger, currentReleaseMarkup } from "./release-catalog.ts";
+import type { ArchiveReleaseLedgerEntry, ArchiveReleaseMarkup, CurrentReleaseLedgerEntry, CurrentReleaseMarkup } from "./release-catalog.ts";
 
 const CURRENT_BEGIN = "<!-- release-sequence:begin -->";
 const CURRENT_END = "<!-- release-sequence:end -->";
 const ARCHIVE_BEGIN = "<!-- archive-track:begin -->";
 const ARCHIVE_END = "<!-- archive-track:end -->";
 
-function playerSource(release) {
+function playerSource(release: CurrentReleaseLedgerEntry): string {
   return `https://bandcamp.com/EmbeddedPlayer/album=${release.playerId}/size=large/bgcol=080706/linkcol=ff6748/tracklist=false/artwork=none/transparent=true/`;
 }
 
-function renderCurrentRelease(release, markup) {
+function renderCurrentRelease(release: CurrentReleaseLedgerEntry, markup: CurrentReleaseMarkup): string {
   return `          <article class="release-spread release-spread--${markup.slug}">
             <div class="release-visual">
               <a href="${release.href}" aria-label="${release.title} on Bandcamp">
@@ -25,7 +26,7 @@ function renderCurrentRelease(release, markup) {
           </article>`;
 }
 
-function renderArchiveRelease(release, markup) {
+function renderArchiveRelease(release: ArchiveReleaseLedgerEntry, markup: ArchiveReleaseMarkup): string {
   return `          <article class="afterimage-release">
             <a href="${release.href}">
               <img src="/assets/covers/${markup.cover}" alt="${release.title} cover" width="${markup.coverWidth}" height="${markup.coverHeight}" decoding="async" loading="lazy" />
@@ -34,7 +35,7 @@ function renderArchiveRelease(release, markup) {
           </article>`;
 }
 
-function renderReleaseSequence() {
+function renderReleaseSequence(): string {
   const articles = currentReleaseLedger.map((release) => {
     const markup = currentReleaseMarkup[release.title];
     if (!markup) {
@@ -45,7 +46,7 @@ function renderReleaseSequence() {
   return `${CURRENT_BEGIN}\n${articles.join("\n\n")}\n          ${CURRENT_END}`;
 }
 
-function renderArchiveTrack() {
+function renderArchiveTrack(): string {
   const articles = archiveReleaseLedger.map((release) => {
     const markup = archiveReleaseMarkup[release.title];
     if (!markup) {
@@ -56,7 +57,7 @@ function renderArchiveTrack() {
   return `${ARCHIVE_BEGIN}\n${articles.join("\n")}\n          ${ARCHIVE_END}`;
 }
 
-function replaceRegion(source, begin, end, replacement, label) {
+function replaceRegion(source: string, begin: string, end: string, replacement: string, label: string): string {
   const beginIndex = source.indexOf(begin);
   const endIndex = source.indexOf(end);
   if (beginIndex === -1 || endIndex === -1 || endIndex < beginIndex) {
@@ -65,7 +66,7 @@ function replaceRegion(source, begin, end, replacement, label) {
   return `${source.slice(0, beginIndex)}${replacement}${source.slice(endIndex + end.length)}`;
 }
 
-export function renderCatalog(source) {
+export function renderCatalog(source: string): string {
   const withSequence = replaceRegion(source, CURRENT_BEGIN, CURRENT_END, renderReleaseSequence(), "release-sequence");
   return replaceRegion(withSequence, ARCHIVE_BEGIN, ARCHIVE_END, renderArchiveTrack(), "archive-track");
 }

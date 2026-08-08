@@ -1,13 +1,13 @@
 import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import { test } from "vitest";
-import { attribute, document, elements, notFoundDocument } from "./helpers/site-fixture.mjs";
+import { attribute, document, elements, notFoundDocument } from "./helpers/site-fixture.ts";
 
 const fontStylesheetPath = "/assets/fonts.css";
 const fontStylesheet = await readFile(new URL("../public/assets/fonts.css", import.meta.url), "utf8");
 const notFoundStyles = await readFile(new URL("../public/404.css", import.meta.url), "utf8");
 
-function stylesheetHrefs(page) {
+function stylesheetHrefs(page: Document) {
   return elements(page, "link")
     .filter((link) => attribute(link, "rel") === "stylesheet")
     .map((link) => attribute(link, "href"));
@@ -21,14 +21,14 @@ test("both pages use the shared self-hosted font stylesheet", () => {
 
 test("the shared font stylesheet owns every used font file", async () => {
   const fontFaces = [...fontStylesheet.matchAll(/@font-face\s*\{([^}]+)\}/g)].map((match) => {
-    const block = match[1];
-    const declaration = (name) => block.match(new RegExp(`${name}:\\s*([^;]+)`))?.[1].trim();
+    const block = match[1]!;
+    const declaration = (name: string) => block.match(new RegExp(`${name}:\\s*([^;]+)`))?.[1]!.trim();
     return {
       family: declaration("font-family")?.replaceAll('"', ""),
       style: declaration("font-style"),
       weight: declaration("font-weight"),
       display: declaration("font-display"),
-      source: block.match(/url\("(\/assets\/[^"]+\.woff2)"\)/)?.[1],
+      source: block.match(/url\("(\/assets\/[^"]+\.woff2)"\)/)?.[1]!,
     };
   });
   const expected = [
@@ -38,7 +38,7 @@ test("the shared font stylesheet owns every used font file", async () => {
     { family: "IBM Plex Sans", style: "normal", weight: "400", display: "swap", source: "/assets/ibm-plex-sans-latin-ext-400.woff2" },
     { family: "IBM Plex Sans", style: "normal", weight: "600", display: "swap", source: "/assets/ibm-plex-sans-latin-ext-600.woff2" },
   ];
-  const bySource = (left, right) => left.source.localeCompare(right.source);
+  const bySource = (left: { source: string }, right: { source: string }) => left.source.localeCompare(right.source);
   assert.deepEqual(fontFaces.toSorted(bySource), expected.toSorted(bySource));
 
   await Promise.all(fontFaces.map(({ source }) => access(new URL(`../public${source}`, import.meta.url))));

@@ -8,6 +8,7 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noUncheckedSideEffectImports": true,
