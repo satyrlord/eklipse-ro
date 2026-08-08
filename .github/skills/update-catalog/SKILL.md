@@ -13,10 +13,10 @@ product copy, assets, links, and release policy tests.
 
 ## 1. Establish the change
 
-1. Read `AGENTS.md`, `PRODUCT.md`, `index.html`,
+1. Read `AGENTS.md`, `PRODUCT.md`, `src/release-catalog.mjs`,
    `tests/static-policy.test.mjs`, and `package.json`.
-   Completion criterion: Product rules, catalog markup, tests, and commands are
-   available.
+   Completion criterion: Product rules, the single catalog source, tests, and
+   commands are available.
 2. Inspect the current status and preserve unrelated changes.
    Completion criterion: Unrelated dirty or staged work is recorded and
    remains outside the change.
@@ -31,6 +31,9 @@ product copy, assets, links, and release policy tests.
    Completion criterion: No unproved release fact enters the catalog.
 
 ## 2. Apply the catalog rules
+
+Edit only `src/release-catalog.mjs`. The build-time renderer expands
+`index.html` from it, so markup, tests, and links stay in sync.
 
 1. Preserve the exact Bandcamp title, capitalization, date, and chronology.
    Completion criterion: The catalog matches the official release record.

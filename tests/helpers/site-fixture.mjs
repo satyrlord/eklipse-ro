@@ -1,7 +1,9 @@
 import { readFile } from "node:fs/promises";
 import { JSDOM } from "jsdom";
+import { renderCatalog } from "../../src/render-catalog.mjs";
 
-export const html = await readFile(new URL("../../index.html", import.meta.url), "utf8");
+const template = await readFile(new URL("../../index.html", import.meta.url), "utf8");
+export const html = renderCatalog(template);
 export const document = new JSDOM(html).window.document;
 export const cpanel = await readFile(new URL("../../.cpanel.yml", import.meta.url), "utf8");
 export const htaccess = await readFile(new URL("../../public/.htaccess", import.meta.url), "utf8");

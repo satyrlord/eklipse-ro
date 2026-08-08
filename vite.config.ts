@@ -1,12 +1,20 @@
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import istanbul from "vite-plugin-istanbul";
+import { renderCatalog } from "./src/render-catalog.mjs";
 
 export default defineConfig(() => {
   const coverageEnabled = process.env.VITE_COVERAGE === "true";
 
   return {
     plugins: [
+      {
+        name: "eklipse-release-catalog",
+        transformIndexHtml: {
+          order: "pre",
+          handler: renderCatalog,
+        },
+      },
       tailwindcss(),
       ...(coverageEnabled
         ? [

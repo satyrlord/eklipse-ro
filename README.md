@@ -65,7 +65,9 @@ coverage instrumentation.
 ## Structure
 
 ```text
-index.html                 HTML entry point
+index.html                 HTML entry point and catalog template
+src/release-catalog.mjs    single source of truth for release facts and markup
+src/render-catalog.mjs     build-time renderer that expands the catalog template
 src/main.ts                browser runtime
 src/runtime.ts             typed runtime calculations
 src/styles.css             Tailwind, daisyUI, tokens, layout, and motion
@@ -83,8 +85,15 @@ AGENTS.md                  repository rules
 
 ## Tests
 
-`npm test` runs the product, asset, security, deployment, and runtime tests with
-Vitest. The static tests use one shared jsdom fixture.
+`npm test` runs the product, asset, security, deployment, design-token, and
+runtime tests with Vitest. The static tests use one shared jsdom fixture.
+
+The catalog is authored once in `src/release-catalog.mjs` (facts plus per-release
+markup). `src/render-catalog.mjs` expands the `<!-- release-sequence:* -->` and
+`<!-- archive-track:* -->` regions of `index.html` at build time through a Vite
+`transformIndexHtml` hook. To add or change a release, edit only
+`src/release-catalog.mjs`; the policy tests assert the rendered markup matches
+the ledger.
 
 `npm run test:coverage` records V8 coverage for TypeScript source. The browser
 gate records Istanbul coverage for the real production bundle. No coverage
