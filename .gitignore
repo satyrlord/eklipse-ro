@@ -7,3 +7,5 @@ test-results/
 eklipse-deploy.zip
 tmp/
 .impeccable/
+# Vite build output — deploy via manual upload of dist/
+dist/
