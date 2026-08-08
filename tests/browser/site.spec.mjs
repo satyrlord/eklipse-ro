@@ -1,0 +1,185 @@
+import { expect, test } from "@playwright/test";
+
+const viewports = [
+  { name: "narrow mobile", width: 320, height: 800 },
+  { name: "mobile boundary", width: 480, height: 900 },
+  { name: "single-column end", width: 760, height: 900 },
+  { name: "three-column start", width: 761, height: 900 },
+  { name: "narrow desktop grid", width: 820, height: 900 },
+  { name: "responsive type end", width: 1000, height: 900 },
+  { name: "wide type start", width: 1001, height: 900 },
+  { name: "common desktop", width: 1024, height: 900 },
+  { name: "desktop", width: 1440, height: 900 },
+];
+
+async function openSite(page) {
+  const consoleErrors = [];
+  const localRequestFailures = [];
+  const pageErrors = [];
+
+  page.on("console", (message) => {
+    if (message.type() === "error" && message.location().url.startsWith("http://127.0.0.1:4173")) {
+      consoleErrors.push(message.text());
+    }
+  });
+  page.on("requestfailed", (request) => {
+    if (request.url().startsWith("http://127.0.0.1:4173")) {
+      localRequestFailures.push(`${request.url()}: ${request.failure()?.errorText}`);
+    }
+  });
+  page.on("pageerror", (error) => {
+    pageErrors.push(error.message);
+  });
+  await page.route("https://bandcamp.com/**", (route) => route.abort());
+  await page.goto("/", { waitUntil: "networkidle" });
+  await page.evaluate(() => document.fonts.ready);
+
+  return () => {
+    expect(consoleErrors).toEqual([]);
+    expect(localRequestFailures).toEqual([]);
+    expect(pageErrors).toEqual([]);
+  };
+}
+
+for (const viewport of viewports) {
+  test(`titles and page geometry fit at ${viewport.name}`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    const assertNoLocalErrors = await openSite(page);
+
+    const pageGeometry = await page.evaluate(() => ({
+      clientWidth: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+    }));
+    expect(pageGeometry.scrollWidth).toBeLessThanOrEqual(pageGeometry.clientWidth + 1);
+
+    const titles = await page.locator(".threshold-release h2, .release-copy h3, .afterimage-release strong").evaluateAll((nodes) =>
+      nodes.map((node) => ({
+        text: node.textContent.replace(/\s+/g, " ").trim(),
+        clientWidth: node.clientWidth,
+        scrollWidth: node.scrollWidth,
+        height: node.getBoundingClientRect().height,
+        lineHeight: Number.parseFloat(getComputedStyle(node).lineHeight),
+        whiteSpace: getComputedStyle(node).whiteSpace,
+      })),
+    );
+
+    for (const title of titles) {
+      expect(title.height, title.text).toBeLessThanOrEqual(title.lineHeight + 1);
+      expect(title.whiteSpace, title.text).toBe("nowrap");
+      expect(title.scrollWidth, title.text).toBeLessThanOrEqual(title.clientWidth + 1);
+    }
+    assertNoLocalErrors();
+  });
+}
+
+test("archive covers keep the documented desktop and mobile geometry", async ({ page }) => {
+  await page.setViewportSize({ width: 820, height: 900 });
+  const assertNoLocalErrors = await openSite(page);
+
+  const desktop = await page.locator(".afterimage-release").evaluateAll((nodes) =>
+    nodes.map((node) => {
+      const rect = node.getBoundingClientRect();
+      return { left: rect.left, top: rect.top, width: rect.width };
+    }),
+  );
+  expect(Math.max(...desktop.map(({ top }) => top)) - Math.min(...desktop.map(({ top }) => top))).toBeLessThanOrEqual(1);
+  expect(Math.max(...desktop.map(({ width }) => width)) - Math.min(...desktop.map(({ width }) => width))).toBeLessThanOrEqual(1);
+  expect(desktop[0].left).toBeLessThan(desktop[1].left);
+  expect(desktop[1].left).toBeLessThan(desktop[2].left);
+
+  await page.setViewportSize({ width: 480, height: 900 });
+  const mobile = await page.locator(".afterimage-release").evaluateAll((nodes) =>
+    nodes.map((node) => {
+      const rect = node.getBoundingClientRect();
+      return { left: rect.left, top: rect.top, width: rect.width };
+    }),
+  );
+  expect(Math.max(...mobile.map(({ left }) => left)) - Math.min(...mobile.map(({ left }) => left))).toBeLessThanOrEqual(1);
+  expect(Math.max(...mobile.map(({ width }) => width)) - Math.min(...mobile.map(({ width }) => width))).toBeLessThanOrEqual(1);
+  expect(mobile[0].top).toBeLessThan(mobile[1].top);
+  expect(mobile[1].top).toBeLessThan(mobile[2].top);
+  assertNoLocalErrors();
+});
+
+test("keyboard focus and fragment navigation remain visible and functional", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const assertNoLocalErrors = await openSite(page);
+
+  await page.keyboard.press("Tab");
+  await expect(page.locator(".skip-link")).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/#releases$/);
+  await expect(page.locator("#releases")).toBeFocused();
+
+  await page.goto("/", { waitUntil: "networkidle" });
+  const expectedHeaderOrder = [".skip-link", ".wordmark", '.site-nav a[href="#project"]', '.site-nav a[href="#releases"]', ".site-nav .bandcamp-link"];
+  for (const selector of expectedHeaderOrder) {
+    await page.keyboard.press("Tab");
+    await expect(page.locator(selector)).toBeFocused();
+  }
+
+  const links = page.locator("a");
+  for (let index = 0; index < (await links.count()); index += 1) {
+    const link = links.nth(index);
+    await link.focus();
+    const focusStyle = await link.evaluate((node) => {
+      const style = getComputedStyle(node);
+      return { outlineStyle: style.outlineStyle, outlineWidth: Number.parseFloat(style.outlineWidth), boxShadow: style.boxShadow };
+    });
+    expect(focusStyle.outlineStyle).toBe("solid");
+    expect(focusStyle.outlineWidth).toBeGreaterThanOrEqual(3);
+    expect(focusStyle.boxShadow).not.toBe("none");
+  }
+  assertNoLocalErrors();
+});
+
+test("images and player metadata resolve from the production page", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const assertNoLocalErrors = await openSite(page);
+
+  const images = page.locator("img");
+  for (let index = 0; index < (await images.count()); index += 1) {
+    const image = images.nth(index);
+    await image.scrollIntoViewIfNeeded();
+    await expect.poll(() => image.evaluate((node) => node.complete && node.naturalWidth > 0)).toBe(true);
+    await expect(image).toHaveAttribute("alt", /\S/);
+  }
+
+  const players = await page.locator("iframe.bandcamp-player").evaluateAll((nodes) =>
+    nodes.map((node) => ({ title: node.title, source: node.src })),
+  );
+  expect(players).toHaveLength(8);
+  for (const player of players) {
+    expect(player.title).toMatch(/Bandcamp album player$/);
+    expect(player.source).toMatch(/^https:\/\/bandcamp\.com\/EmbeddedPlayer\//);
+  }
+  assertNoLocalErrors();
+});
+
+test("reduced motion removes smooth scrolling and decorative movement", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const assertNoLocalErrors = await openSite(page);
+
+  const before = await page.locator(".threshold").evaluate((node) => ({
+    gravityX: getComputedStyle(node).getPropertyValue("--gravity-x"),
+    gravityY: getComputedStyle(node).getPropertyValue("--gravity-y"),
+    scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior,
+    animationDuration: getComputedStyle(node.querySelector(".threshold-art")).animationDuration,
+    thresholdGlowTransform: getComputedStyle(node.querySelector(".threshold-art"), "::after").transform,
+    gravityRingsTransform: getComputedStyle(node.querySelector(".gravity-map__rings")).transform,
+  }));
+  await page.mouse.move(800, 250);
+  await page.waitForTimeout(50);
+  const after = await page.locator(".threshold").evaluate((node) => ({
+    gravityX: getComputedStyle(node).getPropertyValue("--gravity-x"),
+    gravityY: getComputedStyle(node).getPropertyValue("--gravity-y"),
+  }));
+
+  expect(before.scrollBehavior).toBe("auto");
+  expect(Number.parseFloat(before.animationDuration)).toBeLessThanOrEqual(0.000001);
+  expect(before.thresholdGlowTransform).toBe("none");
+  expect(before.gravityRingsTransform).toBe("none");
+  expect(after).toEqual({ gravityX: before.gravityX, gravityY: before.gravityY });
+  assertNoLocalErrors();
+});

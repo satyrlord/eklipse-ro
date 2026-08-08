@@ -1,10 +1,5 @@
-import "@fontsource/syne/latin-ext-600.css";
-import "@fontsource/syne/latin-ext-700.css";
-import "@fontsource/syne/latin-ext-800.css";
-import "@fontsource/ibm-plex-sans/latin-ext-400.css";
-import "@fontsource/ibm-plex-sans/latin-ext-500.css";
-import "@fontsource/ibm-plex-sans/latin-ext-600.css";
 import "./styles.css";
+import "./release-sequence.css";
 
 const root = document.documentElement;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");

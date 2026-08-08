@@ -1,0 +1,409 @@
+.releases-section {
+  position: relative;
+  background: var(--catalog-field);
+}
+
+.sequence-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+  min-height: 58svh;
+  padding: 10rem var(--gutter) 4rem;
+  color: var(--catalog-fg);
+  background:
+    radial-gradient(circle at 76% 24%, rgb(104 215 230 / 0.18), transparent 28%),
+    radial-gradient(circle at 18% 76%, rgb(166 137 230 / 0.1), transparent 34%),
+    var(--catalog-field);
+  border-bottom: 1px solid color-mix(in srgb, var(--catalog-accent) 45%, transparent);
+}
+
+.sequence-header h2 {
+  font-family: var(--display-pressure);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+.release-sequence {
+  position: relative;
+}
+
+.release-spine {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--catalog-muted);
+  opacity: 0.23;
+  pointer-events: none;
+}
+
+.release-spine path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.release-spine circle {
+  fill: var(--ember);
+  stroke: var(--catalog-field);
+  stroke-width: 8;
+  vector-effect: non-scaling-stroke;
+}
+
+.release-spread {
+  --spread-bg: var(--soot);
+  --spread-fg: var(--bone-bright);
+  --spread-muted: var(--bone);
+  --spread-accent: var(--ember);
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: center;
+  min-height: 100svh;
+  padding: clamp(7rem, 11vw, 11rem) var(--gutter);
+  overflow: hidden;
+  background: var(--spread-bg);
+  color: var(--spread-fg);
+  border-bottom: 1px solid color-mix(in srgb, var(--spread-fg) 22%, transparent);
+}
+
+.release-spread::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(76vw, 74rem);
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in srgb, var(--spread-accent) 52%, transparent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.release-visual,
+.release-copy {
+  position: relative;
+  z-index: 4;
+}
+
+.release-visual {
+  grid-column: 1 / 8;
+}
+
+.release-visual a {
+  display: block;
+  width: min(100%, 42rem);
+  text-decoration: none;
+}
+
+.release-visual img {
+  width: 100%;
+  max-height: 76svh;
+  object-fit: contain;
+  box-shadow: 0 36px 86px rgb(0 0 0 / 0.48);
+  transition: filter 280ms ease-out, transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.release-visual a:hover img {
+  filter: saturate(1.08) contrast(1.04);
+  transform: scale(0.988);
+}
+
+.release-copy {
+  grid-column: 8 / 13;
+  width: min(100%, 37rem);
+  justify-self: end;
+}
+
+.release-copy::before {
+  content: "";
+  display: block;
+  width: 5rem;
+  margin-bottom: 1.5rem;
+  border-top: 1px solid var(--spread-accent);
+}
+
+.release-copy time {
+  display: block;
+  margin-bottom: 1rem;
+  color: var(--spread-muted);
+  font-family: var(--utility);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-variant-numeric: tabular-nums;
+}
+
+.release-copy h3 {
+  margin: 0;
+  font-family: var(--display-pressure);
+  font-size: var(--type-headline);
+  font-weight: 800;
+  line-height: 0.84;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.release-copy h3 small {
+  display: inline;
+  margin-left: 0.3em;
+  color: var(--spread-muted);
+  font-family: var(--ambient);
+  font-size: clamp(0.68rem, 1.25vw, 0.92rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: inherit;
+  letter-spacing: 0.01em;
+  vertical-align: 0.15em;
+}
+
+.release-copy > p {
+  max-width: var(--measure-copy);
+  margin: 1.5rem 0 1.75rem;
+  color: var(--spread-muted);
+  font-size: clamp(1rem, 1.1vw, 1.1rem);
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.bandcamp-player {
+  display: block;
+  width: min(100%, 34rem);
+  height: 7.5rem;
+  margin: 0 0 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--spread-fg) 35%, transparent);
+  background: var(--void);
+}
+
+.release-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--spread-fg);
+  font-family: var(--utility);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-underline-offset: 0.42rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.release-spread--introspection {
+  --spread-bg: #171218;
+  --spread-fg: var(--bone-bright);
+  --spread-muted: #d1bda1;
+  --spread-accent: var(--ember);
+}
+
+.release-spread--introspection .release-visual {
+  grid-column: 1 / 9;
+}
+
+.release-spread--introspection .release-copy {
+  grid-column: 8 / 13;
+  padding: 3rem 0 3rem 3rem;
+  background: rgb(8 7 6 / 0.84);
+}
+
+.release-spread--moonstone {
+  --spread-bg: #0d1938;
+  --spread-fg: #f4d384;
+  --spread-muted: #e8d5ae;
+  --spread-accent: var(--gold);
+}
+
+.release-spread--moonstone .release-visual {
+  grid-column: 6 / 13;
+  justify-self: end;
+}
+
+.release-spread--moonstone .release-copy {
+  grid-column: 1 / 6;
+  grid-row: 1;
+  justify-self: start;
+}
+
+.release-spread--sunfire {
+  --spread-bg: #102c31;
+  --spread-fg: #fff0d0;
+  --spread-muted: #c6d4c9;
+  --spread-accent: #ffb33f;
+}
+
+.release-spread--sunfire .release-visual {
+  grid-column: 1 / 8;
+  transform: translateY(-3vh);
+}
+
+.release-spread--sunfire .release-copy {
+  grid-column: 8 / 13;
+  align-self: end;
+  padding-bottom: 3vh;
+}
+
+.release-spread--nostalgia {
+  --spread-bg: #09132f;
+  --spread-fg: #f5f1eb;
+  --spread-muted: #a9cfe4;
+  --spread-accent: #f39bb1;
+}
+
+.release-spread--nostalgia .release-visual {
+  grid-column: 5 / 12;
+  justify-self: end;
+  transform: rotate(1.2deg);
+}
+
+.release-spread--nostalgia .release-copy {
+  grid-column: 1 / 6;
+  grid-row: 1;
+  justify-self: start;
+}
+
+.release-spread--empty-spaces {
+  --spread-bg: #0b1513;
+  --spread-fg: #f0dfbe;
+  --spread-muted: #b8c3a6;
+  --spread-accent: #d36e4f;
+}
+
+.release-spread--empty-spaces .release-visual {
+  grid-column: 1 / 7;
+  transform: translateY(5vh);
+}
+
+.release-spread--empty-spaces .release-copy {
+  grid-column: 7 / 13;
+  align-self: start;
+  padding-top: 8vh;
+}
+
+.release-spread--idolatry {
+  --spread-bg: #0c0d25;
+  --spread-fg: #fae1c4;
+  --spread-muted: #c8c4df;
+  --spread-accent: #ffb43f;
+}
+
+.release-spread--idolatry .release-visual {
+  grid-column: 6 / 13;
+  justify-self: end;
+}
+
+.release-spread--idolatry .release-copy {
+  grid-column: 1 / 6;
+  grid-row: 1;
+  justify-self: start;
+  align-self: end;
+}
+
+.release-spread--illusions {
+  --spread-bg: #091316;
+  --spread-fg: #f0e7dc;
+  --spread-muted: #b9d0d0;
+  --spread-accent: #6ed7e7;
+}
+
+.release-spread--illusions .release-visual {
+  grid-column: 1 / 9;
+}
+
+.release-spread--illusions .release-copy {
+  grid-column: 8 / 13;
+  padding: 2.5rem;
+  background: rgb(8 7 6 / 0.8);
+}
+
+.release-spread--introspection-ii {
+  --spread-bg: #071319;
+  --spread-fg: #f3e5ce;
+  --spread-muted: #b3c9c4;
+  --spread-accent: #72d6c2;
+}
+
+.release-spread--introspection-ii .release-visual {
+  grid-column: 5 / 12;
+  justify-self: end;
+}
+
+.release-spread--introspection-ii .release-copy {
+  grid-column: 1 / 6;
+  grid-row: 1;
+  justify-self: start;
+}
+
+@media (max-width: 1000px) {
+  .release-spread {
+    padding-block: 8rem;
+  }
+
+  .release-copy h3 {
+    font-size: var(--type-headline);
+  }
+}
+
+@media (max-width: 760px) {
+  .sequence-header {
+    align-items: start;
+    flex-direction: column;
+    min-height: 52svh;
+    padding-block: 8rem 3rem;
+  }
+
+  .release-spread,
+  .release-spread--introspection,
+  .release-spread--moonstone,
+  .release-spread--sunfire,
+  .release-spread--nostalgia,
+  .release-spread--empty-spaces,
+  .release-spread--idolatry,
+  .release-spread--illusions,
+  .release-spread--introspection-ii {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    gap: 3rem;
+    padding-block: 7rem;
+  }
+
+  .release-spread::before {
+    left: 75%;
+    top: 28%;
+    width: 120vw;
+  }
+
+  .release-spread .release-visual,
+  .release-spread .release-copy {
+    grid-column: 1;
+    grid-row: auto;
+    width: 100%;
+    max-width: none;
+    justify-self: stretch;
+    align-self: auto;
+    padding: 0;
+    transform: none;
+    background: transparent;
+  }
+
+  .release-visual a {
+    width: 100%;
+  }
+
+  .release-visual img {
+    max-height: none;
+  }
+
+  .release-copy h3 {
+    font-size: var(--type-headline);
+  }
+
+  .bandcamp-player {
+    width: 100%;
+  }
+}
