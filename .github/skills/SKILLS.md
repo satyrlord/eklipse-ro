@@ -5,6 +5,7 @@ Use the skill that matches the user request.
 | Skill | Use for |
 | --- | --- |
 | `create-skill` | Create or revise a repository skill package. |
+| `improve-codebase-architecture` | Review module boundaries and code ownership. |
 | `run-quality-gate` | Run or repair the complete static-site gate. |
 | `verify-site` | Verify the production build in a real browser. |
 | `update-catalog` | Add or revise releases from official Bandcamp evidence. |

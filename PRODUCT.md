@@ -38,7 +38,7 @@ The site is a single-page promotional experience at eklipse.ro. Visitors learn a
 ## Brand Commitments
 
 - Artist name: eklipse. Always lowercase.
-- Location: Brașov, Romania. Origin: Iași, Romania, in 2001.
+- Location: Brasov, Romania. Origin: Iasi, Romania, in 2001.
 - Space is the main visual subject.
 - Album artwork from the official Bandcamp catalog is primary visual evidence.
 

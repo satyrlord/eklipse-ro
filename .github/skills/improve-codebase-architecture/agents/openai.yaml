@@ -1,0 +1,4 @@
+interface:
+  display_name: "Improve Architecture"
+  short_description: "Review module boundaries and code ownership"
+  default_prompt: "Use $improve-codebase-architecture to review eklipse architecture, ownership, coupling, and test seams."
