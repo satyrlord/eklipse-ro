@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 import { parse } from "parse5";
 
 const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const document = parse(html);
+const htaccess = await readFile(new URL("../public/.htaccess", import.meta.url), "utf8");
+const notFoundHtml = await readFile(new URL("../public/404.html", import.meta.url), "utf8");
 
 function elements(node, name) {
   const matches = node.nodeName === name ? [node] : [];
@@ -52,4 +54,18 @@ test("all eleven official releases are represented", () => {
 test("Romanian place names and Moonstone remaster copy stay accurate", () => {
   assert.match(html, /started in Iași in 2001 and now based in Brașov/);
   assert.match(html, /A deluxe remaster of the 2008 album <em>Moon<\/em>, combining remastered originals with new tracks\./);
+});
+
+test("production HTTP policy rejects unsafe methods and hardens all site responses", () => {
+  assert.match(htaccess, /ErrorDocument 404 \/404\.html/);
+  assert.match(htaccess, /REQUEST_METHOD} !\^\(GET\|HEAD\)\$/);
+  assert.match(htaccess, /Strict-Transport-Security "max-age=31536000"/);
+  assert.match(htaccess, /Cross-Origin-Resource-Policy "same-origin"/);
+  assert.match(htaccess, /https:\/\/eklipse\.ro%{REQUEST_URI}/);
+  assert.match(notFoundHtml, /<meta name="robots" content="noindex" \/>/);
+  assert.match(notFoundHtml, /<a href="\/">Return to eklipse<\/a>/);
+});
+
+test("the custom error page font is self-hosted at a stable path", async () => {
+  await access(new URL("../public/assets/source-sans-3-400.woff2", import.meta.url));
 });

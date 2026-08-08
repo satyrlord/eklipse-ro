@@ -1,0 +1,63 @@
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/assets/source-sans-3-400.woff2") format("woff2");
+}
+
+:root {
+  color-scheme: dark;
+  font-family: "Source Sans 3", sans-serif;
+  background: #05070b;
+  color: #f3f7f3;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 42%, rgb(104 224 223 / 10%), transparent 35%),
+    #05070b;
+}
+
+main {
+  width: min(88vw, 36rem);
+  padding-block: 4rem;
+}
+
+.status {
+  margin: 0 0 1rem;
+  color: #68e0df;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(3rem, 12vw, 6rem);
+  line-height: 0.9;
+}
+
+main > p:not(.status) {
+  margin: 1.5rem 0 2rem;
+  color: #b9c9cf;
+  font-size: 1.15rem;
+}
+
+a {
+  display: inline-block;
+  padding: 0.8rem 1.1rem;
+  background: #68e0df;
+  color: #05070b;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+a:focus-visible {
+  outline: 2px solid #f2b05e;
+  outline-offset: 5px;
+}
