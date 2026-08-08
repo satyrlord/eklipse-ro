@@ -75,6 +75,10 @@ test("production HTTP policy rejects unsafe methods and hardens all site respons
   assert.match(notFoundHtml, /<a href="\/">Return to eklipse<\/a>/);
 });
 
-test("the custom error page font is self-hosted at a stable path", async () => {
-  await access(new URL("../public/assets/source-sans-3-400.woff2", import.meta.url));
+test("the custom error page fonts are self-hosted at stable paths", async () => {
+  await Promise.all([
+    access(new URL("../public/assets/syne-latin-ext-700.woff2", import.meta.url)),
+    access(new URL("../public/assets/ibm-plex-sans-latin-ext-400.woff2", import.meta.url)),
+    access(new URL("../public/assets/ibm-plex-sans-latin-ext-600.woff2", import.meta.url)),
+  ]);
 });

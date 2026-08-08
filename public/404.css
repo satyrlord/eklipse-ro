@@ -1,14 +1,30 @@
 @font-face {
-  font-family: "Source Sans 3";
+  font-family: "Syne";
   font-style: normal;
-  font-weight: 400 700;
+  font-weight: 700;
   font-display: swap;
-  src: url("/assets/source-sans-3-400.woff2") format("woff2");
+  src: url("/assets/syne-latin-ext-700.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/ibm-plex-sans-latin-ext-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/assets/ibm-plex-sans-latin-ext-600.woff2") format("woff2");
 }
 
 :root {
   color-scheme: dark;
-  font-family: "Source Sans 3", sans-serif;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
   background: #05070b;
   color: #f3f7f3;
 }
@@ -32,14 +48,19 @@ main {
 .status {
   margin: 0 0 1rem;
   color: #68e0df;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
 }
 
 h1 {
   margin: 0;
-  font-size: clamp(3rem, 12vw, 6rem);
-  line-height: 0.9;
+  max-width: 9ch;
+  font-family: "Syne", "Trebuchet MS", sans-serif;
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-wrap: balance;
 }
 
 main > p:not(.status) {
@@ -53,11 +74,17 @@ a {
   padding: 0.8rem 1.1rem;
   background: #68e0df;
   color: #05070b;
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: none;
 }
 
 a:focus-visible {
   outline: 2px solid #f2b05e;
   outline-offset: 5px;
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 3.25rem;
+  }
 }
