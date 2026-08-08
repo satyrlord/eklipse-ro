@@ -8,4 +8,5 @@ eklipse-deploy.zip
 tmp/
 .impeccable/
 # GitHub Actions force-adds Vite output for cPanel deployment.
-dist/
+.codex/
+.agents/
