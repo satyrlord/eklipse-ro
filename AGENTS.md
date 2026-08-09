@@ -1,5 +1,72 @@
 # eklipse Website Instructions
 
+## Commands
+
+```sh
+npm install
+npm run dev
+npm run typecheck
+npm run lint:markdown
+npm run lint:dead-code
+npm test
+npm run test:coverage
+npm run test:browser
+npm run build
+npm run preview
+npm run ci
+```
+
+`npm run test:browser` first runs Playwright against a normal production build.
+It then repeats the browser suite with Istanbul instrumentation and writes the
+NYC report under `tmp/coverage/browser`. Normal production builds do not contain
+coverage instrumentation.
+
+## Structure
+
+```text
+index.html                 HTML entry point and catalog template
+src/release-catalog.ts     single source of truth for release facts and markup
+src/render-catalog.ts      build-time renderer that expands the catalog template
+src/main.ts                browser runtime
+src/runtime.ts             typed runtime calculations
+src/styles.css             Tailwind, daisyUI, tokens, layout, and motion
+src/release-sequence.css   current-release section styles
+vite.config.ts             Tailwind and conditional Istanbul setup
+vitest.config.ts           Vitest and V8 coverage setup
+playwright.config.ts       production-browser test setup
+scripts/                   TypeScript tool scripts
+public/                    assets, error page, and server configuration
+tests/                     policy, unit, and browser tests
+tmp/                       ignored build and coverage artifacts
+PRODUCT.md                 product contract
+AGENTS.md                  repository rules
+```
+
+## Tests
+
+`npm test` runs the product, asset, security, deployment, design-token, and
+runtime tests with Vitest. The static tests use one shared jsdom fixture.
+
+The catalog is authored once in `src/release-catalog.ts` (facts plus per-release
+markup). `src/render-catalog.ts` expands the `<!-- release-sequence:* -->` and
+`<!-- archive-track:* -->` regions of `index.html` at build time through a Vite
+`transformIndexHtml` hook. To add or change a release, edit only
+`src/release-catalog.ts`; the policy tests assert the rendered markup matches
+the ledger.
+
+`npm run test:coverage` records V8 coverage for TypeScript source. The browser
+gate records Istanbul coverage for the real production bundle. No coverage
+threshold exists yet. Add one only after the repository has a measured baseline
+and an accepted contract.
+
+The browser tests check title fit, overflow, archive geometry, focus, reduced
+motion, assets, player metadata, local requests, and console errors in Chromium.
+The deployment workflow runs the full gate before it rebuilds `dist/`.
+
+The [verify-site workflow](.github/skills/verify-site/SKILL.md) owns the broader
+manual production-browser check.
+
+
 ## Product source
 
 - Treat `PRODUCT.md` and the official eklipse Bandcamp catalog as product truth.
@@ -79,6 +146,15 @@
 - Check the production output, responsive layout, keyboard access, allowed
   links, and security headers before deployment.
 - Never store cPanel, FTP, or deployment secrets in the repository.
+
+## Deployment
+
+cPanel serves the production site from `/home/eklipse/public_html`. The GitHub
+workflow in [.github/workflows/build-dist.yml](.github/workflows/build-dist.yml)
+builds and publishes `dist/`. A cPanel cron deploys the managed repository. The
+cPanel task clears the site-owned asset directory and root files before it
+copies the build. Keep a removed site-owned root path in the cleanup command so
+an older deployment cannot leave that file public.
 
 ## Close-out
 

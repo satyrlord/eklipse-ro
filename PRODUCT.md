@@ -45,11 +45,16 @@ remain in a clearly labeled archive.
 
 - One responsive single-page experience with a space theme.
 - One self-hosted vector black-hole field stays sharp at all viewport sizes.
+- The first viewport shows the latest cover as a separate linked artifact. It
+  does not use album artwork as a page background.
 - The album title stays on one row at every viewport size.
 - Reduce the album title font size when it cannot fit on one row.
 - English is the sole interface and metadata language.
 - A short project description and a short description in every current release
   section.
+- Every current release uses the same responsive copy panel, player width, and
+  recovery-link alignment. Cover position and local color can vary.
+- Every Bandcamp player has a visible direct-album recovery link.
 - No comments, forms, authentication, analytics, or user input.
 - No server-side application code.
 - Outbound links go only to official eklipse Bandcamp pages.

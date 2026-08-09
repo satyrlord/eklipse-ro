@@ -328,6 +328,7 @@ img {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-variant-numeric: tabular-nums;
+  transition: color 180ms ease-out, opacity 180ms ease-out;
 }
 
 .site-nav a[aria-current="true"] {
@@ -338,6 +339,14 @@ img {
 }
 
 .site-nav .bandcamp-link {
+  color: var(--bone);
+}
+
+.site-header:not(.site-header--past-threshold) .site-nav a {
+  opacity: 0.78;
+}
+
+.site-header--past-threshold .site-nav .bandcamp-link {
   color: var(--ember);
 }
 
@@ -426,32 +435,59 @@ img {
 }
 
 .threshold-release {
+  position: relative;
   width: 100%;
   padding-top: 1.25rem;
   border-top: 1px solid var(--bone);
 }
 
+.threshold-artifact {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 1.5rem);
+  width: clamp(4.75rem, 7vw, 6.5rem);
+  aspect-ratio: 1;
+  border: 1px solid rgb(234 217 184 / 0.46);
+  box-shadow: 0 24px 64px rgb(0 0 0 / 0.52);
+  transition: filter 280ms ease-out, transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.threshold-artifact img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.threshold-artifact:hover {
+  filter: saturate(1.08) contrast(1.04);
+  transform: scale(0.988);
+}
+
 .threshold-release__title {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
-  justify-content: space-between;
   gap: 1rem;
 }
 
 .threshold-release h2 {
+  --fit-title-base: var(--type-title);
+  --fit-title-min: 1.5rem;
   margin: 0;
   font-family: var(--display);
-  font-size: var(--type-title);
+  font-size: var(--fit-font-size, var(--fit-title-base));
   font-weight: 400;
   line-height: 0.92;
   letter-spacing: -0.03em;
+  min-width: 0;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: visible;
 }
 
 @media (min-width: 1001px) {
   .threshold-release h2 {
-    font-size: clamp(1.85rem, 2.3vw, 2.7rem);
+    --fit-title-base: clamp(1.85rem, 2.3vw, 2.7rem);
   }
 }
 
@@ -751,17 +787,19 @@ img {
 }
 
 .afterimage-release strong {
+  --fit-title-base: clamp(1rem, 2.05vw, 3.6rem);
+  --fit-title-min: 1rem;
   display: block;
   margin-bottom: 0.25rem;
   font-family: var(--display);
-  font-size: clamp(1rem, 2.05vw, 3.6rem);
+  font-size: var(--fit-font-size, var(--fit-title-base));
   font-weight: 400;
   line-height: 0.95;
   text-transform: none;
   letter-spacing: -0.03em;
   color: var(--archive-cell-accent);
   white-space: nowrap;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .afterimage-release strong small {
@@ -780,7 +818,7 @@ img {
 
 @media (max-width: 760px) {
   .afterimage-release strong {
-    font-size: clamp(1.8rem, 3vw, 3.6rem);
+    --fit-title-base: clamp(1.8rem, 3vw, 3.6rem);
   }
 }
 
@@ -971,7 +1009,8 @@ img {
   .site-nav a {
     min-height: 44px;
     padding-inline: 0.45rem;
-    font-size: 0.62rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.075em;
   }
 
   .threshold {
@@ -1005,11 +1044,17 @@ img {
   }
 
   .primary-action {
+    gap: 1rem;
     width: 100%;
   }
 
   .threshold-release h2 {
-    font-size: var(--type-title);
+    --fit-title-base: var(--type-title);
+  }
+
+  .threshold-release__title {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.35rem;
   }
 
   .threshold-summary {
@@ -1094,8 +1139,9 @@ img {
   }
 
   .site-nav a {
-    padding-inline: 0.3rem;
-    font-size: 0.57rem;
+    padding-inline: 0.2rem;
+    font-size: 0.64rem;
+    letter-spacing: 0.055em;
   }
 
   .threshold-lockup {

@@ -76,10 +76,10 @@ typography:
     archive-title-max: "3.6rem"
     footer-wordmark: "1.15rem"
     mobile-wordmark: "1.25rem"
-    mobile-nav: "0.62rem"
+    mobile-nav: "0.68rem"
     mobile-threshold-min: "1.5rem"
     mobile-threshold-max: "7.6rem"
-    mobile-nav-compact: "0.57rem"
+    mobile-nav-compact: "0.64rem"
 rounded:
   sharp: "0"
   orbital: "50%"
@@ -137,7 +137,8 @@ Gravitational Press world.
 
 **Key Characteristics:**
 
-- A persistent vector black hole leads the page. Full-scale album art leads each
+- A persistent vector black hole leads the page. A separate linked cover
+  artifact identifies the featured release. Full-scale album art leads each
   release stage.
 - Radial paths and thin rules connect the sequence. Decorative red points are
   not part of the system.
@@ -248,11 +249,13 @@ role.
 The desktop system uses a fluid page width capped at 1500px and a 12-column
 release grid. Each release spread is at least one small viewport high. Covers
 and copy alternate across the grid. The vertical center of each complete release
-details block aligns with the vertical center of its cover. Selected releases
-keep deliberate horizontal overlaps. A continuous SVG spine and large circular
-registration paths connect the spreads.
+details block aligns with the vertical center of its cover. All releases use
+one consistent copy and playback module. A continuous SVG spine and large
+circular registration paths connect the spreads.
 
 The first viewport is a full-bleed threshold over the persistent vector field.
+The latest cover appears as a small linked plate above the release details. It
+does not become a page background.
 The black hole uses an event core, photon ring, lensed arcs, and an asymmetric
 accretion disk. The wordmark stays separate from the release information. Its
 vertical center aligns with the vertical center of the complete release block.
@@ -266,12 +269,13 @@ column on mobile. Each cover carries a dark local plate with its own caption
 accent. The final event horizon centers one short heading and one primary action
 inside concentric rings.
 
-At 1000px, the release title and grid proportions compress. At 760px, the page
-gutter becomes 1.25rem, all release spreads become a single vertical column, the
-spine geometry moves behind the stack, players use the full width, and archive
-covers use one equal-width column. The header uses a near-solid dark field. At
-430px, threshold actions stack and the primary action takes the full width.
-Touch targets remain at least 44px high.
+At 1000px, all release spreads become a single vertical column and the release
+title compresses. At 760px, the page gutter becomes 1.25rem, the spine geometry
+moves behind the stack, and archive covers use one equal-width column. The
+header uses a near-solid dark field. At 430px, threshold actions stack and the
+primary action takes the full width.
+Mobile release spacing compresses without hiding players or changing their
+order. Touch targets remain at least 44px high.
 
 ### Layout Rules
 
@@ -343,7 +347,8 @@ generic containers for text or icons.
   near-black field on mobile. Use three real routes only.
 - **Typography:** Syne at compact uppercase label sizes with wide tracking.
 - **Current State:** Underline the active internal section with Ember. Keep the
-  Bandcamp route Ember at rest.
+  catalog route quiet in the threshold, then use Ember after the visitor passes
+  the first viewport.
 - **Mobile:** Preserve all routes and the 44px target height. Tighten the gap
   and label size without hiding an item.
 
@@ -351,11 +356,12 @@ generic containers for text or icons.
 
 - **Topology:** One 12-column editorial field per current release, with a cover
   plate and a separate copy region.
-- **Cover:** Keep the full cover readable with `object-fit: contain`. Let
-  selected spreads overlap copy through grid placement, not through a rounded
-  card.
-- **Copy:** Use a short accent rule, date, serif release title, optional factual
-  description, one Bandcamp player, and one album link.
+- **Cover:** Keep the full cover readable with `object-fit: contain`. Alternate
+  its side and preserve the same grid boundary next to the copy region.
+- **Copy:** Use one shared sharp panel for every release. Keep its width,
+  padding, background, border, player, and recovery-link alignment consistent.
+  Use a short accent rule, date, release title, optional factual description,
+  one Bandcamp player, and one album link.
 - **Hover:** Current covers gain slight saturation and contrast and reduce to
   98.8% scale.
 - **Focus:** The cover link and album link use the shared focus system.
@@ -365,9 +371,11 @@ generic containers for text or icons.
 - **Style:** Use the official player as a quiet 7.5rem-high strip below the
   release copy.
 - **Border:** Use a one-pixel tint of the local spread foreground.
-- **Constraint:** Keep a fixed 2rem minimum clearance between the player and the
-  cover on desktop. When the release stacks on mobile, return the player to the
-  full content width. Do not restyle its remote contents.
+- **Constraint:** Give every player the same width at a given viewport. Center
+  it in the shared release-copy panel. Keep a fixed 2rem minimum clearance from
+  the cover on desktop. Align the recovery route to the player. Place a visible
+  direct-album recovery route below every player. Do not restyle its remote
+  contents.
 
 ### Archive Afterimages
 

@@ -62,7 +62,38 @@ test("the archive ledger keeps exact URLs, titles, labels, and no players", () =
 
   assert.deepEqual(actual, archiveReleaseLedger);
   assert.equal(releases.flatMap((release) => elements(release, "iframe")).length, 0);
-  assert.equal(elements(document, "img").length, 11);
+  assert.equal(elements(document, "img").length, 12);
+});
+
+test("the threshold presents the latest cover as a linked artifact", () => {
+  const artifact = elements(document, "a").find((link) => hasClass(link, "threshold-artifact"));
+  assert.ok(artifact, "the threshold needs one linked latest-release artifact");
+  assert.equal(attribute(artifact, "href"), currentReleaseLedger[0]!.href);
+
+  const image = elements(artifact, "img")[0]!;
+  assert.equal(attribute(image, "src"), "/assets/covers/introspection-i-remastered.jpg");
+  assert.equal(attribute(image, "alt"), "Introspection I (remastered edition) cover");
+});
+
+test("every player has one visible direct-album recovery route", () => {
+  const releases = elements(document, "article").filter((article) => hasClass(article, "release-spread"));
+
+  for (const release of releases) {
+    const recovery = elements(release, "div").find((node) => hasClass(node, "player-recovery"));
+    assert.ok(recovery, `${normalizedText(elements(release, "h3")[0]!)} needs player recovery`);
+    assert.equal(normalizedText(elements(recovery, "span")[0]!), "Player unavailable?");
+    assert.equal(normalizedText(elements(recovery, "a")[0]!), "Open album on Bandcamp");
+  }
+});
+
+test("the first viewport gives each route a distinct name", () => {
+  const catalog = elements(document, "a").find((link) => hasClass(link, "bandcamp-link"));
+  const primary = elements(document, "a").find((link) => hasClass(link, "primary-action"));
+  const browse = elements(document, "a").find((link) => hasClass(link, "text-action"));
+
+  assert.equal(normalizedText(catalog!), "Catalog");
+  assert.equal(normalizedText(primary!), "Listen to latest");
+  assert.equal(normalizedText(browse!), "Browse releases");
 });
 
 test("the cover-led editorial journey keeps every catalog stage", () => {

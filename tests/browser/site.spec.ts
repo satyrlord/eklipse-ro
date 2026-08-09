@@ -19,11 +19,11 @@ test.afterEach(async ({ page }, testInfo) => {
 const viewports = [
   { name: "narrow mobile", width: 320, height: 800 },
   { name: "mobile boundary", width: 480, height: 900 },
-  { name: "single-column end", width: 760, height: 900 },
-  { name: "three-column start", width: 761, height: 900 },
-  { name: "narrow desktop grid", width: 820, height: 900 },
-  { name: "responsive type end", width: 1000, height: 900 },
-  { name: "wide type start", width: 1001, height: 900 },
+  { name: "compact stack", width: 760, height: 900 },
+  { name: "wide stack start", width: 761, height: 900 },
+  { name: "wide stack", width: 820, height: 900 },
+  { name: "single-column end", width: 1000, height: 900 },
+  { name: "desktop grid start", width: 1001, height: 900 },
   { name: "common desktop", width: 1024, height: 900 },
   { name: "desktop", width: 1440, height: 900 },
 ];
@@ -74,19 +74,100 @@ for (const viewport of viewports) {
         clientWidth: node.clientWidth,
         scrollWidth: node.scrollWidth,
         height: node.getBoundingClientRect().height,
+        left: node.getBoundingClientRect().left,
+        right: node.getBoundingClientRect().right,
+        parentLeft: node.parentElement!.getBoundingClientRect().left,
+        parentRight: node.parentElement!.getBoundingClientRect().right,
         lineHeight: Number.parseFloat(getComputedStyle(node).lineHeight),
+        overflowX: getComputedStyle(node).overflowX,
         whiteSpace: getComputedStyle(node).whiteSpace,
       })),
     );
 
     for (const title of titles) {
       expect(title.height, title.text).toBeLessThanOrEqual(title.lineHeight + 1);
+      expect(title.overflowX, title.text).toBe("visible");
       expect(title.whiteSpace, title.text).toBe("nowrap");
       expect(title.scrollWidth, title.text).toBeLessThanOrEqual(title.clientWidth + 1);
+      expect(title.left, `${title.text} left edge`).toBeGreaterThanOrEqual(title.parentLeft - 1);
+      expect(title.right, `${title.text} right edge`).toBeLessThanOrEqual(title.parentRight + 1);
     }
     assertNoLocalErrors();
   });
 }
+
+test("the threshold artifact and route hierarchy stay clear", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const assertNoLocalErrors = await openSite(page);
+
+  const artifact = page.locator(".threshold-artifact");
+  await expect(artifact).toBeVisible();
+  await expect(artifact).toHaveAttribute("href", /introspection-i-remastered-edition$/);
+  const image = artifact.locator("img");
+  await expect(image).toHaveAttribute("alt", "Introspection I (remastered edition) cover");
+  await expect.poll(() => image.evaluate((node) => (node as HTMLImageElement).complete && (node as HTMLImageElement).naturalWidth > 0)).toBe(true);
+  const restingArtifact = await artifact.evaluate((node) => {
+    const rect = node.getBoundingClientRect();
+    return { transform: getComputedStyle(node).transform, width: rect.width, height: rect.height };
+  });
+  expect(restingArtifact.transform).toBe("none");
+  expect(Math.abs(restingArtifact.width - restingArtifact.height)).toBeLessThanOrEqual(1);
+  await artifact.hover();
+  const hoverTransform = await artifact.evaluate((node) => {
+    const matrix = new DOMMatrix(getComputedStyle(node).transform);
+    return { b: matrix.b, c: matrix.c };
+  });
+  expect(Math.abs(hoverTransform.b)).toBeLessThan(0.001);
+  expect(Math.abs(hoverTransform.c)).toBeLessThan(0.001);
+
+  await expect(page.locator(".site-nav .bandcamp-link")).toHaveText(/Catalog/);
+  await expect(page.locator(".threshold-actions .primary-action")).toHaveText(/Listen to latest/);
+  await expect(page.locator(".threshold-actions .text-action")).toHaveText("Browse releases");
+
+  const topColor = await page.locator(".site-nav .bandcamp-link").evaluate((node) => getComputedStyle(node).color);
+  expect(topColor).toBe("rgb(234, 217, 184)");
+  const thresholdHeight = await page.locator(".threshold").evaluate((node) => (node as HTMLElement).offsetHeight);
+  await page.evaluate(() => {
+    document.documentElement.style.scrollBehavior = "auto";
+  });
+  await page.evaluate((height) => window.scrollTo(0, height - 2), thresholdHeight);
+  await expect(page.locator(".site-header")).not.toHaveClass(/site-header--past-threshold/);
+  await page.evaluate((height) => window.scrollTo(0, height + 1), thresholdHeight);
+  await expect(page.locator(".site-header")).toHaveClass(/site-header--past-threshold/);
+  await expect.poll(() => page.locator(".site-nav .bandcamp-link").evaluate((node) => getComputedStyle(node).color)).toBe("rgb(255, 103, 72)");
+  assertNoLocalErrors();
+});
+
+test("mobile navigation and release rhythm stay readable", async ({ page }) => {
+  for (const viewport of [
+    { width: 480, height: 900 },
+    { width: 320, height: 800 },
+  ]) {
+    await page.setViewportSize(viewport);
+    const assertNoLocalErrors = await openSite(page);
+    const metrics = await page.locator(".release-spread").first().evaluate((release) => {
+      const style = getComputedStyle(release);
+      const navLink = document.querySelector(".site-nav a")!;
+      return {
+        gap: Number.parseFloat(style.gap),
+        navFontSize: Number.parseFloat(getComputedStyle(navLink).fontSize),
+        paddingTop: Number.parseFloat(style.paddingTop),
+      };
+    });
+
+    expect(metrics.gap, `${viewport.width}px release gap`).toBeLessThanOrEqual(36);
+    expect(metrics.navFontSize, `${viewport.width}px navigation text`).toBeGreaterThanOrEqual(10);
+    expect(metrics.paddingTop, `${viewport.width}px release padding`).toBeLessThanOrEqual(77);
+    const artifact = await page.locator(".threshold-artifact").evaluate((node) => {
+      const rect = node.getBoundingClientRect();
+      return { left: rect.left, right: rect.right, transform: getComputedStyle(node).transform };
+    });
+    expect(artifact.left, `${viewport.width}px artifact left edge`).toBeGreaterThanOrEqual(0);
+    expect(artifact.right, `${viewport.width}px artifact right edge`).toBeLessThanOrEqual(viewport.width);
+    expect(artifact.transform, `${viewport.width}px artifact rotation`).toBe("none");
+    assertNoLocalErrors();
+  }
+});
 
 test("archive covers keep the documented desktop and mobile geometry", async ({ page }) => {
   await page.setViewportSize({ width: 820, height: 900 });
@@ -138,8 +219,9 @@ test("release details stay vertically centered against their covers on desktop",
 
   for (const viewport of [
     { width: 1440, height: 900 },
-    { width: 820, height: 900 },
-    { width: 761, height: 900 },
+    { width: 1259, height: 900 },
+    { width: 1024, height: 900 },
+    { width: 1001, height: 900 },
   ]) {
     const releases = await alignmentAt(viewport);
     for (const release of releases) {
@@ -156,8 +238,7 @@ test("release players keep fixed clearance from covers on desktop", async ({ pag
   for (const viewport of [
     { width: 1259, height: 779 },
     { width: 1024, height: 900 },
-    { width: 820, height: 900 },
-    { width: 761, height: 900 },
+    { width: 1001, height: 900 },
   ]) {
     await page.setViewportSize(viewport);
     const releases = page.locator(".release-spread");
@@ -169,17 +250,75 @@ test("release players keep fixed clearance from covers on desktop", async ({ pag
       await expect.poll(() => image.evaluate((node) => (node as HTMLImageElement).complete && (node as HTMLImageElement).naturalWidth > 0)).toBe(true);
     }
 
-    const clearances = await releases.evaluateAll((nodes) =>
+    const geometry = await releases.evaluateAll((nodes) =>
       nodes.map((release) => {
         const cover = release.querySelector(".release-visual img")!.getBoundingClientRect();
+        const copy = release.querySelector(".release-copy")!.getBoundingClientRect();
         const player = release.querySelector(".bandcamp-player")!.getBoundingClientRect();
         const gap = cover.right <= player.left ? player.left - cover.right : cover.left >= player.right ? cover.left - player.right : -Math.min(cover.right - player.left, player.right - cover.left);
-        return { gap, title: release.querySelector("h3")!.textContent.replace(/\s+/g, " ").trim() };
+        return {
+          centerDelta: Math.abs(copy.left + copy.width / 2 - (player.left + player.width / 2)),
+          gap,
+          title: release.querySelector("h3")!.textContent.replace(/\s+/g, " ").trim(),
+        };
       }),
     );
 
-    for (const clearance of clearances) {
-      expect(clearance.gap, `${clearance.title} at ${viewport.width}px`).toBeGreaterThanOrEqual(31);
+    for (const release of geometry) {
+      expect(release.gap, `${release.title} clearance at ${viewport.width}px`).toBeGreaterThanOrEqual(31);
+      expect(release.centerDelta, `${release.title} player center at ${viewport.width}px`).toBeLessThanOrEqual(1);
+    }
+  }
+  assertNoLocalErrors();
+});
+
+test("every release uses one copy and playback module", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const assertNoLocalErrors = await openSite(page);
+
+  for (const viewport of [
+    { width: 1440, height: 900 },
+    { width: 1024, height: 900 },
+    { width: 1000, height: 900 },
+    { width: 820, height: 900 },
+    { width: 480, height: 900 },
+    { width: 320, height: 800 },
+  ]) {
+    await page.setViewportSize(viewport);
+    const modules = await page.locator(".release-spread").evaluateAll((nodes) =>
+      nodes.map((release) => {
+        const copy = release.querySelector(".release-copy")!;
+        const player = release.querySelector(".bandcamp-player")!;
+        const recovery = release.querySelector(".player-recovery")!;
+        const copyRect = copy.getBoundingClientRect();
+        const playerRect = player.getBoundingClientRect();
+        const recoveryRect = recovery.getBoundingClientRect();
+        const style = getComputedStyle(copy);
+        return {
+          background: style.backgroundColor,
+          borderLeftWidth: style.borderLeftWidth,
+          copyWidth: copyRect.width,
+          paddingLeft: style.paddingLeft,
+          paddingRight: style.paddingRight,
+          playerCenterDelta: Math.abs(copyRect.left + copyRect.width / 2 - (playerRect.left + playerRect.width / 2)),
+          playerWidth: playerRect.width,
+          recoveryLeftDelta: Math.abs(recoveryRect.left - playerRect.left),
+          recoveryRightDelta: Math.abs(recoveryRect.right - playerRect.right),
+        };
+      }),
+    );
+
+    const spread = (values: number[]) => Math.max(...values) - Math.min(...values);
+    expect(new Set(modules.map(({ background }) => background)).size, `${viewport.width}px panel background`).toBe(1);
+    expect(new Set(modules.map(({ borderLeftWidth }) => borderLeftWidth)).size, `${viewport.width}px panel border`).toBe(1);
+    expect(new Set(modules.map(({ paddingLeft }) => paddingLeft)).size, `${viewport.width}px left padding`).toBe(1);
+    expect(new Set(modules.map(({ paddingRight }) => paddingRight)).size, `${viewport.width}px right padding`).toBe(1);
+    expect(spread(modules.map(({ copyWidth }) => copyWidth)), `${viewport.width}px panel width`).toBeLessThanOrEqual(1);
+    expect(spread(modules.map(({ playerWidth }) => playerWidth)), `${viewport.width}px player width`).toBeLessThanOrEqual(1);
+    for (const module of modules) {
+      expect(module.playerCenterDelta, `${viewport.width}px player center`).toBeLessThanOrEqual(1);
+      expect(module.recoveryLeftDelta, `${viewport.width}px recovery left edge`).toBeLessThanOrEqual(1);
+      expect(module.recoveryRightDelta, `${viewport.width}px recovery right edge`).toBeLessThanOrEqual(1);
     }
   }
   assertNoLocalErrors();
@@ -272,6 +411,11 @@ test("images and player metadata resolve from the production page", async ({ pag
   for (const player of players) {
     expect(player.title).toMatch(/Bandcamp album player$/);
     expect(player.source).toMatch(/^https:\/\/bandcamp\.com\/EmbeddedPlayer\//);
+  }
+  await expect(page.locator(".player-recovery")).toHaveCount(8);
+  for (const recovery of await page.locator(".player-recovery").all()) {
+    await expect(recovery).toContainText("Player unavailable?");
+    await expect(recovery.locator("a")).toHaveText(/Open album on Bandcamp/);
   }
   assertNoLocalErrors();
 });

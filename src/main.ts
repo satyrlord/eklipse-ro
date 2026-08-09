@@ -4,6 +4,8 @@ import { calculateGravityPoint, calculatePageProgress, mostVisibleSectionId } fr
 
 const root = document.documentElement;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const threshold = document.querySelector<HTMLElement>(".threshold");
+const siteHeader = document.querySelector<HTMLElement>(".site-header");
 
 root.classList.add("js-ready");
 
@@ -13,6 +15,10 @@ function updatePageProgress() {
   progressFrame = 0;
   const progress = calculatePageProgress(window.scrollY, document.documentElement.scrollHeight, window.innerHeight);
   root.style.setProperty("--page-progress", progress.toFixed(4));
+  if (threshold && siteHeader) {
+    const thresholdEnd = threshold.offsetTop + threshold.offsetHeight;
+    siteHeader.classList.toggle("site-header--past-threshold", window.scrollY >= thresholdEnd);
+  }
 }
 
 function requestProgressUpdate() {
@@ -26,7 +32,57 @@ window.addEventListener("resize", requestProgressUpdate, { passive: true });
 window.addEventListener("pageshow", requestProgressUpdate);
 requestProgressUpdate();
 
-const threshold = document.querySelector<HTMLElement>(".threshold");
+let titleFitFrame = 0;
+
+function fitSingleLineTitle(title: HTMLElement) {
+  title.style.removeProperty("--fit-font-size");
+  if (title.scrollWidth <= title.clientWidth) {
+    return;
+  }
+
+  const naturalStyle = getComputedStyle(title);
+  const naturalSize = Number.parseFloat(naturalStyle.fontSize);
+  const configuredMinimum = naturalStyle.getPropertyValue("--fit-title-min").trim();
+  title.style.setProperty("--fit-font-size", configuredMinimum || `${naturalSize}px`);
+  const minimumSize = Number.parseFloat(getComputedStyle(title).fontSize);
+  let lower = Math.min(naturalSize, minimumSize);
+  let upper = naturalSize;
+
+  while (title.scrollWidth > title.clientWidth && lower > 8) {
+    lower = Math.max(8, lower - 2);
+    title.style.setProperty("--fit-font-size", `${lower}px`);
+  }
+
+  for (let iteration = 0; iteration < 8; iteration += 1) {
+    const candidate = (lower + upper) / 2;
+    title.style.setProperty("--fit-font-size", `${candidate}px`);
+    if (title.scrollWidth <= title.clientWidth) {
+      lower = candidate;
+    } else {
+      upper = candidate;
+    }
+  }
+
+  title.style.setProperty("--fit-font-size", `${Math.floor(lower * 10) / 10}px`);
+}
+
+function fitSingleLineTitles() {
+  titleFitFrame = 0;
+  for (const title of document.querySelectorAll<HTMLElement>(".threshold-release h2, .release-copy h3, .afterimage-release strong")) {
+    fitSingleLineTitle(title);
+  }
+}
+
+function requestTitleFit() {
+  if (!titleFitFrame) {
+    titleFitFrame = window.requestAnimationFrame(fitSingleLineTitles);
+  }
+}
+
+window.addEventListener("resize", requestTitleFit, { passive: true });
+window.addEventListener("pageshow", requestTitleFit);
+void document.fonts.ready.then(requestTitleFit);
+requestTitleFit();
 
 if (threshold) {
   let pointerFrame = 0;

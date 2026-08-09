@@ -21,7 +21,7 @@ function renderCurrentRelease(release: CurrentReleaseLedgerEntry, markup: Curren
               <time datetime="${release.datetime}">${markup.dateLabel}</time>
               <h3>${markup.heading}</h3>
               ${markup.description ? `${markup.description}\n              ` : ""}<iframe class="bandcamp-player" title="${release.title} by eklipse — Bandcamp album player" src="${playerSource(release)}" seamless loading="lazy"></iframe>
-              <a class="release-link" href="${release.href}">Open album on Bandcamp <svg class="outbound-icon" aria-hidden="true"><use href="#arrow-out"></use></svg></a>
+              <div class="player-recovery"><span>Player unavailable?</span><a class="release-link" href="${release.href}">Open album on Bandcamp <svg class="outbound-icon" aria-hidden="true"><use href="#arrow-out"></use></svg></a></div>
             </div>
           </article>`;
 }
