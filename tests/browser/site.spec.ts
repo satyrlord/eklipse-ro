@@ -465,10 +465,10 @@ test("the vector backdrop remains visible and the threshold wordmark stays insid
 
   await expect(page.locator(".space-backdrop")).toBeVisible();
   const backdropFilter = await page.locator(".space-backdrop").evaluate((node) => getComputedStyle(node).filter);
-  expect(backdropFilter).toContain("brightness(0.8)");
+  expect(backdropFilter).toContain("brightness(0.2)");
   await expect(page.locator(".space-noise")).toBeVisible();
   const noiseOpacity = await page.locator(".space-noise").evaluate((node) => getComputedStyle(node).opacity);
-  expect(noiseOpacity).toBe("0.05");
+  expect(noiseOpacity).toBe("0.2");
   const surfaces = await page
     .locator(".threshold, .project-section, .sequence-header, .release-spread, .afterimage, .event-horizon")
     .evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).backgroundColor));

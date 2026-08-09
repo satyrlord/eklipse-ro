@@ -46,15 +46,15 @@ function ruleBlock(selector: string): string {
   return match[1]!;
 }
 
-test("the persistent backdrop renders at 80 percent brightness", () => {
+test("the persistent backdrop renders at 20 percent brightness", () => {
   const backdrop = ruleBlock("\\.space-backdrop");
-  assert.match(backdrop, /filter:\s*brightness\(0\.8\);/);
+  assert.match(backdrop, /filter:\s*brightness\(0\.2\);/);
 });
 
 test("a quiet grayscale grain layer sits above the backdrop", () => {
   const noise = ruleBlock("\\.space-noise");
   assert.match(noise, /position:\s*fixed;/);
   assert.match(noise, /z-index:\s*0;/);
-  assert.match(noise, /opacity:\s*0\.05;/);
+  assert.match(noise, /opacity:\s*0\.2;/);
   assert.match(noise, /pointer-events:\s*none;/);
 });

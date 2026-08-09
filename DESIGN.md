@@ -130,8 +130,8 @@ The world combines a geometric event core, a lensed accretion disk, dark
 cover-derived fields, ember actions, exposed print seams, radial paths, and
 large album plates. Each section uses its local field at 50% opacity so the
 black hole remains visible. Cover art supplies local color and release evidence.
-The backdrop renders at 80 percent brightness and carries a fine grayscale
-grain layer at 5 percent opacity. The dim and the grain keep the vector field
+The backdrop renders at 20 percent brightness and carries a fine grayscale
+grain layer at 20 percent opacity. The dim and the grain keep the vector field
 quiet and printed. The grain stays behind all content.
 
 This document records the implemented system. Typography uses two display voices
