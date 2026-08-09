@@ -54,11 +54,19 @@ test("each current release has one description between its title and player", ()
 
 test("the archive ledger keeps exact URLs, titles, labels, and no players", () => {
   const releases = elements(document, "article").filter((article) => hasClass(article, "afterimage-release"));
-  const actual = releases.map((release) => ({
-    href: oneAlbumHref(release),
-    title: normalizedText(elements(release, "strong")[0]!),
-    label: normalizedText(elements(release, "small").find((node) => hasClass(node, "archive-subtitle"))!),
-  }));
+  const actual = releases.map((release) => {
+    const link = elements(release, "a")[0]!;
+    const destination = elements(release, "small").find((node) => hasClass(node, "archive-destination"));
+
+    assert.equal(attribute(link, "aria-label"), `${normalizedText(elements(release, "strong")[0]!)} on Bandcamp`);
+    assert.equal(normalizedText(destination!), "Open on Bandcamp");
+
+    return {
+      href: oneAlbumHref(release),
+      title: normalizedText(elements(release, "strong")[0]!),
+      label: normalizedText(elements(release, "small").find((node) => hasClass(node, "archive-subtitle"))!),
+    };
+  });
 
   assert.deepEqual(actual, archiveReleaseLedger);
   assert.equal(releases.flatMap((release) => elements(release, "iframe")).length, 0);
@@ -91,7 +99,8 @@ test("the first viewport gives each route a distinct name", () => {
   const primary = elements(document, "a").find((link) => hasClass(link, "primary-action"));
   const browse = elements(document, "a").find((link) => hasClass(link, "text-action"));
 
-  assert.equal(normalizedText(catalog!), "Catalog");
+  assert.equal(normalizedText(catalog!), "Bandcamp");
+  assert.equal(attribute(catalog!, "aria-label"), "Open eklipse on Bandcamp");
   assert.equal(normalizedText(primary!), "Listen to latest");
   assert.equal(normalizedText(browse!), "Browse releases");
 });
@@ -117,7 +126,10 @@ test("the black-hole backdrop uses no album cover or decorative red points", () 
 });
 
 test("Romanian place names and the supported Moonstone relation stay accurate", () => {
-  assert.match(html, /started in Iasi in 2001 and now based in Brasov/);
+  assert.match(html, /Since 2001/);
+  assert.match(html, /Iasi to Brasov/);
+  assert.match(html, /Current and remastered editions lead the catalog/);
+  assert.match(html, /Three original versions stay together in the archive/);
   assert.match(html, /A deluxe remaster of the 2008 album <em>Moon<\/em>, combining remastered originals with new tracks\./);
 });
 

@@ -347,7 +347,7 @@ generic containers for text or icons.
   near-black field on mobile. Use three real routes only.
 - **Typography:** Syne at compact uppercase label sizes with wide tracking.
 - **Current State:** Underline the active internal section with Ember. Keep the
-  catalog route quiet in the threshold, then use Ember after the visitor passes
+  Bandcamp route quiet in the threshold, then use Ember after the visitor passes
   the first viewport.
 - **Mobile:** Preserve all routes and the 44px target height. Tighten the gap
   and label size without hiding an item.
@@ -380,6 +380,8 @@ generic containers for text or icons.
 ### Archive Afterimages
 
 - **Topology:** Three link-only covers in one aligned coda. Do not add players.
+- **Destination:** Each cover names `Open on Bandcamp` below its title. The
+  complete card remains one link.
 - **Default:** Keep most cover color visible with a restrained grayscale and
   contrast filter.
 - **Hover:** Restore full color and move the plate up by 0.5rem.

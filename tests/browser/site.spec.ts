@@ -18,6 +18,9 @@ test.afterEach(async ({ page }, testInfo) => {
 
 const viewports = [
   { name: "narrow mobile", width: 320, height: 800 },
+  { name: "compact header approach", width: 429, height: 800 },
+  { name: "compact header boundary", width: 430, height: 800 },
+  { name: "compact header exit", width: 431, height: 800 },
   { name: "mobile boundary", width: 480, height: 900 },
   { name: "compact stack", width: 760, height: 900 },
   { name: "wide stack start", width: 761, height: 900 },
@@ -120,7 +123,8 @@ test("the threshold artifact and route hierarchy stay clear", async ({ page }) =
   expect(Math.abs(hoverTransform.b)).toBeLessThan(0.001);
   expect(Math.abs(hoverTransform.c)).toBeLessThan(0.001);
 
-  await expect(page.locator(".site-nav .bandcamp-link")).toHaveText(/Catalog/);
+  await expect(page.locator(".site-nav .bandcamp-link")).toHaveText("Bandcamp");
+  await expect(page.locator(".site-nav .bandcamp-link")).toHaveAccessibleName("Open eklipse on Bandcamp");
   await expect(page.locator(".threshold-actions .primary-action")).toHaveText(/Listen to latest/);
   await expect(page.locator(".threshold-actions .text-action")).toHaveText("Browse releases");
 
@@ -141,6 +145,9 @@ test("the threshold artifact and route hierarchy stay clear", async ({ page }) =
 test("mobile navigation and release rhythm stay readable", async ({ page }) => {
   for (const viewport of [
     { width: 480, height: 900 },
+    { width: 431, height: 800 },
+    { width: 430, height: 800 },
+    { width: 429, height: 800 },
     { width: 320, height: 800 },
   ]) {
     await page.setViewportSize(viewport);
@@ -158,12 +165,38 @@ test("mobile navigation and release rhythm stay readable", async ({ page }) => {
     expect(metrics.gap, `${viewport.width}px release gap`).toBeLessThanOrEqual(36);
     expect(metrics.navFontSize, `${viewport.width}px navigation text`).toBeGreaterThanOrEqual(10);
     expect(metrics.paddingTop, `${viewport.width}px release padding`).toBeLessThanOrEqual(77);
+    const headerItems = await page.locator(".wordmark, .site-nav a").evaluateAll((nodes) =>
+      nodes.map((node) => {
+        const rect = node.getBoundingClientRect();
+        return {
+          label: node.textContent?.trim(),
+          left: rect.left,
+          right: rect.right,
+          top: rect.top,
+          height: rect.height,
+          isNavigation: node.matches(".site-nav a"),
+        };
+      }),
+    );
+    for (const headerItem of headerItems) {
+      expect(headerItem.left, `${viewport.width}px ${headerItem.label} left edge`).toBeGreaterThanOrEqual(0);
+      expect(headerItem.right, `${viewport.width}px ${headerItem.label} right edge`).toBeLessThanOrEqual(viewport.width);
+      if (headerItem.isNavigation) {
+        expect(headerItem.height, `${viewport.width}px ${headerItem.label} target height`).toBeGreaterThanOrEqual(44);
+      }
+    }
+    for (let index = 1; index < headerItems.length; index += 1) {
+      expect(headerItems[index - 1]!.right, `${viewport.width}px header item separation`).toBeLessThanOrEqual(headerItems[index]!.left);
+    }
+
     const artifact = await page.locator(".threshold-artifact").evaluate((node) => {
       const rect = node.getBoundingClientRect();
-      return { left: rect.left, right: rect.right, transform: getComputedStyle(node).transform };
+      const header = document.querySelector(".site-header")!.getBoundingClientRect();
+      return { left: rect.left, right: rect.right, top: rect.top, headerBottom: header.bottom, transform: getComputedStyle(node).transform };
     });
     expect(artifact.left, `${viewport.width}px artifact left edge`).toBeGreaterThanOrEqual(0);
     expect(artifact.right, `${viewport.width}px artifact right edge`).toBeLessThanOrEqual(viewport.width);
+    expect(artifact.top, `${viewport.width}px artifact header clearance`).toBeGreaterThanOrEqual(artifact.headerBottom);
     expect(artifact.transform, `${viewport.width}px artifact rotation`).toBe("none");
     assertNoLocalErrors();
   }
@@ -172,6 +205,12 @@ test("mobile navigation and release rhythm stay readable", async ({ page }) => {
 test("archive covers keep the documented desktop and mobile geometry", async ({ page }) => {
   await page.setViewportSize({ width: 820, height: 900 });
   const assertNoLocalErrors = await openSite(page);
+
+  const archiveLinks = page.locator(".afterimage-release a");
+  for (const archiveLink of await archiveLinks.all()) {
+    await expect(archiveLink).toHaveAccessibleName(/on Bandcamp$/);
+    await expect(archiveLink.locator(".archive-destination")).toHaveText("Open on Bandcamp");
+  }
 
   const desktop = await page.locator(".afterimage-release").evaluateAll((nodes) =>
     nodes.map((node) => {

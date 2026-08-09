@@ -28,9 +28,9 @@ function renderCurrentRelease(release: CurrentReleaseLedgerEntry, markup: Curren
 
 function renderArchiveRelease(release: ArchiveReleaseLedgerEntry, markup: ArchiveReleaseMarkup): string {
   return `          <article class="afterimage-release">
-            <a href="${release.href}">
+            <a href="${release.href}" aria-label="${release.title} on Bandcamp">
               <img src="/assets/covers/${markup.cover}" alt="${release.title} cover" width="${markup.coverWidth}" height="${markup.coverHeight}" decoding="async" loading="lazy" />
-              <span><strong>${markup.heading}</strong><small class="archive-subtitle">${release.label}</small></span>
+              <span><strong>${markup.heading}</strong><small class="archive-destination">Open on Bandcamp <svg class="outbound-icon" aria-hidden="true"><use href="#arrow-out"></use></svg></small><small class="archive-subtitle">${release.label}</small></span>
             </a>
           </article>`;
 }

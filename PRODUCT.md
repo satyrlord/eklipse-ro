@@ -55,6 +55,7 @@ remain in a clearly labeled archive.
 - Every current release uses the same responsive copy panel, player width, and
   recovery-link alignment. Cover position and local color can vary.
 - Every Bandcamp player has a visible direct-album recovery link.
+- The global route and every archive link visibly name Bandcamp.
 - No comments, forms, authentication, analytics, or user input.
 - No server-side application code.
 - Outbound links go only to official eklipse Bandcamp pages.

@@ -66,7 +66,6 @@ The deployment workflow runs the full gate before it rebuilds `dist/`.
 The [verify-site workflow](.github/skills/verify-site/SKILL.md) owns the broader
 manual production-browser check.
 
-
 ## Product source
 
 - Treat `PRODUCT.md` and the official eklipse Bandcamp catalog as product truth.

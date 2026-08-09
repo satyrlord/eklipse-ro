@@ -786,6 +786,21 @@ img {
   text-align: right;
 }
 
+.afterimage-release .archive-destination {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  margin-top: 0.65rem;
+  color: var(--archive-cell-fg);
+  font-family: var(--utility);
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .afterimage-release strong {
   --fit-title-base: clamp(1rem, 2.05vw, 3.6rem);
   --fit-title-min: 1rem;
