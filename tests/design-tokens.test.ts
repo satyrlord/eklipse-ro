@@ -39,3 +39,22 @@ test("section fields expose the persistent backdrop at 50 percent opacity", () =
   assert.ok(styles.includes("--section-field-opacity: 0.5;"));
   assert.doesNotMatch(styles, /url\("\/assets\/covers\//, "album covers must not appear in CSS backgrounds");
 });
+
+function ruleBlock(selector: string): string {
+  const match = styles.match(new RegExp(`${selector}\\s*\\{([^}]*)\\}`));
+  assert.ok(match, `styles.css must define ${selector}`);
+  return match[1]!;
+}
+
+test("the persistent backdrop renders at 80 percent brightness", () => {
+  const backdrop = ruleBlock("\\.space-backdrop");
+  assert.match(backdrop, /filter:\s*brightness\(0\.8\);/);
+});
+
+test("a quiet grayscale grain layer sits above the backdrop", () => {
+  const noise = ruleBlock("\\.space-noise");
+  assert.match(noise, /position:\s*fixed;/);
+  assert.match(noise, /z-index:\s*0;/);
+  assert.match(noise, /opacity:\s*0\.05;/);
+  assert.match(noise, /pointer-events:\s*none;/);
+});

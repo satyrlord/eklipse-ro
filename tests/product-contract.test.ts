@@ -125,6 +125,25 @@ test("the black-hole backdrop uses no album cover or decorative red points", () 
   assert.equal(elements(spine, "circle").length, 0);
 });
 
+test("one quiet grayscale grain layer sits directly above the backdrop", () => {
+  const svgs = elements(document, "svg").filter((svg) => hasClass(svg, "space-backdrop") || hasClass(svg, "space-noise"));
+  assert.equal(svgs.length, 2);
+  assert.equal(hasClass(svgs[0]!, "space-backdrop"), true, "the grain layer must come after the backdrop");
+  assert.equal(hasClass(svgs[1]!, "space-noise"), true);
+
+  const noise = svgs[1]!;
+  assert.equal(attribute(noise, "aria-hidden"), "true");
+  const turbulence = elements(noise, "feturbulence");
+  assert.equal(turbulence.length, 1);
+  assert.equal(attribute(turbulence[0]!, "type"), "fractalNoise");
+  assert.equal(attribute(turbulence[0]!, "stitchTiles"), "stitch");
+
+  const matrix = elements(noise, "fecolormatrix");
+  assert.equal(matrix.length, 1);
+  assert.equal(attribute(matrix[0]!, "type"), "saturate");
+  assert.equal(attribute(matrix[0]!, "values"), "0");
+});
+
 test("Romanian place names and the supported Moonstone relation stay accurate", () => {
   assert.match(html, /Since 2001/);
   assert.match(html, /Iasi to Brasov/);
