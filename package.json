@@ -19,7 +19,7 @@
     "ci": "npm run typecheck && npm run lint:markdown && npm run lint:dead-code && npm run test:coverage && npm run test:browser"
   },
   "dependencies": {
-    "daisyui": "5.7.16",
+    "daisyui": "5.7.20",
     "tailwindcss": "4.3.3"
   },
   "devDependencies": {
@@ -27,16 +27,16 @@
     "@tailwindcss/vite": "4.3.3",
     "@types/jsdom": "^30.0.0",
     "@types/node": "24.13.3",
-    "@vitest/coverage-v8": "4.1.10",
-    "fallow": "3.14.0",
+    "@vitest/coverage-v8": "4.1.11",
+    "fallow": "3.17.0",
     "jsdom": "30.0.1",
     "markdownlint-cli2": "0.23.2",
     "nyc": "18.0.0",
-    "tsx": "4.23.11",
+    "tsx": "4.23.12",
     "typescript": "7.0.2",
-    "vite": "8.2.1",
+    "vite": "8.2.2",
     "vite-plugin-istanbul": "9.0.1",
-    "vitest": "4.1.10"
+    "vitest": "4.1.11"
   },
   "allowScripts": {
     "esbuild@0.28.1": true
