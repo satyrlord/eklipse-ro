@@ -34,42 +34,40 @@ requestProgressUpdate();
 
 let titleFitFrame = 0;
 
-function fitSingleLineTitle(title: HTMLElement) {
-  title.style.removeProperty("--fit-font-size");
-  if (title.scrollWidth <= title.clientWidth) {
+function fitSingleLineTitles() {
+  titleFitFrame = 0;
+  const expanded = Number.parseFloat(getComputedStyle(root).fontSize) > 16;
+  root.classList.toggle("text-expanded", expanded);
+  const titles = [...document.querySelectorAll<HTMLElement>(".threshold-release h2, .release-copy h3, .afterimage-release strong")];
+  for (const title of titles) {
+    title.style.removeProperty("--fit-font-size");
+  }
+  if (expanded) {
+    requestProgressUpdate();
     return;
   }
 
-  const naturalStyle = getComputedStyle(title);
-  const naturalSize = Number.parseFloat(naturalStyle.fontSize);
-  const configuredMinimum = naturalStyle.getPropertyValue("--fit-title-min").trim();
-  title.style.setProperty("--fit-font-size", configuredMinimum || `${naturalSize}px`);
-  const minimumSize = Number.parseFloat(getComputedStyle(title).fontSize);
-  let lower = Math.min(naturalSize, minimumSize);
-  let upper = naturalSize;
+  const fitting = titles.flatMap((title) => {
+    const upper = Number.parseFloat(getComputedStyle(title).fontSize);
+    return title.scrollWidth > title.clientWidth ? [{ title, lower: 8, upper }] : [];
+  });
 
-  while (title.scrollWidth > title.clientWidth && lower > 8) {
-    lower = Math.max(8, lower - 2);
-    title.style.setProperty("--fit-font-size", `${lower}px`);
-  }
-
+  // Batch all writes before geometry reads so each pass shares one layout.
   for (let iteration = 0; iteration < 8; iteration += 1) {
-    const candidate = (lower + upper) / 2;
-    title.style.setProperty("--fit-font-size", `${candidate}px`);
-    if (title.scrollWidth <= title.clientWidth) {
-      lower = candidate;
-    } else {
-      upper = candidate;
+    for (const fit of fitting) {
+      fit.title.style.setProperty("--fit-font-size", `${(fit.lower + fit.upper) / 2}px`);
+    }
+    for (const fit of fitting) {
+      const candidate = (fit.lower + fit.upper) / 2;
+      if (fit.title.scrollWidth <= fit.title.clientWidth) {
+        fit.lower = candidate;
+      } else {
+        fit.upper = candidate;
+      }
     }
   }
-
-  title.style.setProperty("--fit-font-size", `${Math.floor(lower * 10) / 10}px`);
-}
-
-function fitSingleLineTitles() {
-  titleFitFrame = 0;
-  for (const title of document.querySelectorAll<HTMLElement>(".threshold-release h2, .release-copy h3, .afterimage-release strong")) {
-    fitSingleLineTitle(title);
+  for (const fit of fitting) {
+    fit.title.style.setProperty("--fit-font-size", `${Math.floor(fit.lower * 10) / 10}px`);
   }
 }
 
@@ -83,6 +81,16 @@ window.addEventListener("resize", requestTitleFit, { passive: true });
 window.addEventListener("pageshow", requestTitleFit);
 void document.fonts.ready.then(requestTitleFit);
 requestTitleFit();
+
+const wordmark = document.querySelector(".wordmark");
+if (wordmark) {
+  new ResizeObserver(() => {
+    const expanded = Number.parseFloat(getComputedStyle(root).fontSize) > 16;
+    if (expanded !== root.classList.contains("text-expanded")) {
+      requestTitleFit();
+    }
+  }).observe(wordmark);
+}
 
 if (threshold) {
   let pointerFrame = 0;
@@ -141,13 +149,13 @@ for (const link of document.querySelectorAll<HTMLAnchorElement>('.site-nav a[hre
 }
 
 if (sectionLinks.size > 0 && "IntersectionObserver" in window) {
+  const sectionEntries = new Map<Element, IntersectionObserverEntry>();
   const sectionObserver = new IntersectionObserver(
     (entries) => {
-      const activeSectionId = mostVisibleSectionId(entries);
-
-      if (!activeSectionId) {
-        return;
+      for (const entry of entries) {
+        sectionEntries.set(entry.target, entry);
       }
+      const activeSectionId = mostVisibleSectionId([...sectionEntries.values()]);
 
       for (const [sectionId, link] of sectionLinks) {
         if (sectionId === activeSectionId) {

@@ -140,7 +140,6 @@
 
 .release-copy h3 {
   --fit-title-base: var(--type-headline);
-  --fit-title-min: 1.25rem;
   margin: 0;
   font-family: var(--display-pressure);
   font-size: var(--fit-font-size, var(--fit-title-base));

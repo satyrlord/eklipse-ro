@@ -79,7 +79,9 @@ test("the threshold presents the latest cover as a linked artifact", () => {
   assert.equal(attribute(artifact, "href"), currentReleaseLedger[0]!.href);
 
   const image = elements(artifact, "img")[0]!;
-  assert.equal(attribute(image, "src"), "/assets/covers/introspection-i-remastered.jpg");
+  assert.equal(attribute(image, "src"), "/assets/covers/introspection-i-remastered-208.jpg");
+  assert.equal(attribute(image, "width"), "208");
+  assert.equal(attribute(image, "height"), "208");
   assert.equal(attribute(image, "alt"), "Introspection I (remastered edition) cover");
 });
 

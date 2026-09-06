@@ -3,7 +3,8 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 test.afterEach(async ({ page }, testInfo) => {
-  if (process.env.VITE_COVERAGE !== "true") {
+  // The static error page has no JavaScript to instrument.
+  if (process.env.VITE_COVERAGE !== "true" || new URL(page.url()).pathname === "/404.html") {
     return;
   }
 
@@ -593,4 +594,88 @@ test("live reduced-motion changes stop and resume pointer movement", async ({ pa
   await page.mouse.move(bounds.x + bounds.width * 0.8, bounds.y + bounds.height * 0.45);
   await expect.poll(gravity).not.toEqual({ x: 56, y: 24 });
   assertNoLocalErrors();
+});
+
+test("enlarged text preserves readable titles and reachable content", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const assertNoLocalErrors = await openSite(page);
+  for (const width of [320, 480, 820, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const percent of [125, 150, 200]) {
+      await page.evaluate((size) => { document.documentElement.style.fontSize = `${size}%`; }, percent);
+      await expect(page.locator("html")).toHaveClass(/text-expanded/);
+      await expect.poll(() => page.locator(".threshold-release h2").evaluate((node) => Number.parseFloat(getComputedStyle(node).fontSize))).toBe(percent * 0.32);
+      const overflow = await page.evaluate(() => {
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        const outside: string[] = [];
+        while (walker.nextNode()) {
+          const node = walker.currentNode;
+          if (!node.textContent?.trim() || node.parentElement?.closest("svg, script, style, .skip-link")) continue;
+          const range = document.createRange();
+          range.selectNodeContents(node);
+          for (const rect of range.getClientRects()) {
+            if (rect.width && (rect.left < -1 || rect.right > innerWidth + 1)) outside.push(node.textContent.trim());
+          }
+        }
+        return outside;
+      });
+      expect(overflow, `${width}px at ${percent}%`).toEqual([]);
+      const threshold = await page.locator(".threshold").boundingBox();
+      for (const selector of [".threshold-artifact", ".threshold-release h2", ".threshold-actions"]) {
+        const rect = await page.locator(selector).boundingBox();
+        expect(rect!.y, selector).toBeGreaterThanOrEqual(threshold!.y);
+        expect(rect!.y + rect!.height, selector).toBeLessThanOrEqual(threshold!.y + threshold!.height);
+      }
+    }
+  }
+  await page.evaluate(() => document.documentElement.style.removeProperty("font-size"));
+  await expect(page.locator("html")).not.toHaveClass(/text-expanded/);
+  assertNoLocalErrors();
+});
+
+test("returning to the threshold clears current navigation", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const assertNoLocalErrors = await openSite(page);
+  for (const section of ["project", "releases"]) {
+    const link = page.locator(`.site-nav a[href="#${section}"]`);
+    await link.click();
+    await expect(link).toHaveAttribute("aria-current", "true");
+    await page.locator(".wordmark").click();
+    await expect(page.locator(".site-nav [aria-current]")).toHaveCount(0);
+  }
+  assertNoLocalErrors();
+});
+
+test("wordmark and footer links provide touch targets", async ({ page }) => {
+  const assertNoLocalErrors = await openSite(page);
+  for (const width of [320, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const link of await page.locator(".wordmark, .site-footer a").all()) {
+      const rect = await link.boundingBox();
+      expect(rect!.height).toBeGreaterThanOrEqual(44);
+      expect(rect!.width).toBeGreaterThanOrEqual(44);
+    }
+  }
+  const cover = page.locator(".threshold-artifact img");
+  await expect.poll(() => cover.evaluate((node) => (node as HTMLImageElement).naturalWidth)).toBe(208);
+  assertNoLocalErrors();
+});
+
+test("the error page uses the shared palette and keyboard focus", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto("/404.html");
+  await page.evaluate(() => document.fonts.ready);
+  await page.keyboard.press("Tab");
+  const link = page.getByRole("link", { name: "Return to eklipse" });
+  await expect(link).toBeFocused();
+  const style = await link.evaluate((node) => {
+    const value = getComputedStyle(node);
+    return { background: value.backgroundColor, color: value.color, outline: value.outlineWidth, shadow: value.boxShadow, height: node.getBoundingClientRect().height };
+  });
+  expect(style.background).toBe("rgb(255, 103, 72)");
+  expect(style.color).toBe("rgb(8, 7, 6)");
+  expect(style.outline).toBe("3px");
+  expect(style.shadow).not.toBe("none");
+  expect(style.height).toBeGreaterThanOrEqual(44);
+  await expect(link).toHaveAttribute("href", "/");
 });

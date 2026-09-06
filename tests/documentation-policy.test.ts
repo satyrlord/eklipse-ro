@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, extname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { JSDOM } from "jsdom";
 import { test } from "vitest";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -58,9 +59,14 @@ function withoutFencedCode(markdown: string): string {
 }
 
 function markdownForLinkChecks(markdown: string): string {
-  return withoutFencedCode(markdown)
-    .replace(/<!--[\s\S]*?-->/g, "")
-    .replace(/`+[^`\r\n]*`+/g, "");
+  let text = withoutFencedCode(markdown);
+  let previous: string;
+  // Repeat removal because joined text can form another comment.
+  do {
+    previous = text;
+    text = text.replace(/<!--[\s\S]*?-->/g, "");
+  } while (text !== previous);
+  return text.replace(/`+[^`\r\n]*`+/g, "");
 }
 
 function localLinkDestinations(markdown: string): string[] {
@@ -94,8 +100,7 @@ function githubHeadingAnchors(markdown: string): Set<string> {
       continue;
     }
 
-    const base = heading
-      .replace(/<[^>]*>/g, "")
+    const base = (JSDOM.fragment(heading).textContent ?? "")
       .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
       .replace(/[\x60*_~]/g, "")
       .toLowerCase()
@@ -158,6 +163,29 @@ test("the local link checker rejects missing targets and headings", () => {
   assert.throws(
     () => assertLocalLink(join(repositoryRoot, "README.md"), "AGENTS.md#missing-heading"),
     /links to a missing heading/,
+  );
+});
+
+test("comment removal also removes comments formed by joined text", () => {
+  const markdown = "<!<!-- removed -->-- [hidden](missing.md) -->[visible](README.md)";
+  assert.equal(markdownForLinkChecks(markdown), "[visible](README.md)");
+  assert.deepEqual(localLinkDestinations(markdown), ["README.md"]);
+  assert.deepEqual(
+    localLinkDestinations("<!-- [hidden](missing.md) -->[visible](README.md)"),
+    ["README.md"],
+  );
+});
+
+test("heading anchors parse HTML attributes and preserve inline text", () => {
+  assert.deepEqual(
+    [...githubHeadingAnchors([
+      "# <span title='>attribute'>Title</span>",
+      "# pre<em>fix</em>",
+      "# prefix",
+      "# [**Local** link](README.md)",
+      "# Fish &amp; Chips",
+    ].join("\n"))],
+    ["title", "prefix", "prefix-1", "local-link", "fish--chips"],
   );
 });
 

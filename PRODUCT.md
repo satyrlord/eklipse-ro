@@ -47,8 +47,10 @@ remain in a labeled archive.
 - One self-hosted vector black-hole field stays sharp at all viewport sizes.
 - The first viewport shows the latest cover as a separate linked artifact. It
   does not use album artwork as a page background.
-- The album title stays on one row at every viewport size.
-- Reduce the album title font size when it cannot fit on one row.
+- At the default text size, album titles stay on one row at every viewport size.
+- Fit default-size titles to their available width with batched measurements.
+- When the root text size exceeds 16px, use a flowing layout and wrapped titles.
+- Preserve readable content and reachable links through 200% text enlargement.
 - English is the sole interface and metadata language.
 - A short project description and a short description in every current release
   section.
@@ -88,6 +90,8 @@ remain in a labeled archive.
 - Keep the site read-only with a small attack surface.
 - Use factual copy from the official catalog.
 - Make the catalog clear on mobile and desktop.
+- Use a small derived cover for the threshold artifact.
+  Preserve the full catalog cover.
 
 ## Accessibility and Inclusion
 

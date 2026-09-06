@@ -282,6 +282,13 @@ Mobile release spacing compresses without hiding players or changing their
 order. Navigation, text-action, and release-link targets remain at least 44px
 high.
 
+When the root text size exceeds 16px, the header enters normal flow and its
+routes can wrap. The threshold, project, releases, and archive use one column.
+Titles wrap at 2rem instead of shrinking to fit. The threshold cover enters
+normal flow so its content can increase section height. This accessibility
+layout takes precedence over the default single-line title rule.
+The wordmark and footer links also provide targets at least 44px high.
+
 ### Layout Rules
 
 **The Editorial Sequence Rule.** Preserve the order: threshold, project, eight
@@ -402,7 +409,10 @@ generic containers for text or icons.
 - A fixed three-pixel line shows page progress.
 - The threshold radial field follows pointer position through
   requestAnimationFrame and returns to its origin on pointer leave.
-- IntersectionObserver sets the active Project or Releases route.
+- IntersectionObserver retains section observations and sets the active route.
+  It clears the current route outside Project and Releases.
+- Default-size title fitting batches writes before reads across all headings.
+  Enlarged text bypasses title fitting.
 - The black-hole mass arrives from a smaller, dim state over 1100ms.
   Radial paths draw in over 1300ms after a 120ms delay.
 - Cover hover transitions use ease-out for color and
@@ -417,6 +427,13 @@ generic containers for text or icons.
 - Keep focus pairs high contrast against each dark local field. Use the local
   accent for archive links and Bright Bone for global controls.
 - Keep the skip link hidden above the viewport until it receives focus.
+
+### Error Page
+
+The error page uses Void, Bone, Bright Bone, and Ember from the main palette.
+Its return link uses the shared two-layer focus treatment and a 44px minimum
+target height. The threshold uses a 208px derived JPEG for its small cover.
+The catalog retains the full-resolution official cover.
 
 ### Interaction Rules
 
