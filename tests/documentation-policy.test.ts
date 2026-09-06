@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, extname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test } from "vitest";
@@ -7,13 +7,6 @@ import { test } from "vitest";
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const githubRoot = join(repositoryRoot, ".github");
 const skillsRoot = join(githubRoot, "skills");
-const designRouterRoot = join(skillsRoot, "design-router");
-
-type RegistryEntry = {
-  slug: string;
-  name: string;
-  themePath: string;
-};
 
 function markdownFiles(directory: string): string[] {
   const files: string[] = [];
@@ -177,36 +170,4 @@ test("the skill catalog lists each skill folder once", () => {
 
   assert.equal(new Set(listedSkills).size, listedSkills.length, "the skill catalog must not list a skill twice");
   assert.deepEqual([...listedSkills].sort(), [...skillFolders].sort());
-});
-
-test("the design registry maps each theme to its local file", () => {
-  const parsed: unknown = JSON.parse(readFileSync(join(designRouterRoot, "registry-index.json"), "utf8"));
-  assert.ok(parsed && typeof parsed === "object" && !Array.isArray(parsed), "the design registry must be an object");
-
-  const registry = parsed as Record<string, RegistryEntry>;
-  const themeSlugs = readdirSync(join(designRouterRoot, "themes"), { withFileTypes: true })
-    .filter((entry) => entry.isFile() && extname(entry.name).toLowerCase() === ".md")
-    .map((entry) => entry.name.slice(0, -extname(entry.name).length));
-
-  assert.deepEqual(Object.keys(registry).sort(), [...themeSlugs].sort());
-
-  const catalog = readFileSync(join(designRouterRoot, "CATALOG.md"), "utf8");
-  const catalogThemes = new Set(localLinkDestinations(catalog).filter((path) => path.startsWith("themes/")));
-  assert.deepEqual([...catalogThemes].sort(), themeSlugs.map((slug) => `themes/${slug}.md`).sort());
-
-  const mappedPaths = new Set<string>();
-  for (const [slug, entry] of Object.entries(registry)) {
-    assert.equal(entry.slug, slug, `${slug} must repeat its registry key in slug`);
-    assert.equal(typeof entry.name, "string");
-    assert.equal(entry.themePath, `themes/${slug}.md`);
-
-    const themePath = resolve(designRouterRoot, entry.themePath);
-    const relativeThemePath = relative(designRouterRoot, themePath);
-    assert.equal(relativeThemePath.startsWith(`..${sep}`), false, `${slug} must stay inside the design-router package`);
-    assert.ok(existsSync(themePath), `${slug} must map to an existing theme file`);
-    assert.equal(statSync(themePath).isFile(), true, `${slug} must map to a file`);
-    mappedPaths.add(relativeThemePath);
-  }
-
-  assert.equal(mappedPaths.size, themeSlugs.length, "each theme file must have one registry entry");
 });

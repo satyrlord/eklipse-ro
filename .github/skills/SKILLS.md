@@ -5,7 +5,6 @@ Use the skill that matches the user request.
 | Skill | Use for |
 | --- | --- |
 | `create-skill` | Create or revise a repository skill package. |
-| `design-router` | Select the eklipse system or a design theme. |
 | `improve-codebase-architecture` | Review module boundaries. |
 | `run-quality-gate` | Run or repair the static-site gate. |
 | `verify-site` | Verify the production build in a real browser. |
