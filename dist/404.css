@@ -1,8 +1,12 @@
 :root {
   color-scheme: dark;
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
-  background: #05070b;
-  color: #f3f7f3;
+  --void: #080706;
+  --bone: #ead9b8;
+  --bone-bright: #f8ead0;
+  --ember: #ff6748;
+  background: var(--void);
+  color: var(--bone-bright);
 }
 
 body {
@@ -12,8 +16,8 @@ body {
   display: grid;
   place-items: center;
   background:
-    radial-gradient(circle at 50% 42%, rgb(104 224 223 / 10%), transparent 35%),
-    #05070b;
+    radial-gradient(circle at 50% 42%, rgb(255 103 72 / 10%), transparent 35%),
+    var(--void);
 }
 
 main {
@@ -23,7 +27,7 @@ main {
 
 .status {
   margin: 0 0 1rem;
-  color: #68e0df;
+  color: var(--ember);
   font-weight: 600;
   letter-spacing: 0.08em;
 }
@@ -41,22 +45,30 @@ h1 {
 
 main > p:not(.status) {
   margin: 1.5rem 0 2rem;
-  color: #b9c9cf;
+  color: var(--bone);
   font-size: 1.15rem;
 }
 
 a {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 44px;
   padding: 0.8rem 1.1rem;
-  background: #68e0df;
-  color: #05070b;
+  background: var(--ember);
+  color: var(--void);
   font-weight: 600;
   text-decoration: none;
 }
 
+a:hover {
+  background: var(--bone-bright);
+}
+
 a:focus-visible {
-  outline: 2px solid #f2b05e;
+  outline: 3px solid var(--bone-bright);
   outline-offset: 5px;
+  box-shadow: 0 0 0 7px var(--void);
 }
 
 @media (max-width: 480px) {
