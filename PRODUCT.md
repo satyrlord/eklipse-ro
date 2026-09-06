@@ -51,6 +51,9 @@ remain in a labeled archive.
 - Fit default-size titles to their available width with batched measurements.
 - When the root text size exceeds 16px, use a flowing layout and wrapped titles.
 - Preserve readable content and reachable links through 200% text enlargement.
+- Use the flowing layout when visitors increase text spacing.
+- Keep the latest cover below the header in short viewports. Let the first
+  section grow when its content needs more height.
 - English is the sole interface and metadata language.
 - A short project description and a short description in every current release
   section.

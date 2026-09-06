@@ -23,6 +23,7 @@ body {
 main {
   width: min(88vw, 36rem);
   padding-block: 4rem;
+  overflow-wrap: anywhere;
 }
 
 .status {

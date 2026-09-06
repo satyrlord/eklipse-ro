@@ -282,8 +282,12 @@ Mobile release spacing compresses without hiding players or changing their
 order. Navigation, text-action, and release-link targets remain at least 44px
 high.
 
-When the root text size exceeds 16px, the header enters normal flow and its
-routes can wrap. The threshold, project, releases, and archive use one column.
+The threshold uses normal flow with reserved cover and header clearance. Its
+height grows when a short viewport cannot contain the release block.
+
+When text size exceeds 16px or text spacing increases, the header enters normal
+flow. Its routes can wrap. The threshold, project, releases, and archive use
+one column.
 Titles wrap at 2rem instead of shrinking to fit. The threshold cover enters
 normal flow so its content can increase section height. This accessibility
 layout takes precedence over the default single-line title rule.
@@ -419,6 +423,7 @@ generic containers for text or icons.
   `cubic-bezier(0.16, 1, 0.3, 1)` for scale or lift.
 - Reduced motion turns off smooth scroll, compresses animation and transition
   durations to 0.001ms, and removes threshold orbital transforms.
+- Reduced motion removes cover hover transforms. Color and focus feedback remain.
 
 ### Focus System
 
@@ -431,6 +436,7 @@ generic containers for text or icons.
 ### Error Page
 
 The error page uses Void, Bone, Bright Bone, and Ember from the main palette.
+Its text can wrap within words to prevent overflow through 200% enlargement.
 Its return link uses the shared two-layer focus treatment and a 44px minimum
 target height. The threshold uses a 208px derived JPEG for its small cover.
 The catalog retains the full-resolution official cover.

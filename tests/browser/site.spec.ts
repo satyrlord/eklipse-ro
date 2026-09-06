@@ -679,3 +679,79 @@ test("the error page uses the shared palette and keyboard focus", async ({ page 
   expect(style.height).toBeGreaterThanOrEqual(44);
   await expect(link).toHaveAttribute("href", "/");
 });
+
+test("short viewports retain the latest cover below the header", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const assertNoLocalErrors = await openSite(page);
+  for (const viewport of [{ width: 844, height: 390 }, { width: 555, height: 411 }, { width: 320, height: 568 }]) {
+    await page.setViewportSize(viewport);
+    await page.evaluate(() => window.scrollTo(0, 0));
+    const header = (await page.locator(".site-header").boundingBox())!;
+    const threshold = (await page.locator(".threshold").boundingBox())!;
+    for (const selector of [".threshold-artifact", ".threshold-lockup"]) {
+      const rect = (await page.locator(selector).boundingBox())!;
+      expect(rect.y, `${viewport.width}px ${selector}`).toBeGreaterThanOrEqual(header.y + header.height);
+      expect(rect.y + rect.height).toBeLessThanOrEqual(threshold.y + threshold.height);
+    }
+  }
+  assertNoLocalErrors();
+});
+
+test("user text spacing enables flowing titles without clipping", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const assertNoLocalErrors = await openSite(page);
+  const spacing = await page.addStyleTag({ content: "body, body * { line-height: 1.5 !important; letter-spacing: .12em !important; word-spacing: .16em !important; } p { margin-bottom: 2em !important; }" });
+  await expect(page.locator("html")).toHaveClass(/text-expanded/);
+  for (const width of [320, 480, 820, 1440]) {
+    await page.setViewportSize({ width, height: 800 });
+    const overflow = await page.evaluate(() => {
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const outside: string[] = [];
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        if (!node.textContent?.trim() || node.parentElement?.closest("svg, script, style, .skip-link")) continue;
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        for (const rect of range.getClientRects()) {
+          if (rect.width && (rect.left < -1 || rect.right > innerWidth + 1)) outside.push(node.textContent.trim());
+        }
+      }
+      return outside;
+    });
+    expect(overflow, `${width}px spacing`).toEqual([]);
+  }
+  await spacing.evaluate((node) => node.parentNode!.removeChild(node));
+  await expect(page.locator("html")).not.toHaveClass(/text-expanded/);
+  assertNoLocalErrors();
+});
+
+test("reduced motion keeps cover hover feedback stationary", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const assertNoLocalErrors = await openSite(page);
+  for (const [linkSelector, targetSelector] of [
+    [".threshold-artifact", ".threshold-artifact"],
+    [".release-visual a", ".release-visual img"],
+    [".afterimage-release a", ".afterimage-release img"],
+  ]) {
+    await page.locator(linkSelector!).first().hover();
+    await expect.poll(() => page.locator(targetSelector!).first().evaluate((node) => getComputedStyle(node).transform)).toBe("none");
+    expect(await page.locator(targetSelector!).first().evaluate((node) => getComputedStyle(node).filter)).not.toBe("none");
+  }
+  assertNoLocalErrors();
+});
+
+test("the error page contains enlarged text and its return link", async ({ page }) => {
+  await page.goto("/404.html");
+  await page.evaluate(() => document.fonts.ready);
+  for (const width of [320, 480, 820, 1440]) {
+    await page.setViewportSize({ width, height: 800 });
+    for (const percent of [100, 125, 150, 200]) {
+      await page.evaluate((size) => { document.documentElement.style.fontSize = `${size}%`; }, percent);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth), `${width}px at ${percent}%`).toBeLessThanOrEqual(width);
+      const link = page.getByRole("link", { name: "Return to eklipse" });
+      await link.evaluate((node) => node.blur());
+      await link.focus();
+      await expect(link).toBeInViewport();
+    }
+  }
+});

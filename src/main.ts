@@ -6,6 +6,7 @@ const root = document.documentElement;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const threshold = document.querySelector<HTMLElement>(".threshold");
 const siteHeader = document.querySelector<HTMLElement>(".site-header");
+const wordmark = document.querySelector(".wordmark");
 
 root.classList.add("js-ready");
 
@@ -34,9 +35,19 @@ requestProgressUpdate();
 
 let titleFitFrame = 0;
 
+function needsFlowingText() {
+  const style = getComputedStyle(root);
+  const textStyle = getComputedStyle(wordmark ?? root);
+  return Number.parseFloat(style.fontSize) > 16
+    || Number.parseFloat(style.letterSpacing) > 0
+    || Number.parseFloat(style.wordSpacing) > 0
+    || Number.parseFloat(textStyle.letterSpacing) > 0
+    || Number.parseFloat(textStyle.wordSpacing) > 0;
+}
+
 function fitSingleLineTitles() {
   titleFitFrame = 0;
-  const expanded = Number.parseFloat(getComputedStyle(root).fontSize) > 16;
+  const expanded = needsFlowingText();
   root.classList.toggle("text-expanded", expanded);
   const titles = [...document.querySelectorAll<HTMLElement>(".threshold-release h2, .release-copy h3, .afterimage-release strong")];
   for (const title of titles) {
@@ -82,10 +93,9 @@ window.addEventListener("pageshow", requestTitleFit);
 void document.fonts.ready.then(requestTitleFit);
 requestTitleFit();
 
-const wordmark = document.querySelector(".wordmark");
 if (wordmark) {
   new ResizeObserver(() => {
-    const expanded = Number.parseFloat(getComputedStyle(root).fontSize) > 16;
+    const expanded = needsFlowingText();
     if (expanded !== root.classList.contains("text-expanded")) {
       requestTitleFit();
     }

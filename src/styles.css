@@ -367,7 +367,11 @@ img {
 .threshold {
   --threshold-column: min(29rem, 38vw);
   position: relative;
+  display: grid;
+  align-items: end;
   min-height: 100svh;
+  padding-top: calc(6rem + clamp(4.75rem, 7vw, 6.5rem) + 1.5rem);
+  padding-bottom: clamp(7rem, 11vh, 10rem);
   overflow: hidden;
   isolation: isolate;
   background: rgb(8 7 6 / var(--section-field-opacity));
@@ -426,11 +430,9 @@ img {
 }
 
 .threshold-lockup {
-  position: absolute;
+  position: relative;
   z-index: 5;
-  right: var(--gutter);
-  bottom: clamp(7rem, 11vh, 10rem);
-  left: var(--gutter);
+  margin-inline: var(--gutter);
   display: grid;
   grid-template-columns: minmax(0, 1fr) var(--threshold-column);
   gap: clamp(2rem, 5vw, 7rem);
@@ -1045,6 +1047,7 @@ img {
 
   .threshold {
     min-height: 100svh;
+    padding-bottom: 2rem;
   }
 
   .threshold::before {
@@ -1059,7 +1062,6 @@ img {
   }
 
   .threshold-lockup {
-    bottom: 2rem;
     grid-template-columns: minmax(8rem, 0.55fr) minmax(0, 1fr);
     gap: clamp(1rem, 4vw, 2rem);
   }
@@ -1301,5 +1303,11 @@ img {
   .black-hole__mass,
   .gravity-map__paths {
     animation-name: none !important;
+  }
+
+  .threshold-artifact:hover,
+  .release-spread .release-visual a:hover img,
+  .afterimage-release a:hover img {
+    transform: none;
   }
 }
