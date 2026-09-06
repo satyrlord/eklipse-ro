@@ -1,14 +1,14 @@
 ---
 name: handoff
-description: "Write an eklipse handoff with verified state and the next action. Use when work pauses or a fresh agent resumes."
+description: "Write an eklipse handoff with verified state and the next action. Use when the user asks to pause or hand off work."
 ---
 
 # Handoff
 
 Write the minimum state that a fresh agent needs to continue the current task.
 
-Use this skill only after an explicit handoff request or when the user asks to
-pause work. It writes a durable temporary artifact.
+Use this skill when the user asks to pause work or write a handoff. It writes a
+durable temporary artifact.
 
 ## 1. Critique the current state
 
@@ -45,9 +45,11 @@ Use these headings in this order:
 
 Completion criterion: The file has all eight headings in the required order.
 
-Link to `PRODUCT.md`, `AGENTS.md`, tests, diffs, and other owning files.
+Link to the owning files from the `tmp/` output location. Use paths such as
+`../PRODUCT.md`, `../AGENTS.md`, and `../tests/...`.
 Do not copy their contents.
-Completion criterion: The handoff links to owners without duplicating their text.
+Completion criterion: Each link resolves from the saved handoff location and
+does not duplicate the owner text.
 
 Do not include credentials, personal data, conversation history, dead ends, or
 unsupported claims.

@@ -9,9 +9,8 @@ Review the architecture in read-only mode by default. Find the smallest
 boundary that hides real complexity.
 Do not edit code unless the user authorizes the change.
 
-Use this skill only after an explicit architecture review request. It inspects
-a broad source area.
-It proposes structural changes after it finds direct evidence.
+Use this skill for a broad architecture review request. It proposes structural
+changes only after it finds direct evidence.
 
 ## Terms
 
@@ -47,9 +46,13 @@ Verify these ownership signals in the current files.
 
 - `PRODUCT.md` owns product facts and the static-site boundary.
 - `DESIGN.md` owns implemented visual tokens and layout rules when it exists.
-- `index.html` owns semantic structure and product copy.
+- `index.html` owns semantic structure, static copy, and catalog region markers.
+- `src/release-catalog.ts` owns release facts and release markup.
+- `src/render-catalog.ts` expands release regions at build time.
 - `src/main.ts` owns progressive enhancement and interaction state.
+- `src/runtime.ts` owns pure runtime calculations.
 - `src/styles.css` owns layout, tokens, focus, and motion.
+- `src/release-sequence.css` owns current-release geometry.
 - `public/` owns static assets, the error page, and server rules.
 - `tests/` owns executable policy checks.
 - `package.json`, workflows, and `.cpanel.yml` own commands and deployment.
@@ -69,7 +72,7 @@ Verify these ownership signals in the current files.
    the same complexity.
 
 Do not create a framework, service, state layer, or abstraction for one operation.
-Keep the static boundary and current vanilla JavaScript stack.
+Keep the static boundary and current TypeScript browser stack.
 
 ## 3. Present architecture candidates
 
@@ -132,16 +135,14 @@ a boundary, a verification method, and a strength.
     Completion criterion: Changed browser behavior has direct browser evidence
     or a blocker.
 
-## eklipse boundary rules
+## Repository constraints
 
-- Keep production static, read-only, and self-hosted where practical.
-- Do not add server code, APIs, forms, authentication, cookies, analytics, or
-  trackers.
-- Keep product facts in `PRODUCT.md` and official Bandcamp evidence.
-- Keep implemented visual rules in `DESIGN.md` when that document owns them.
-- Preserve Bandcamp link and iframe allowlists.
-- Do not edit generated `dist/` output by hand.
-- Preserve unrelated dirty or staged work.
+Read `AGENTS.md`, `PRODUCT.md`, and `DESIGN.md` when present. These files own
+the static-site, product, visual, link, generated-output, and worktree rules.
+Apply their current rules while you map the architecture.
+
+Completion criterion: The review records each affected contract and its owning
+document.
 
 ## Completion criterion
 

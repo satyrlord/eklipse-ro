@@ -8,3 +8,5 @@ Use the current source file and its owning test as evidence.
 - Keep self-hosted assets and the static runtime boundary.
 - Do not edit generated `dist/` files.
 - Match existing formatting and validate with `npm run build`.
+- If tracked `dist/` files are dirty, build to an ignored
+  `tmp/deslop-<slug>/` path as `AGENTS.md` requires.

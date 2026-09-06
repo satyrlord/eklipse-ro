@@ -7,8 +7,8 @@ description: "Interview the user about one eklipse design decision at a time bef
 
 Resolve a plan or design one branch at a time.
 
-Use this skill only after an explicit grill request or an unresolved product decision.
-It asks questions and updates durable documents only with edit authority.
+Use this skill for an unresolved product or design decision. It asks questions
+and updates durable documents only with edit authority.
 
 ## 1. Prepare the decision
 
@@ -36,11 +36,11 @@ It asks questions and updates durable documents only with edit authority.
 3. Reopen a settled branch only when new conflicting evidence appears.
    Completion criterion: A reopened branch cites the new evidence.
 
-## eklipse Boundaries
+## Decision constraints
 
-- Preserve the static, read-only architecture and Bandcamp-only outbound link allowlist.
-- Do not solicit or introduce unsupported commercial claims.
-- Treat `PRODUCT.md` as product truth and `DESIGN.md` as visual truth once it exists.
+- Read `PRODUCT.md` for product facts and `DESIGN.md` for visual rules when it exists.
+- Apply the static-site and link rules in `AGENTS.md`.
+- Do not introduce unsupported commercial claims.
 
 ## Completion criterion
 

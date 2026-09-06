@@ -1,20 +1,24 @@
-<!-- TYPEUI_SH_MANAGED_START -->
+# Glassmorphism design reference
 
-# Glassmorphism Design System Skill (Universal)
+## Contents
 
-## Mission
+- [Use](#use)
+- [Brand](#brand)
+- [Style foundations](#style-foundations)
+- [Copy tone](#copy-tone)
+- [Design intent](#design-intent)
 
-You are an expert design-system guideline author for Glassmorphism. Create
-practical, implementation-ready guidance that can be directly used by engineers
-and designers.
+## Use
+
+Read [shared theme guidance](../GUIDANCE.md) before using this reference.
+Use this file with one selected slug from [CATALOG.md](../CATALOG.md).
 
 ## Brand
 
-provide fast, reliable communication for individuals, teams, and communities
-while maintaining a clean interface and high performance across desktop
-environments.
+Glassmorphism supports fast, reliable communication for individuals, teams, and
+communities. It uses a clean interface with high performance on desktop.
 
-## Style Foundations
+## Style foundations
 
 - Visual style: clean, high-contrast, bold, enterprise, liquidglass effect,
   glassmorphism
@@ -29,111 +33,11 @@ environments.
 
 - bento cards
 
-## Accessibility
+## Copy tone
 
-WCAG 2.2 AA, keyboard-first interactions, visible focus states
+- Tone: concise, confident, helpful, clear, friendly, professional.
 
-## Writing Tone
-
-concise, confident, helpful, clear, friendly, professional
-
-## Rules: Do
-
-- prefer semantic tokens over raw values
-- preserve visual hierarchy
-- keep interaction states explicit
-
-## Rules: Don't
-
-- avoid low contrast text
-- avoid inconsistent spacing rhythm
-- avoid decorative motion without purpose
-- avoid ambiguous labels
-- avoid mixing multiple visual metaphors
-
-## Expected Behavior
-
-- Follow the foundations first, then component consistency.
-- When uncertain, prioritize accessibility and clarity over novelty.
-- Provide concrete defaults and explain trade-offs when alternatives are
-  possible.
-- Keep guidance opinionated, concise, and implementation-focused.
-
-## Guideline Authoring Workflow
-
-1. Restate the design intent in one sentence before proposing rules.
-2. Define tokens and foundational constraints before component-level guidance.
-3. Specify component anatomy, states, variants, and interaction behavior.
-4. Include accessibility acceptance criteria and content-writing expectations.
-5. Add anti-patterns and migration notes for existing inconsistent UI.
-6. End with a QA checklist that can be executed in code review.
-
-## Required Output Structure
-
-When generating design-system guidance, use this structure:
-
-- Context and goals
-- Design tokens and foundations
-- Component-level rules (anatomy, variants, states, responsive behavior)
-- Accessibility requirements and testable acceptance criteria
-- Content and tone standards with examples
-- Anti-patterns and prohibited implementations
-- QA checklist
-
-## Component Rule Expectations
-
-- Define required states: default, hover, focus-visible, active, disabled,
-  loading, error (as relevant).
-- Describe interaction behavior for keyboard, pointer, and touch.
-- State spacing, typography, and color-token usage explicitly.
-- Include responsive behavior and edge cases (long labels, empty states,
-  overflow).
-
-## Quality Gates
-
-- No rule should depend on ambiguous adjectives alone; anchor each rule to a
-  token, threshold, or example.
-- Every accessibility statement must be testable in implementation.
-- Prefer system consistency over one-off local optimizations.
-- Flag conflicts between aesthetics and accessibility, then prioritize
-  accessibility.
-
-## Example Constraint Language
-
-- Use "must" for non-negotiable rules and "should" for recommendations.
-- Pair every do-rule with at least one concrete don't-example.
-- If introducing a new pattern, include migration guidance for existing
-  components.
-
-<!-- TYPEUI_SH_MANAGED_END -->
-
-## Design intent (from DESIGN.md)
-
-## Overview
+## Design intent
 
 Frosted glass effect with translucent layers, subtle blur, and luminous borders
 for depth and modern elegance.
-
-## DESIGN.md Style Foundations
-
-- **Visual style:** clean, high-contrast, bold, enterprise, liquidglass effect,
-  glassmorphism
-- **Typography scale:** mobile-first compact scale
-- **Typography fonts:** primary=Plus Jakarta Sans, display=Plus Jakarta Sans,
-  mono=JetBrains Mono
-- **Typography weights:** 100, 200, 300, 400, 500, 600, 700, 800, 900
-- **Color palette:** primary, neutral, success, warning, danger, info,
-  surface/subtle layers
-- **Spacing scale:** comfortable density mode
-
-## Colors
-
-- **Primary (#1856FF):** Token from style foundations.
-- **Secondary (#3A344E):** Token from style foundations.
-- **Success (#07CA6B):** Token from style foundations.
-- **Warning (#E89558):** Token from style foundations.
-- **Danger (#EA2143):** Token from style foundations.
-- **Surface (#FFFFFF):** Token from style foundations.
-- **Text (#141414):** Token from style foundations.
-- **Neutral (#FFFFFF):** Derived from the surface token for official format
-  compatibility.

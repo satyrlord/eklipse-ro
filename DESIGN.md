@@ -35,7 +35,7 @@ typography:
     letterSpacing: "-0.035em"
   headline:
     fontFamily: "Syne, Trebuchet MS, sans-serif"
-    fontSize: "clamp(2.75rem, 5.8vw, 5.75rem)"
+    fontSize: "clamp(2.05rem, 3.2vw, 3.4rem)"
     fontWeight: 800
     lineHeight: 0.84
     letterSpacing: "-0.035em"
@@ -60,8 +60,8 @@ typography:
   scale:
     header-wordmark: "1.2rem"
     threshold-meta: "0.68rem"
-    threshold-title-min: "2.2rem"
-    threshold-title-max: "3.5rem"
+    threshold-title-min: "1.5rem"
+    threshold-title-max: "4.6rem"
     threshold-summary-max: "1.12rem"
     action: "0.8rem"
     text-action: "0.76rem"
@@ -71,14 +71,14 @@ typography:
     release-subline: "0.92rem"
     release-copy-max: "1.1rem"
     archive-label: "0.76rem"
-    archive-title-min: "1.8rem"
-    archive-title-mid: "3.1rem"
+    archive-title-min: "1rem"
+    archive-title-mid: "2.05vw"
     archive-title-max: "3.6rem"
     footer-wordmark: "1.15rem"
     mobile-wordmark: "1.25rem"
     mobile-nav: "0.68rem"
     mobile-threshold-min: "1.5rem"
-    mobile-threshold-max: "7.6rem"
+    mobile-threshold-max: "3.8rem"
     mobile-nav-compact: "0.64rem"
 rounded:
   sharp: "0"
@@ -113,30 +113,31 @@ components:
     backgroundColor: "{colors.void}"
     rounded: "{rounded.sharp}"
     height: "7.5rem"
-    width: "min(100%, 34rem)"
+    width: "100%"
+    maxWidth: "34rem"
 ---
 
 ## Overview
 
-### Creative North Star: "Gravitational Press"
+### Design direction: "Gravitational Press"
 
-Gravitational Press is a black-hole rave world built as an editorial sequence.
-The implementation uses one persistent vector black-hole field as the threshold
-and page backdrop. It then moves through eight cover-led release spreads, an
-archive afterimage, and a final event horizon. It refuses the framed-cover
-artist template and generic card grids.
+Gravitational Press is a black-hole rave system for an editorial sequence. The
+implementation uses one persistent vector black-hole field for the threshold and
+the page backdrop. The sequence contains eight cover-led release spreads, an
+archive afterimage, and a final event horizon. It does not use a framed-cover
+artist template or generic card grids.
 
-The world combines a geometric event core, a lensed accretion disk, dark
+The system combines a geometric event core, a lensed accretion disk, dark
 cover-derived fields, ember actions, exposed print seams, radial paths, and
 large album plates. Each section uses its local field at 50% opacity so the
 black hole remains visible. Cover art supplies local color and release evidence.
-The backdrop renders at 20 percent brightness and carries a fine grayscale
-grain layer at 20 percent opacity. The dim and the grain keep the vector field
-quiet and printed. The grain stays behind all content.
+The backdrop renders at 20 percent brightness. A fine grayscale grain layer
+renders at 20 percent opacity. These layers reduce visual noise. The grain stays
+behind all content.
 
-This document records the implemented system. Typography uses two display voices
-so the page can move from ambient space to rave pressure without leaving the
-Gravitational Press world.
+This document records the implemented system. Typography uses two display voices.
+The page moves from ambient space to rave pressure within the Gravitational Press
+system.
 
 **Key Characteristics:**
 
@@ -149,7 +150,7 @@ Gravitational Press world.
   structural tension.
 - Utility labels are compact, uppercase, and widely tracked.
 - Sharp semantic controls keep the route to Bandcamp clear.
-- One dark field runs through the journey. Each stage shifts hue from its cover
+- One dark field runs through the journey. Each stage uses a hue from its cover
   art.
 
 ## Colors
@@ -169,8 +170,8 @@ and progress.
 
 - **Press Gold** (`#e6b85e`): Use with the Moonstone field and other artwork-led
   warm accents.
-- **Orbital Blue** (`#122747`): Use as the Moonstone release field. It is not a
-  general application blue.
+- **Orbital Blue** (`#122747`): Keep as the Moonstone reference token. Do not use
+  it as a general application blue.
 
 ### Neutral
 
@@ -233,7 +234,7 @@ dates, and actions feel registered and technical.
   once as a separate pressure mark opposite the threshold release block.
 - **Ambient Display** (Georgia 400, `clamp(3rem, 6vw, 6rem)`, 0.9): Use for the
   project statement, threshold release title, and archive heading.
-- **Pressure Headline** (Syne 800, `clamp(2.75rem, 5.8vw, 5.75rem)`, 0.84): Use
+- **Pressure Headline** (Syne 800, `clamp(2.05rem, 3.2vw, 3.4rem)`, 0.84): Use
   for current release titles and final action statements.
 - **Body** (IBM Plex Sans 400, `1rem` minimum, 1.6–1.65): Use for project and
   release copy. Keep long text blocks at 60ch or less.
@@ -262,9 +263,9 @@ does not become a page background.
 The black hole uses an event core, photon ring, lensed arcs, and an asymmetric
 accretion disk. The wordmark stays separate from the release information. Its
 vertical center aligns with the vertical center of the complete release block.
-The release title, summary, and actions hold at the right edge. The project
-section stays dark and shifts into moss and teal before the catalog descends
-into ink blue.
+The threshold release title, summary, and actions sit at the right edge. The
+project section stays dark and shifts into moss and teal before the catalog
+descends into ink blue.
 
 The archive is an aligned three-cover coda on a graphite field. The original
 covers share one row and one baseline on desktop, then use one equal-width
@@ -278,7 +279,8 @@ moves behind the stack, and archive covers use one equal-width column. The
 header uses a near-solid dark field. At 430px, threshold actions stack and the
 primary action takes the full width.
 Mobile release spacing compresses without hiding players or changing their
-order. Touch targets remain at least 44px high.
+order. Navigation, text-action, and release-link targets remain at least 44px
+high.
 
 ### Layout Rules
 
@@ -363,7 +365,7 @@ generic containers for text or icons.
   its side and preserve the same grid boundary next to the copy region.
 - **Copy:** Use one shared sharp panel for every release. Keep its width,
   padding, background, border, player, and recovery-link alignment consistent.
-  Use a short accent rule, date, release title, optional factual description,
+  Use a short accent rule, date, release title, one factual description,
   one Bandcamp player, and one album link.
 - **Hover:** Current covers gain slight saturation and contrast and reduce to
   98.8% scale.
@@ -387,7 +389,7 @@ generic containers for text or icons.
   complete card remains one link.
 - **Default:** Keep most cover color visible with a restrained grayscale and
   contrast filter.
-- **Hover:** Restore full color and move the plate up by 0.5rem.
+- **Hover:** Restore full color and move the cover up by 0.5rem.
 
 ### Event Horizon
 
@@ -421,10 +423,10 @@ generic containers for text or icons.
 **The Semantic Route Rule.** Every visible control is a real link with a useful
 destination. Do not add decorative buttons or inactive affordances.
 
-**The Motion Restraint Rule.** Motion can reveal gravity and cover depth, but it
-must not interrupt the reading sequence and it must stop under reduced motion.
+**The Motion Restraint Rule.** Motion may show gravity and cover depth. It must
+not interrupt reading. It must stop when reduced motion is enabled.
 
-## Do's and Don'ts
+## Rules
 
 ### Do
 
@@ -433,22 +435,21 @@ must not interrupt the reading sequence and it must stop under reduced motion.
 - **Do** let official cover art control the local release atmosphere.
 - **Do** keep the main Bandcamp action clear in the threshold and event horizon.
 - **Do** preserve semantic headings, navigation, outbound labels, keyboard
-  focus, and 44px targets.
+  focus, and 44px targets for navigation and text actions.
 - **Do** use radial geometry as a continuous registration system.
 - **Do** verify computed styles, focus, pointer behavior, and responsive
   geometry in a production browser before a change alters a documented rule.
-  This document pass used source-level evidence and the approved comp.
 
-### Don't
+### Do not
 
-- **Don't** add rounded cards, pills, bento grids, glass surfaces, or generic
+- **Do not** add rounded cards, pills, bento grids, glass surfaces, or generic
   software-layout patterns.
-- **Don't** frame every cover in the same repeated card treatment.
-- **Don't** use official album art as a page background or replace it with
+- **Do not** frame every cover in the same repeated card treatment.
+- **Do not** use official album art as a page background or replace it with
   generated imagery or stock photography.
-- **Don't** invent navigation routes, release facts, product claims, or inactive
+- **Do not** invent navigation routes, release facts, product claims, or inactive
   controls.
-- **Don't** let the pressure voice replace body copy or factual metadata. Keep
+- **Do not** let the pressure voice replace body copy or factual metadata. Keep
   the ambient / pressure alternation intentional.
-- **Don't** add decorative taglines, heading subtitles, or section numbering.
-  Keep every visible text factual and useful.
+- **Do not** add decorative taglines, heading subtitles, or section numbering.
+  Keep all visible text factual and useful.

@@ -1,12 +1,17 @@
-<!-- TYPEUI_SH_MANAGED_START -->
+# Enterprise design reference
 
-# Enterprise Design System Skill (Universal)
+## Contents
 
-## Mission
+- [Use](#use)
+- [Brand](#brand)
+- [Style foundations](#style-foundations)
+- [Copy tone](#copy-tone)
+- [Design intent](#design-intent)
 
-You are an expert design-system guideline author for Enterprise. Create
-practical, implementation-ready guidance that can be directly used by engineers
-and designers.
+## Use
+
+Read [shared theme guidance](../GUIDANCE.md) before using this reference.
+Use this file with one selected slug from [CATALOG.md](../CATALOG.md).
 
 ## Brand
 
@@ -15,7 +20,7 @@ hierarchy to present complex data in a clear and accessible way. The interface
 is built for productivity, enabling users to monitor, analyze, and interact with
 information efficiently.
 
-## Style Foundations
+## Style foundations
 
 - Visual style: modern, clean, cloud-platform aesthetic (Heroku/Vercel/GitHub
   inspired), dark theme, subtle gradients, soft shadows, glass-like panels,
@@ -28,118 +33,12 @@ information efficiently.
   danger=#ef4444, surface=#09090b, text=#fafafa
 - Spacing scale: 8pt baseline grid
 
-## Accessibility
+## Copy tone
 
-WCAG 2.2 AA, keyboard-first interactions, visible focus states, semantic HTML
-before ARIA, screen-reader tested labels, reduced-motion support, 44px+ touch
-targets, high-contrast support
+- Tone: concise, confident, helpful, clear, friendly, professional,
+  action-oriented, low-jargon.
 
-## Writing Tone
-
-concise, confident, helpful, clear, friendly, professional, action-oriented,
-low-jargon
-
-## Rules: Do
-
-- prefer semantic tokens over raw values
-- preserve visual hierarchy
-- keep interaction states explicit
-- design for empty/loading/error states
-- ensure responsive behavior by default
-- document accessibility rationale
-
-## Rules: Don't
-
-- avoid low contrast text
-- avoid inconsistent spacing rhythm
-- avoid decorative motion without purpose
-- avoid ambiguous labels
-- avoid mixing multiple visual metaphors
-- avoid inaccessible hit areas
-
-## Expected Behavior
-
-- Follow the foundations first, then component consistency.
-- When uncertain, prioritize accessibility and clarity over novelty.
-- Provide concrete defaults and explain trade-offs when alternatives are
-  possible.
-- Keep guidance opinionated, concise, and implementation-focused.
-
-## Guideline Authoring Workflow
-
-1. Restate the design intent in one sentence before proposing rules.
-2. Define tokens and foundational constraints before component-level guidance.
-3. Specify component anatomy, states, variants, and interaction behavior.
-4. Include accessibility acceptance criteria and content-writing expectations.
-5. Add anti-patterns and migration notes for existing inconsistent UI.
-6. End with a QA checklist that can be executed in code review.
-
-## Required Output Structure
-
-When generating design-system guidance, use this structure:
-
-- Context and goals
-- Design tokens and foundations
-- Component-level rules (anatomy, variants, states, responsive behavior)
-- Accessibility requirements and testable acceptance criteria
-- Content and tone standards with examples
-- Anti-patterns and prohibited implementations
-- QA checklist
-
-## Component Rule Expectations
-
-- Define required states: default, hover, focus-visible, active, disabled,
-  loading, error (as relevant).
-- Describe interaction behavior for keyboard, pointer, and touch.
-- State spacing, typography, and color-token usage explicitly.
-- Include responsive behavior and edge cases (long labels, empty states,
-  overflow).
-
-## Quality Gates
-
-- No rule should depend on ambiguous adjectives alone; anchor each rule to a
-  token, threshold, or example.
-- Every accessibility statement must be testable in implementation.
-- Prefer system consistency over one-off local optimizations.
-- Flag conflicts between aesthetics and accessibility, then prioritize
-  accessibility.
-
-## Example Constraint Language
-
-- Use "must" for non-negotiable rules and "should" for recommendations.
-- Pair every do-rule with at least one concrete don't-example.
-- If introducing a new pattern, include migration guidance for existing
-  components.
-
-<!-- TYPEUI_SH_MANAGED_END -->
-
-## Design intent (from DESIGN.md)
-
-## Overview
+## Design intent
 
 Dark-themed cloud-platform aesthetic with modular grids, glass-like panels, and
 strong data hierarchy for productivity dashboards.
-
-## DESIGN.md Style Foundations
-
-- **Visual style:** modern, clean, cloud-platform aesthetic
-  (Heroku/Vercel/GitHub inspired), dark theme, subtle gradients, soft shadows,
-  glass-like panels, rounded components
-- **Typography scale:** 12/14/16/20/24/32
-- **Typography fonts:** primary=IBM Plex Sans, display=IBM Plex Sans, mono=IBM
-  Plex Sans
-- **Typography weights:** 100, 200, 300, 400, 500, 600, 700, 800, 900
-- **Color palette:** primary, neutral, success, warning, danger
-- **Spacing scale:** 8pt baseline grid
-
-## Colors
-
-- **Primary (#0C5CAB):** Token from style foundations.
-- **Secondary (#0a4a8a):** Token from style foundations.
-- **Success (#10b981):** Token from style foundations.
-- **Warning (#f59e0b):** Token from style foundations.
-- **Danger (#ef4444):** Token from style foundations.
-- **Surface (#09090b):** Token from style foundations.
-- **Text (#fafafa):** Token from style foundations.
-- **Neutral (#09090b):** Derived from the surface token for official format
-  compatibility.

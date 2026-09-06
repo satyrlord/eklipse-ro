@@ -1,6 +1,6 @@
 ---
 name: update-catalog
-description: "Add, remove, or revise eklipse catalog releases from official Bandcamp evidence. Use only for explicit catalog requests."
+description: "Add, remove, or revise eklipse catalog releases from official Bandcamp evidence. Use for catalog change requests."
 ---
 
 # Update Catalog
@@ -8,20 +8,23 @@ description: "Add, remove, or revise eklipse catalog releases from official Band
 Update the catalog from official eklipse Bandcamp evidence. Do not infer
 release facts from unrelated music databases or search snippets.
 
-Use this skill only after an explicit catalog-change request. It changes
-product copy, assets, links, and release policy tests.
+Use this skill for a catalog change request. If the request does not authorize
+changes to product copy, assets, links, or release policy tests, report the
+plan and ask. Proceed without another request when authority is clear.
 
 ## 1. Establish the change
 
-1. Read `AGENTS.md`, `PRODUCT.md`, `src/release-catalog.ts`,
-   `tests/static-policy.test.ts`, and `package.json`.
-   Completion criterion: Product rules, the single catalog source, tests, and
-   commands are available.
+1. Read `AGENTS.md`, `PRODUCT.md`, `index.html`, `src/release-catalog.ts`,
+   `src/render-catalog.ts`, `tests/helpers/release-ledger.ts`,
+   `tests/product-contract.test.ts`, `tests/static-policy.test.ts`, and
+   `package.json`.
+   Completion criterion: Product rules, template fields, catalog sources, test
+   expectations, and commands are available.
 2. Inspect the current status and preserve unrelated changes.
    Completion criterion: Unrelated dirty or staged work is recorded and
    remains outside the change.
 3. Identify the release title, official album URL, chronology position, cover
-   asset, and ledger or archive classification.
+   asset, and current or archive classification.
    Completion criterion: Each requested release field has a value or an
    evidence gap.
 4. Use the official Bandcamp project or album page as the fact source.
@@ -32,8 +35,11 @@ product copy, assets, links, and release policy tests.
 
 ## 2. Apply the catalog rules
 
-Edit only `src/release-catalog.ts`. The build-time renderer expands
-`index.html` from it, so markup, tests, and links stay in sync.
+Author release facts and rendered release markup in `src/release-catalog.ts`.
+`index.html` is the source template. Keep its release-region markers so
+`src/render-catalog.ts` can expand them at build time. Update static latest-
+release fields in `index.html` when that release changes. Do not edit generated
+`dist/` output by hand.
 
 1. Preserve the exact Bandcamp title, capitalization, date, and chronology.
    Completion criterion: The catalog matches the official release record.
@@ -41,8 +47,9 @@ Edit only `src/release-catalog.ts`. The build-time renderer expands
    Completion criterion: Every edited artist name is `eklipse`.
 3. Use only `https://eklipse-music.bandcamp.com/` project or album URLs for anchors.
    Completion criterion: Every edited outbound anchor matches the allowlist.
-4. Add a Bandcamp player only for a ledger release.
-   Completion criterion: Each player belongs to a ledger release.
+4. Add a Bandcamp player only for a current release in
+   `currentReleaseLedger`.
+   Completion criterion: Each player belongs to one current release.
 5. Require every player source to start with `https://bandcamp.com/EmbeddedPlayer/`.
    Completion criterion: Each player source has the required prefix.
 6. Keep archive originals link-only.
@@ -53,10 +60,18 @@ Edit only `src/release-catalog.ts`. The build-time renderer expands
 8. Give each cover useful alternative text and stable dimensions.
    Completion criterion: Each edited cover has useful `alt`, `width`, and
    `height` values.
-9. Update `PRODUCT.md` when the release count, chronology, or catalog evidence changes.
-   Completion criterion: Product documentation matches the changed catalog contract.
-10. Update tests only when a changed public requirement needs a distinct
-    regression check.
+9. Update static latest-release fields in `index.html` when the current first
+   release changes.
+   Completion criterion: The threshold title, cover, link, and metadata match
+   the first current release.
+10. Update `PRODUCT.md` when the release count, chronology, or catalog evidence
+    changes.
+    Completion criterion: Product documentation matches the changed catalog contract.
+11. Check fixed catalog assertions in the product, asset, and security tests.
+    Completion criterion: Counts, cover paths, and latest-release assertions
+    match the change. `tests/helpers/release-ledger.ts` continues to re-export
+    the source ledger without duplicate records.
+12. Add a test only when the change needs a distinct regression check.
     Completion criterion: Each test edit protects one changed public requirement.
 
 Do not invent descriptions, genres, metrics, quotes, prices, availability, or
@@ -74,8 +89,8 @@ catalog identifiers.
    Completion criterion: The dirty-worktree build writes only to ignored output.
 5. Use [verify-site](../verify-site/SKILL.md) for production-browser evidence.
    Completion criterion: Browser evidence or a clear blocker is recorded.
-6. Re-read the changed source and product documents.
-   Completion criterion: Source and product documents agree after validation.
+6. Re-read the changed source, template, test, and product documents.
+   Completion criterion: Source, template, tests, and product documents agree.
 7. Check the complete diff for unrelated changes.
    Completion criterion: No unrelated change is included in the catalog update.
 

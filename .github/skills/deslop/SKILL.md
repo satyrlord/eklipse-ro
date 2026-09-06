@@ -1,6 +1,6 @@
 ---
 name: deslop
-description: "Remove unsupported eklipse site content. Use only for explicit cleanup requests."
+description: "Remove unsupported eklipse site content. Use for factual, structural, and copy cleanup requests."
 ---
 
 # Remove unsupported content
@@ -8,8 +8,10 @@ description: "Remove unsupported eklipse site content. Use only for explicit cle
 Unsupported content conflicts with product truth, the official Bandcamp
 catalog, repository rules, current behavior, or the user's voice.
 
-Use this skill only after an explicit cleanup request. It removes source content.
-It affects public behavior when rendered content changes.
+Use this skill for cleanup requests. Assess files without edits first. If the
+request does not authorize source edits, report findings and ask. Proceed
+without another request when authority is clear. Rendered content changes can
+affect public behavior.
 
 ## Branch References
 
@@ -48,8 +50,8 @@ Read each rule set that applies before you assess a file:
 - Do not invent catalog codes, coordinates, metrics, quotes, dates, genres, or
   narrative framing.
 - Do not remove the no-user-input or Bandcamp-only outbound-link boundary.
-- Allow an iframe only when its source starts with
-  `https://bandcamp.com/EmbeddedPlayer/` and the release is in the ledger.
+- Allow an iframe only for a current release when its source starts with
+  `https://bandcamp.com/EmbeddedPlayer/`. Keep archive originals link-only.
 - Edit source files. Never edit generated `dist/` output.
 
 ## Completion criterion

@@ -7,7 +7,7 @@ This file defines the terms used by [create-skill](SKILL.md).
 - [Invocation](#invocation)
 - [Structure](#structure)
 - [Quality](#quality)
-- [eklipse terms](#eklipse-terms)
+- [Repository terms](#repository-terms)
 
 ## Invocation
 
@@ -104,32 +104,7 @@ disclosure or a justified skill split.
 An instruction with no effect does not change agent behavior or supply a
 required reference. Remove it.
 
-## eklipse terms
+## Repository terms
 
-### Product source
-
-`PRODUCT.md` and the official eklipse Bandcamp catalog own product facts.
-
-### Ledger release
-
-A ledger release is a current or remastered release that may carry an official
-Bandcamp player.
-
-### Archive original
-
-An archive original remains visible but uses a link-only Bandcamp route.
-
-### Static boundary
-
-The static boundary forbids forms, user comments, authentication, cookies,
-tracking, databases, APIs, and server-side code.
-
-### Production artifact
-
-The production artifact is the built output that is ready to deploy to
-`/home/eklipse/public_html`.
-
-### Temporary artifact
-
-A temporary artifact belongs under the ignored `tmp/` folder and does not
-become a product contract.
+Read the [repository glossary](../../../GLOSSARY.md) for product, site, and
+deployment terms. Keep shared definitions in that file.

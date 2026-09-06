@@ -1,222 +1,76 @@
 ---
 name: design-router
-description: "Router for 67 bundled design themes, adapted for the eklipse repository. Use when building or restyling UI and a visual direction is needed. It maps the desired vibe (minimal, playful, retro, enterprise, glassmorphism, etc.) to the right theme file to load. The canonical eklipse system is Gravitational Press in DESIGN.md. Trigger on design style, make it look, UI theme, visual direction, or any request for a specific aesthetic."
+description: "Select a bundled theme for a requested UI style. Use Gravitational Press for eklipse work unless the user requests a restyle."
 license: MIT
 metadata:
-  author: typeui.sh (catalog) / router by user / adapted for eklipse
+  author: typeui.sh catalog, user router, eklipse adaptation
 ---
 
 # Design Skill Router
 
 This skill bundles 67 design themes from typeui.sh. Each theme lives in
-`themes/<slug>.md` (relative to this SKILL.md) and contains a full design
-system: tokens, typography, spacing, component rules, quality gates, and
-design intent.
+`themes/<slug>.md`, relative to this file. Each theme contains brand direction,
+tokens, copy tone, design intent, and style-specific rules. Read
+[`GUIDANCE.md`](GUIDANCE.md) before a theme reference. It owns shared workflow,
+accessibility, component, and quality rules.
 
 ## eklipse adaptation
 
-This copy is adapted for the eklipse repository. The repository has a canonical
-design system: "Gravitational Press", documented in `DESIGN.md` at the
-repository root. Use that system for all eklipse site UI.
+This skill is adapted for the eklipse repository. The repository has one
+canonical design system, "Gravitational Press", in
+[`DESIGN.md`](../../../DESIGN.md). Use that system for all eklipse site UI.
 
-**Default rule.** For UI work on the eklipse site, apply the Gravitational Press
-system from `DESIGN.md`. Do not apply a catalog theme unless the user
-explicitly asks for a restyle or a specific aesthetic.
+Read [`AGENTS.md`](../../../AGENTS.md) for the repository writing, security,
+and delivery rules. Read [`DESIGN.md`](../../../DESIGN.md) for the implemented
+visual rules. These documents own the full contracts.
 
-**When a theme is allowed.** Use the catalog to explore a requested vibe. Then
-translate the theme through the eklipse constraints below. The result must keep
-the eklipse named rules and the static-site security boundary.
+### Translation boundary
 
-### eklipse constraints
+When a user requests a catalog theme for eklipse, translate its visual
+direction through the eklipse contracts:
 
-- Keep the site static and read-only. Add no forms, comments, authentication,
-  cookies, analytics, trackers, databases, APIs, or server-side code.
-- Add no runtime third-party scripts. Allow official Bandcamp album players
-  only. Require every player source to start with
-  `https://bandcamp.com/EmbeddedPlayer/`.
-- Keep outbound anchors limited to the official eklipse Bandcamp pages.
-- Self-host production assets. Keep Syne and IBM Plex Sans in
-  `public/assets/fonts.css`.
-- Keep the named rules: The Ember Action Rule, The Cover Leads Rule, The Dark
-  Field Rule, The Ambient / Pressure Rule, The Sharp Control Rule, The Orbital
-  Circle Rule, The Flat Field Rule, and The Editorial Sequence Rule.
+- Keep the static, read-only site boundary from `AGENTS.md`.
+- Keep official Bandcamp players, allowed links, self-hosted assets, and the
+  English interface from `AGENTS.md`.
+- Keep the Gravitational Press structure, typography, shapes, motion, focus,
+  route, and named rules from `DESIGN.md`.
 - Keep every album title on one row at every page size.
-- Use English as the only interface language.
+- Change visual direction only where the request permits it. Record a conflict
+  when a catalog rule cannot fit the eklipse contract.
 
-**Theme fit.** Some catalog themes share the eklipse world. Others clash with
-it. The fit tables below mark each theme as `closer` or `further`. The fit is
-advisory. The user makes the final choice. The router keeps all 67 themes.
+Read [`CATALOG.md`](CATALOG.md) for the 67-theme selection matrix, fit notes,
+and quick defaults. The matrix is advisory. The user makes the final choice.
 
-### Theme fit for eklipse
+## Invocation and output
 
-Themes closer to the Gravitational Press world:
+Use one branch for each request:
 
-| Slug | Reason |
-| --- | --- |
-| `impeccable` | Editorial-poster look with cream and burnt orange |
-| `editorial` | Magazine-style serif layouts, elegant reading |
-| `modern` | Contemporary editorial, serif type, minimal palettes |
-| `basic` | Print-inspired editorial grids |
-| `claude` | Research-journal on warm ivory, near-black slate ink |
-| `refined` | Curated minimal, elegant serifs, understated palettes |
-| `dramatic` | Theatrical, immersive, unconventional compositions |
-| `cosmic` | Sci-fi dark themes, neon accents, spatial depth |
-| `premium` | Apple-inspired precision and polish |
-| `artistic` | High-contrast expressive creative typography |
-| `terracotta` | Sun-baked clay tones, cream surfaces, display serif |
+1. For eklipse site UI without an explicit restyle request, read
+   [`DESIGN.md`](../../../DESIGN.md) and use Gravitational Press. Stop theme
+   selection. Check: the proposed work follows the named rules and the
+   static-site boundary.
+2. For an explicit restyle or named aesthetic, identify one slug in
+   [`CATALOG.md`](CATALOG.md). Read its theme file. Translate its rules through
+   the eklipse constraints. Check: the output names one theme and states any
+   required adaptation.
+3. For an exact theme slug, read `themes/<slug>.md` directly. Check: the slug
+   matches one file and the output uses that file as its design reference.
+4. For an ambiguous request, ask for one visual direction. If the user asks
+   for a default, use `clean` for an app and `modern` for a marketing site.
+   Check: the output records the selected slug or the unanswered choice.
 
-Themes further from the eklipse world:
+If the request does not concern UI or visual direction, report that this skill
+does not apply. Check: no theme is selected for an unrelated request.
 
-| Slug | Reason |
-| --- | --- |
-| `sega`, `pacman`, `tetris` | Arcade worlds |
-| `lingo`, `fiction` | Children's worlds |
-| `material`, `ant`, `enterprise` | Web-app and dashboard worlds |
-| `roku`, `stitch`, `levels` | Web-app and dashboard worlds |
-| `agentic`, `corporate` | Web-app and dashboard worlds |
-| `professional`, `shadcn` | Web-app and developer-tool worlds |
-| `codex`, `mono` | Developer-tool worlds |
-| `neumorphism`, `claymorphism` | Soft 3D surface effects |
-| `skeumorphism`, `glassmorphism` | Soft 3D surface effects |
-| `perspective` | 3D effects that break flat sharp fields |
-| `bento` | Card grids that the eklipse world refuses |
-| `doodle`, `sketch`, `friendly` | Friendly and playful worlds |
-| `vibrant`, `colorful`, `expressive` | Friendly and playful worlds |
-| `creative`, `storytelling` | Playful story worlds |
-| `immersive`, `cafe` | Worlds that dilute the rave editorial identity |
+## Selection and authority
 
-## How to use this router
+The router may select a theme from the request or use the eklipse default branch.
+Selection identifies a design reference. It does not authorize edits beyond the
+user request. Keep the user request, `AGENTS.md`, and `DESIGN.md` as the sources
+of authority for any implementation change.
 
-1. Check whether the request targets the eklipse site. If yes, read `DESIGN.md`
-   and apply the Gravitational Press system. Use a catalog theme only when the
-   user asks for a different aesthetic.
-2. Identify the desired visual direction from the user's request (explicit
-   style name, adjectives, product type, or references).
-3. Pick ONE theme from the catalog below. If ambiguous, ask the user or default
-   to `clean` for apps and `modern` for marketing sites.
-4. Read `themes/<slug>.md` in this skill's folder and follow it as the design
-   system for all UI you generate. Translate the theme through the eklipse
-   constraints above.
-5. Do not mix multiple themes in one project unless the user asks.
+## Completion criterion
 
-If the user names a style that matches a slug exactly (e.g. "neobrutalism",
-"glassmorphism"), skip the catalog and load `themes/<slug>.md` directly.
-
-## Catalog
-
-### Minimal & clean
-
-| Slug | When to pick |
-| --- | --- |
-| `minimal` | Maximum whitespace, restrained color, stripped-back clarity |
-| `clean` | Simple, legible, low-clutter general-purpose UI |
-| `sleek` | Modern minimalism with subtle interactions and tight spacing |
-| `spacious` | Generous whitespace and breathing grid layouts |
-| `geometric` | Precise shapes, neutral colors, quiet structure |
-| `codex` | Minimal blank canvas, black color, typography-led |
-| `shadcn` | shadcn/ui-style monochrome, utility-first components |
-| `flat` | Two-dimensional, vibrant flat colors, no shadows or 3D |
-
-### Professional & enterprise
-
-| Slug | When to pick |
-| --- | --- |
-| `professional` | Trustworthy business-ready design |
-| `corporate` | Brand-aligned enterprise patterns and structured grids |
-| `ant` | Data-dense enterprise web apps (Ant Design flavor) |
-| `enterprise` | Dark cloud-platform dashboards, glass panels, data hierarchy |
-| `stitch` | High-contrast enterprise data workflows, drag-and-drop |
-| `roku` | Purple-themed app dashboard, developer-first workflows |
-| `levels` | Conversion-focused, friction-free funnels and CTAs |
-| `agentic` | AI/chat-first interfaces, delegated task flows |
-
-### Editorial & print
-
-| Slug | When to pick |
-| --- | --- |
-| `editorial` | Magazine-style serif layouts, elegant reading |
-| `modern` | Contemporary editorial, serif type, minimal palettes |
-| `basic` | Print-inspired books/magazines/reports, editorial grids |
-| `paper` | Paper-textured, tactile print feel |
-| `claude` | Research-journal aesthetic on warm ivory, near-black slate ink |
-| `refined` | Curated minimal with elegant serifs, understated palettes |
-| `square` | Delicate typography, polished, sophisticated |
-| `impeccable` | Editorial-poster look, cream and burnt orange |
-| `terracotta` | Sun-baked clay tones, cream surfaces, display serif headlines |
-
-### Premium & dramatic
-
-| Slug | When to pick |
-| --- | --- |
-| `premium` | Apple-inspired precision and polish |
-| `power` | High-end dark monochrome, bold headings |
-| `bold` | Heavyweight type, high contrast, commanding layouts |
-| `dramatic` | Theatrical, immersive, unconventional compositions |
-| `fantasy` | Game-inspired premium fantasy visuals |
-| `futuristic` | Tech-forward sleek innovation aesthetic |
-| `cosmic` | Sci-fi dark themes with neon accents and spatial depth |
-| `matrix` | Cyber-slick dark-only Matrix-inspired |
-| `mono` | Monospace hacker-chic, compact and high-contrast |
-
-### Playful & friendly
-
-| Slug | When to pick |
-| --- | --- |
-| `friendly` | Rounded, soft pastels, approachable |
-| `lingo` | Duolingo-like bright colors, tactile 3D borders |
-| `creative` | Character-driven landing pages, expressive type |
-| `expressive` | Vibrant personality with structure |
-| `vibrant` | Lively bold playful typography, warm accents |
-| `colorful` | High-contrast palettes and gradients |
-| `fiction` | Children's-book cartoon style, thick outlines, cream background |
-| `doodle` | Hand-drawn doodles and handwritten fonts |
-| `sketch` | Pencil-sketch on cream paper, teal accents |
-| `cafe` | Cozy warm tones, relaxed browsing feel |
-| `storytelling` | Narrative-driven emotional journeys |
-| `immersive` | Interactive stories on one brand-colored canvas |
-
-### Effects & materials
-
-| Slug | When to pick |
-| --- | --- |
-| `glassmorphism` | Frosted glass, blur, translucent layers |
-| `claymorphism` | Puffy clay-like 3D rounded shapes |
-| `neumorphism` | Soft extruded elements, monochrome shadows |
-| `skeumorphism` | Real-world textures and physical metaphors |
-| `gradient` | Gradient-rich modern surfaces |
-| `neon` | Electric glow, high-contrast neon pairings |
-| `perspective` | Isometric/3D spatial depth and layering |
-| `material` | Google Material Design system |
-
-### Retro & raw
-
-| Slug | When to pick |
-| --- | --- |
-| `retro` | Vintage typography and nostalgic palettes |
-| `vintage` | 1950s–90s nostalgia, grain, pixel touches |
-| `dithered` | Dot-pattern retro rendering, limited palette |
-| `riso` | Two-color risograph print on off-white paper |
-| `brutalism` | Raw anti-design, unadorned, jarring |
-| `neobrutalism` | Bold borders, vivid accents, warm surfaces |
-| `pacman` | 8-bit arcade, pixel fonts, dotted borders |
-| `sega` | Arcade pixel typeface, chunky pressed buttons |
-| `tetris` | Block-game colors, bold display fonts |
-| `artistic` | High-contrast expressive creative typography |
-| `pulse` | Thick borders, geometric shapes, and high-contrast colors |
-
-### Layout-driven
-
-| Slug | When to pick |
-| --- | --- |
-| `bento` | Modular bento-grid card layouts |
-| `contemporary` | Current-era minimalism, bento grids, dark mode |
-
-## Quick defaults
-
-- eklipse site UI → Gravitational Press in `DESIGN.md`. Use a catalog theme
-  only on explicit request.
-- Dashboard/SaaS app → `clean`, `ant`, or `enterprise` (dark)
-- Marketing/landing page → `modern`, `creative`, or `impeccable`
-- Dev tool → `shadcn`, `mono`, or `codex`
-- Game/kids product → `sega`, `fiction`, or `lingo`
-- Blog/docs/long-form → `editorial`, `paper`, or `claude`
+The router is complete when the agent selects one branch and reads its design
+reference and required contracts. The output names the adaptation and its check.
+An unrelated request or an unresolved ambiguous request is incomplete.

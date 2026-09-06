@@ -8,5 +8,6 @@ the source that uses them.
   authority.
 - Keep security headers, build configuration, and deployment paths unless
   current behavior disproves them.
-- Keep package dependencies only when source imports use them.
+- Keep a package dependency when source imports, package scripts, tests, or
+  build configuration use it. Remove it only when no declared consumer remains.
 - Validate configuration through its narrowest consumer or production build.

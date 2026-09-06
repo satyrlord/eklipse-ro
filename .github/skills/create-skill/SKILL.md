@@ -1,15 +1,18 @@
 ---
 name: create-skill
-description: "Create or revise eklipse repository skills. Use for triggers, references, quality reviews, or package validation."
+description: "Create or revise eklipse repository skills. Use for triggers, workflows, references, and package validation."
 ---
 
 # Create predictable skills
 
-A skill gives an agent a predictable process. The output changes with the
+A skill gives an agent a predictable process. The result changes with the
 request.
 
-Use this skill only after an explicit user request. It changes a skill package
-or its trigger.
+Use this skill when a request creates or revises a skill package or its trigger.
+Before you edit a package, verify that the current request grants authority. If
+it does not, keep the assessment read-only and ask. Do not ask again when the
+request already grants authority. Keep external or destructive actions behind a
+direct authorization and a clear stop condition.
 
 Read [GLOSSARY.md](GLOSSARY.md) when a term in this workflow needs a definition.
 
@@ -22,11 +25,12 @@ Read [GLOSSARY.md](GLOSSARY.md) when a term in this workflow needs a definition.
 2. Record one concrete request example for each valid branch.
    Completion criterion: Each branch has a trigger, output, boundary, and
    failure case.
-3. Choose model invocation or explicit user invocation for the skill.
-   Completion criterion: The invocation choice has a stated risk-based reason.
-4. Require explicit user invocation for product changes and deliberate reviews.
-   Completion criterion: The skill does not run an expansive workflow without
-   user intent.
+3. Keep the existing invocation policy unless the user requests a change.
+   Completion criterion: `agents/openai.yaml` keeps its current policy or
+   records the requested change.
+4. Separate skill selection from change authority.
+   Completion criterion: The skill checks existing authority and asks only when
+   it is missing.
 
 ## 2. Design the information hierarchy
 
@@ -64,10 +68,10 @@ file longer than 100 lines.
 6. Ground the skill in this static site.
    Completion criterion: The skill does not import Electron, audio, database,
    analytics, or unrelated product rules.
-7. Use `PRODUCT.md` and official Bandcamp pages as evidence for release or
-   catalog facts.
-   Completion criterion: The skill does not invent facts or weaken the
-   static-site security boundary.
+7. For catalog skills, use `PRODUCT.md` and official Bandcamp pages as evidence
+   for release facts.
+   Completion criterion: Each release fact has evidence and the skill does not
+   weaken the static-site security boundary.
 
 If a branch needs a different output style, state the branch and its limit in
 the skill.
@@ -91,18 +95,19 @@ the skill.
    Completion criterion: The package has no structural error.
 2. Run the available Codex skill validator on every changed skill folder.
    Completion criterion: Every validator run passes.
-3. Test each changed branch with a realistic request or raw artifact.
+3. Exercise each changed branch with a realistic request or raw artifact.
    Completion criterion: The skill follows its process without hidden context.
 4. Check repository links and run `git diff --check`.
    Completion criterion: All local links resolve and no whitespace error remains.
 5. Re-read the complete package after validation.
    Completion criterion: No trigger, criterion, reference, or STE defect remains.
 
-For a complex skill or a skill with a large change, run a forward test in a
-clean context when that context is available.
-Give the test agent the request and raw artifacts. Do not give the expected answer.
+For a complex skill or a large change, run a forward test in a clean context
+when delegation is available and authorized. Give the test agent the request
+and raw artifacts. Do not give the expected answer.
 
 ## Completion criterion
 
-The work is complete when every branch has a precise trigger and a checkable result.
-All package and STE checks pass. Each line has one owner and a clear purpose.
+The work is complete when every branch has a precise trigger, output, boundary,
+failure response, and checkable result. All package and STE checks pass. Each
+line has one owner and a clear purpose.

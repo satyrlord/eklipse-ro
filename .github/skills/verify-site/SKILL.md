@@ -8,8 +8,8 @@ description: "Verify the eklipse production build in a real browser. Check layou
 Verify observable behavior in the built static site. Stay read-only unless the
 user explicitly requests repairs.
 
-Use this skill only after an explicit browser-verification request. It starts a
-local build and preview server and records browser evidence.
+Use this skill for a browser-verification request. It starts a local build and
+preview server and records browser evidence.
 
 ## 1. Prepare the evidence
 
@@ -41,8 +41,9 @@ If a required script or browser is unavailable, report the check as BLOCKED.
 2. Allow internal fragment links.
    Completion criterion: Internal fragment links remain available.
 3. Allow an iframe only when its source starts with
-   `https://bandcamp.com/EmbeddedPlayer/` and the release belongs to the ledger.
-   Completion criterion: Each iframe passes the source and ledger checks.
+   `https://bandcamp.com/EmbeddedPlayer/` and the release is current. Keep
+   archive originals link-only.
+   Completion criterion: Each iframe passes the source and release checks.
 4. Reject all other external frames and runtime scripts.
    Completion criterion: No disallowed external frame or runtime script remains.
 5. Reject forms, input controls, user comments, authentication, analytics,

@@ -7,9 +7,8 @@ description: "Review an eklipse change set for ownership, facts, accessibility, 
 
 Run a read-only review by default. Edit files only when the user requests repairs.
 
-Use this skill only after an explicit review request. It inspects a broad
-change set.
-It repairs only approved findings.
+Use this skill for a broad review request. Keep the review read-only until the
+user authorizes repairs. Repair only approved findings.
 
 ## 1. Establish the scope
 
@@ -25,23 +24,21 @@ It repairs only approved findings.
 
 ## 2. Review the contracts
 
-Check these contracts:
+Check the product and repository rules in `PRODUCT.md` and `AGENTS.md`.
+Report any mismatch in product facts, artist spelling, album titles, links,
+iframe classification, static boundaries, or generated-output handling.
+Use official Bandcamp pages when a catalog fact needs source verification.
 
-- Product facts match `PRODUCT.md` and official Bandcamp evidence.
-- The artist name stays `eklipse` and album titles stay exact.
-- External anchors stay on the Bandcamp allowlist.
-- Iframes use the official Bandcamp player exception only for ledger releases.
-- The site remains static, read-only, and self-hosted where practical. It has no
-  tracking or data submission.
+Also check these implementation contracts:
+
 - HTML uses semantic landmarks, useful image alternatives, visible focus, and
   keyboard access.
 - Reduced-motion behavior remains available.
-- CSS and JavaScript stay direct. They do not add identity wrappers or
-  scattered special cases.
+- Keep shared layout and interaction rules in their owning source files. Do not
+  add wrappers that only forward values or one-off selectors without evidence.
 - Shared layout rules have one owner and do not duplicate product policy.
-- Source changes do not edit generated `dist/` output by hand.
 - Tests protect a distinct public contract and do not weaken a current requirement.
-- Do not move code across a large file boundary without a clear ownership reason.
+- Record the ownership reason when code moves across a large file boundary.
 
 ## 3. Report findings
 

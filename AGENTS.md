@@ -25,7 +25,7 @@ coverage instrumentation.
 
 ```text
 index.html                 HTML entry point and catalog template
-src/release-catalog.ts     single source of truth for release facts and markup
+src/release-catalog.ts     catalog facts and release markup
 src/render-catalog.ts      build-time renderer that expands the catalog template
 src/main.ts                browser runtime
 src/runtime.ts             typed runtime calculations
@@ -39,20 +39,26 @@ public/                    assets, error page, and server configuration
 tests/                     policy, unit, and browser tests
 tmp/                       ignored build and coverage artifacts
 PRODUCT.md                 product contract
+DESIGN.md                  visual contract
+GLOSSARY.md                shared technical terms
 AGENTS.md                  repository rules
 ```
 
 ## Tests
 
-`npm test` runs the product, asset, security, deployment, design-token, and
-runtime tests with Vitest. The static tests use one shared jsdom fixture.
+`npm test` runs product, asset, security, deployment, design-token,
+documentation, and runtime tests with Vitest. The static page tests use one
+shared jsdom fixture.
 
-The catalog is authored once in `src/release-catalog.ts` (facts plus per-release
-markup). `src/render-catalog.ts` expands the `<!-- release-sequence:* -->` and
+Author catalog facts and release markup in `src/release-catalog.ts`.
+`src/render-catalog.ts` expands the `<!-- release-sequence:* -->` and
 `<!-- archive-track:* -->` regions of `index.html` at build time through a Vite
-`transformIndexHtml` hook. To add or change a release, edit only
-`src/release-catalog.ts`; the policy tests assert the rendered markup matches
-the ledger.
+`transformIndexHtml` hook. Change release facts and markup in
+`src/release-catalog.ts`. The test ledger helper re-exports these records.
+Update affected contracts and fixed test assertions with each catalog change.
+Add official cover assets when necessary.
+When the latest release changes, update its threshold content and metadata in
+the source `index.html` template. Keep the renderer-owned catalog regions intact.
 
 `npm run test:coverage` records V8 coverage for TypeScript source. The browser
 gate records Istanbul coverage for the real production bundle. No coverage
@@ -81,12 +87,24 @@ manual production-browser check.
 - Use STE-flavored prose for general technical discussion and project documents.
 - Use one name for each item. Use one word for each meaning.
 - Use active voice, short sentences, and plain verbs.
-- Do not use contractions, semicolons, or emoji in technical prose, code,
-  documentation, specifications, instructions, or reusable skills.
+- Limit procedural sentences to 20 words. Limit descriptive sentences to 25
+  words.
+- Give each instruction one action. Put a condition before its action.
+- Keep each paragraph on one topic. Use no more than six sentences per
+  paragraph.
+- Do not use contractions, prose semicolons, or emoji.
+- Apply these rules to comments, error messages, AI prompts, and skill metadata.
+- Preserve code syntax, identifiers, paths, commands, URLs, and published
+  release titles.
+- Preserve third-party license text and exact quotations used as evidence.
 - Avoid idioms.
-- Avoid specialized terms unless they are necessary or defined in the project
-  glossary.
+- Use the [project glossary](GLOSSARY.md) for technical terms.
 - Keep product copy factual and separate from technical instructions.
+
+Use [ASD-STE100 Issue
+9](https://www.asd-ste100.org/assets/files/ASD-STE100_ISSUE9.pdf)
+to check word meanings and writing rules. Markdown lint and pattern scans do
+not prove full STE compliance. Report the review method and its limits.
 
 ## Security boundary
 
@@ -94,13 +112,15 @@ manual production-browser check.
 - Do not add forms, user comments, authentication, cookies, analytics, trackers,
   databases, APIs, or server-side code.
 - Do not add runtime third-party scripts.
-- Allow official Bandcamp album players only for ledger releases.
+- Allow official Bandcamp album players only for current releases in the catalog
+  ledger.
 - Require every allowed player source to start with
   `https://bandcamp.com/EmbeddedPlayer/`.
 - Keep archive originals link-only.
 - Restrict outbound anchors to `https://eklipse-music.bandcamp.com/` and its
   `/album/` pages.
 - Allow internal fragment links for page navigation.
+- Allow `/` as the error page return link.
 - Self-host production assets when possible.
 - Do not route passwords, tokens, or keys through the model. Tell the user to
   enter them directly.
@@ -148,12 +168,13 @@ manual production-browser check.
 
 ## Deployment
 
-cPanel serves the production site from `/home/eklipse/public_html`. The GitHub
-workflow in [.github/workflows/build-dist.yml](.github/workflows/build-dist.yml)
-builds and publishes `dist/`. A cPanel cron deploys the managed repository. The
-cPanel task clears the site-owned asset directory and root files before it
-copies the build. Keep a removed site-owned root path in the cleanup command so
-an older deployment cannot leave that file public.
+The deployment target is `/home/eklipse/public_html`. The GitHub workflow in
+[build-dist.yml](.github/workflows/build-dist.yml) builds and publishes `dist/`.
+The hosting setup requires a cPanel cron to deploy the managed repository.
+Local files do not prove that the cron runs on the host.
+The [cPanel task](.cpanel.yml) clears site-owned assets and root files before
+it copies the build. Keep removed site-owned root paths in the cleanup command.
+This prevents an older deployment from leaving those files public.
 
 ## Close-out
 
@@ -167,157 +188,81 @@ an older deployment cannot leave that file public.
 
 ## General agent operating instructions
 
-### Terms and defaults
+### Priority and scope
 
-- These general operating instructions set defaults for agent behavior. A more
-  specific instruction can override a default.
-- The user's latest explicit request overrides earlier instructions, subject to
-  safety and system constraints.
-- Instruction priority:
-  1. Safety and system constraints.
-  2. The user's latest explicit request.
-  3. These general operating instructions.
-  4. Repository instruction files, such as `AGENTS.md`.
-  5. Older instructions and specifications.
-- When instructions conflict, follow the newer and more specific instruction. A
-  higher-priority instruction overrides it.
-- "Reasoning level" and "capability level" name the same setting. It controls
-  how much analysis a worker does and how much the work costs. Use the standard
-  level by default. Use the level the tool exposes. When the tool has no such
-  setting, ignore this rule.
-
-### Roles and capability levels
-
-- Batch independent tool calls when the environment supports parallel calls.
-  Inspect every result.
-- In an environment that exposes `functions.exec`, use `Promise.allSettled` when
-  partial results are useful. Use `Promise.all` only when any failure should
-  abort the batch.
-- Run these steps sequentially: dependent calls, waits and resumes, approval
-  requests, and conflicting or interdependent mutations.
-- Run an adaptive investigation sequentially when each result changes the next
-  step.
-- Do not split inspections that can run in one batch into separate sequential
-  calls.
-- Use a reasoning-focused configuration for planning. Use a delivery-focused
-  configuration for implementation.
-- Keep planning, implementation, integration, and critical review distinct. One
-  worker can perform several roles.
-- The root coordinator owns the plan, integrates all work, resolves conflicts,
-  and performs the final critical review.
-- Raise the reasoning level for complex implementation, debugging, and review.
-  Use a very high level for architecture, security, concurrency, or major
-  ambiguity. Use the highest available level only as an escalation.
-- Use exploration workers for read-heavy and context-heavy tasks. Examples
-  include:
-  - Mapping components and dependencies.
-  - Tracing execution and data flow.
-  - Inspecting large files, datasets, or logs.
-  - Finding relevant tests and documentation.
-  - Compressing evidence into a clear report for the coordinator.
-- Use the standard reasoning level for exploration. Raise it only for difficult
-  but bounded analysis.
-- Use execution workers for narrow, high-volume, and automatically verifiable
-  tasks. Examples include:
-  - Inventories and searches.
-  - Classification and extraction.
-  - Test partitioning.
-  - Repetitive checks.
-  - Documentation updates.
-  - Mechanical edits.
-- Use a low reasoning level only for purely mechanical work. Use a higher level
-  when batch work has a strong, objective verifier.
-- Delegated workers should normally use a lower-cost capability level than the
-  worker that delegated the task. Raise the level only when task complexity or
-  risk requires it.
-
-### Evidence and documentation
-
-- Use authoritative, current, primary documentation. Use the available
-  documentation, search, and retrieval tools rather than relying on memory.
-- Do not speculate about material facts. Resolve uncertainty by:
-  1. Inspecting the system or source material directly.
-  2. Checking authoritative documentation.
-  3. Running a specific test, command, query, or experiment.
-  4. Asking the user when the ambiguity cannot be resolved from available
-     evidence.
-- State any uncertainty that remains after verification.
-- Before material work, inspect all applicable project documentation that
-  exists. This may include:
-  - Overview and setup documentation.
-  - Terminology or glossary documentation.
-  - Architecture and component documentation.
-  - Data models and schemas.
-  - Interfaces and contracts.
-  - Search or indexing behavior.
-  - Core processing or service behavior.
-  - User interface and user experience documentation.
-  - Testing, deployment, and operations documentation.
-- Do not assume every project uses these document names or has every document
-  type.
-- After resolving a documentation conflict, update the affected documents so
-  they no longer disagree.
+- Follow the runtime instruction hierarchy.
+- Apply these repository rules within that hierarchy.
+- Resolve equal-priority conflicts by specificity, then recency.
+- Complete authorized work through verification.
+- Ask only for a blocking decision or required approval.
+- Use reversible defaults when the request permits them. State material
+  assumptions.
+- Keep reviews read-only unless the user authorizes repairs.
 
 ### Delegation and concurrency
 
-- Delegate independent work concurrently when the environment supports it.
-- Prefer parallel workers for independent searches, file inspection, research,
-  audits, and other read-only tasks.
-- Keep the root coordinator available to integrate results, respond to the user,
-  and redirect work.
-- Give each delegated worker a clear scope, expected output, and verification
+- Batch independent tool calls. Inspect every result.
+- Use `Promise.allSettled` when partial results help.
+- Use `Promise.all` only when one failure must stop the batch.
+- Run dependent calls, adaptive investigations, waits, approvals, and
+  conflicting edits in sequence.
+- Delegate useful independent work when the environment supports agents.
+- Give each worker a scope, file ownership, expected output, and verification
   method.
+- Use exploration workers for source inspection and evidence collection.
+- Use execution workers for bounded implementation and mechanical changes.
+- Keep planning, implementation, integration, and review distinct. One worker
+  can perform several roles.
+- The coordinator owns the plan, integration, conflict resolution, and final
+  review.
 - Avoid overlapping edits unless ownership and merge order are explicit.
-- Assume that concurrent workers may share the same workspace.
+- Keep the coordinator available for user input and worker results.
 
-### Changes and specifications
+Use the standard effort setting by default. Use low effort only for mechanical
+work. Increase effort for difficult implementation, debugging, or review.
+Use very high effort for architecture, security, concurrency, or major
+ambiguity.
+Use maximum effort only for escalation. Use only settings that the tool
+supports.
 
-- After each bug fix or change request, update the relevant specifications and
-  documentation.
-- Do not add temporary scaffolding that only keeps intermediate phases
-  releasable alone. Remove it when you complete and verify all phases together.
-- Retain temporary compatibility or migration work only when it serves a real
-  deployment, review, rollback, or risk-control need.
-- Do not add backward-compatibility work unless a project document defines a
-  migration or compatibility contract. Keep code that a project document
-  requires for migration.
+Prefer lower-cost workers when they can meet the verification requirements.
 
-### Testing and performance
+### Evidence and documentation
 
-- Prefer automated checks when practical.
-- Use representative, real-world fixtures for performance measurements.
-- Do not make performance claims from invented or unrepresentative inputs.
-- Record the test environment, workload, method, and result for each performance
+- Inspect applicable product, design, source, test, and deployment documents
+  before material work.
+- Verify material claims with current primary sources or direct checks.
+- Give each unresolved question a concrete check, such as a command, test, file,
+  or query.
+- Do not assign a worker a vague doubt without a verification method.
+- State uncertainty that remains after verification.
+- Update affected specifications and documentation after a change.
+- Resolve conflicting documentation in the files that own the rules.
+- Add compatibility code only when a document defines its contract.
+- Remove scaffolding that only supports an intermediate implementation phase.
+- Keep temporary compatibility work only for deployment, migration, review,
+  rollback, or risk control.
+
+### Verification evidence
+
+- Prefer meaningful automated checks.
+- Use representative real-world fixtures for performance measurements.
+- Record the environment, workload, method, and result for each performance
   claim.
-- When a required measurement is missing, state that explicitly. Do not replace
-  it with an estimate presented as fact.
-- For environment-sensitive behavior, test the built artifact in a minimal local
-  runtime that reflects the least-capable supported production environment.
-- Do not rely on development-only behavior, permissions, configuration, or
-  infrastructure unless the target environment guarantees them.
-- Do not publish changes solely to reproduce an environment condition that can
-  be tested locally.
+- State missing measurements. Do not present estimates as measurements.
+- Test environment-sensitive behavior with the built artifact in a minimal
+  supported local runtime.
+- Do not assume development-only permissions or infrastructure exist in
+  production.
+- Do not publish changes only to reproduce a condition that you can test
+  locally.
 
-### Uncertainty and verification
+### Independent review
 
-- Never assign a worker to investigate a vague doubt without defining a concrete
-  verification step.
-- Pair every uncertainty with at least one specific check. Examples include:
-  - A command to run.
-  - A test to execute.
-  - A file or record to inspect.
-  - A query to perform.
-  - A source to consult.
-  - A behavior to reproduce.
-- Do not repeatedly ask whether a result is correct.
-- Replace repeated confirmation requests with direct, objective verification.
-
-### Close-out and handoff
-
-- Run a self-critique pass before you finish.
-- For large, high-risk, or difficult changes, request an independent review from
-  a clean context.
-- Give the independent reviewer the plan, evidence, changes, verification
-  results, and handoff.
-- Ask the reviewer: "Evaluate this work. What may have been missed?"
-- Include the independent review findings in the final handoff.
+- Run one self-review before completion.
+- For large, risky, or difficult changes, obtain independent review from a clean
+  context when available.
+- Give the reviewer the plan, changes, evidence, verification results, and
+  proposed handoff.
+- Ask the reviewer to identify what the work may have missed.
+- Report the findings and any unavailable review.

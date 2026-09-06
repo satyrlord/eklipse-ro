@@ -8,9 +8,9 @@ description: "Run or repair the eklipse static-site gate for tests, builds, secu
 Run the relevant repository gates and report objective PASS, FAIL, BLOCKED, or
 N/A evidence.
 
-Use this skill only after an explicit quality-gate request. It runs tests,
-builds, policy checks, and browser checks.
-Repair mode changes source files.
+Use this skill for a quality-gate request. It runs tests, builds, policy checks,
+and browser checks. Repair mode changes source files only when the request
+authorizes the repair.
 
 ## 1. Select the mode
 
@@ -47,9 +47,9 @@ Run these checks in order. Use the commands from `package.json`.
 1. Run `npm run typecheck`.
    Completion criterion: TypeScript reports no errors.
 2. Run `npm run lint:markdown`.
-   Completion criterion: The owning project documents pass Markdownlint.
+   Completion criterion: Markdownlint reports no errors in the repository documents.
 3. Run `npm run lint:dead-code`.
-   Completion criterion: Fallow reports no unused code or dependency issue.
+   Completion criterion: Fallow reports no unused code or dependency issues.
 4. Run `npm run test:coverage`.
    Completion criterion: Vitest passes and records V8 coverage.
 5. Run `npm run test:browser`.
@@ -64,7 +64,7 @@ Run these checks in order. Use the commands from `package.json`.
 9. Allow internal fragment anchors.
    Completion criterion: Internal fragment anchors remain available.
 10. Allow only `https://bandcamp.com/EmbeddedPlayer/` iframe sources for
-    ledger releases.
+    current releases. Keep archive originals link-only.
     Completion criterion: Each iframe source and release classification passes
     the rule.
 11. Reject all other runtime third-party scripts, frames, forms, input
