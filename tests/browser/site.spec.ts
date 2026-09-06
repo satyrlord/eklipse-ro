@@ -203,6 +203,43 @@ test("mobile navigation and release rhythm stay readable", async ({ page }) => {
   }
 });
 
+test("compact threshold details use the full width below the wordmark and cover", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const assertNoLocalErrors = await openSite(page);
+  for (const width of [320, 390, 429, 430]) {
+    await page.setViewportSize({ width, height: 800 });
+    const geometry = await page.locator(".threshold-lockup").evaluate((node) => {
+      const lockup = node.getBoundingClientRect();
+      const wordmark = node.querySelector(".threshold-wordmark")!.getBoundingClientRect();
+      const cover = node.querySelector(".threshold-artifact")!.getBoundingClientRect();
+      const release = node.querySelector(".threshold-release")!.getBoundingClientRect();
+      const action = node.querySelector(".primary-action")!;
+      const label = [...action.childNodes].find((child) => child.nodeType === Node.TEXT_NODE && child.textContent?.trim())!;
+      const range = document.createRange();
+      range.selectNodeContents(label);
+      const lines = [...range.getClientRects()].filter((rect) => rect.width > 0);
+      return {
+        width: lockup.width,
+        releaseWidth: release.width,
+        actionWidth: action.getBoundingClientRect().width,
+        wordmarkRight: wordmark.right,
+        wordmarkBottom: wordmark.bottom,
+        coverLeft: cover.left,
+        coverBottom: cover.bottom,
+        releaseTop: release.top,
+        labelLines: lines.length,
+      };
+    });
+    expect(geometry.releaseWidth, `${width}px details width`).toBeCloseTo(geometry.width, 0);
+    expect(geometry.actionWidth, `${width}px action width`).toBeCloseTo(geometry.width, 0);
+    expect(geometry.wordmarkRight).toBeLessThan(geometry.coverLeft);
+    expect(geometry.wordmarkBottom).toBeLessThan(geometry.releaseTop);
+    expect(geometry.coverBottom).toBeLessThan(geometry.releaseTop);
+    expect(geometry.labelLines, `${width}px action label`).toBe(1);
+  }
+  assertNoLocalErrors();
+});
+
 test("archive covers keep the documented desktop and mobile geometry", async ({ page }) => {
   await page.setViewportSize({ width: 820, height: 900 });
   const assertNoLocalErrors = await openSite(page);
@@ -754,4 +791,44 @@ test("the error page contains enlarged text and its return link", async ({ page 
       await expect(link).toBeInViewport();
     }
   }
+});
+
+test("a failed script preserves readable catalog content and recovers on reload", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.route("**/assets/*.js", (route) => route.abort());
+  await page.route("https://bandcamp.com/**", (route) => route.abort());
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto("/", { waitUntil: "networkidle" });
+  await page.evaluate(() => document.fonts.ready);
+  await expect(page.locator("html")).not.toHaveClass(/js-ready/);
+
+  for (const width of [320, 480, 820, 1440]) {
+    await page.setViewportSize({ width, height: 800 });
+    const titles = await page.locator(".threshold-release h2, .release-copy h3, .afterimage-release strong").evaluateAll((nodes) =>
+      nodes.map((node) => {
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        return {
+          text: node.textContent,
+          fontSize: Number.parseFloat(getComputedStyle(node).fontSize),
+          contained: [...range.getClientRects()].every((rect) => rect.left >= 0 && rect.right <= innerWidth),
+          width: node.clientWidth,
+          scrollWidth: node.scrollWidth,
+        };
+      }),
+    );
+    for (const title of titles) {
+      expect(title.contained, `${width}px ${title.text}`).toBe(true);
+      expect(title.fontSize, `${width}px ${title.text}`).toBeGreaterThanOrEqual(24);
+      expect(title.scrollWidth, `${width}px ${title.text}`).toBeLessThanOrEqual(title.width + 1);
+    }
+    await page.locator(".threshold-actions .text-action").click();
+    await expect(page.locator("#releases")).toBeInViewport();
+    await expect(page.locator(".player-recovery a")).toHaveCount(8);
+  }
+
+  await page.unroute("**/assets/*.js");
+  await page.reload({ waitUntil: "networkidle" });
+  await expect(page.locator("html")).toHaveClass(/js-ready/);
+  await expect(page.locator(".threshold-release h2")).toHaveCSS("white-space", "nowrap");
 });

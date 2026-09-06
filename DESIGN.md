@@ -261,8 +261,8 @@ The first viewport is a full-bleed threshold over the persistent vector field.
 The latest cover appears as a small linked plate above the release details. It
 does not become a page background.
 The black hole uses an event core, photon ring, lensed arcs, and an asymmetric
-accretion disk. The wordmark stays separate from the release information. Its
-vertical center aligns with the vertical center of the complete release block.
+accretion disk. The wordmark stays separate from the release information. Above
+430px, its vertical center aligns with the complete release block.
 The threshold release title, summary, and actions sit at the right edge. The
 project section stays dark and shifts into moss and teal before the catalog
 descends into ink blue.
@@ -277,7 +277,8 @@ At 1000px, all release spreads become a single vertical column and the release
 title compresses. At 760px, the page gutter becomes 1.25rem, the spine geometry
 moves behind the stack, and archive covers use one equal-width column. The
 header uses a near-solid dark field. At 430px, threshold actions stack and the
-primary action takes the full width.
+primary action takes the full width. The threshold wordmark and cover share a
+row above full-width release details at this breakpoint.
 Mobile release spacing compresses without hiding players or changing their
 order. Navigation, text-action, and release-link targets remain at least 44px
 high.
@@ -292,6 +293,9 @@ Titles wrap at 2rem instead of shrinking to fit. The threshold cover enters
 normal flow so its content can increase section height. This accessibility
 layout takes precedence over the default single-line title rule.
 The wordmark and footer links also provide targets at least 44px high.
+
+The static page uses this flowing layout until the site script starts. A failed
+script must leave full titles and catalog links readable.
 
 ### Layout Rules
 

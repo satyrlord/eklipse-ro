@@ -52,6 +52,8 @@ remain in a labeled archive.
 - When the root text size exceeds 16px, use a flowing layout and wrapped titles.
 - Preserve readable content and reachable links through 200% text enlargement.
 - Use the flowing layout when visitors increase text spacing.
+- Keep titles and catalog links readable when the site script cannot load.
+- At 430px and below, give the latest-release details and action the full width.
 - Keep the latest cover below the header in short viewports. Let the first
   section grow when its content needs more height.
 - English is the sole interface and metadata language.
