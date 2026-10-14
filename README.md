@@ -39,6 +39,14 @@ Node.js 24 for local development, tests, and production builds.
 
 The exact dependency versions are in [package.json](package.json).
 
+The `markdownlint-cli2` dependency overrides select security fixes that its
+current release does not include. `markdown-it` 15.0.2 fixes quadratic processing
+in smartquotes ([advisory](https://github.com/advisories/GHSA-r7fv-28h4-cvq7)).
+`smol-toml` 1.9.1 includes the key-parsing fix
+([advisory](https://github.com/advisories/GHSA-r4xh-jqrq-34v2)). Remove each override
+when `markdownlint-cli2` requires a safe version. Use `npm audit` to check both
+direct dependencies and their dependencies after an update.
+
 The application has no frontend framework. It uses semantic HTML, a TypeScript
 browser runtime, and the Gravitational Press CSS system. Tailwind CSS and daisyUI
 extend that system. They do not replace the documented visual direction.
