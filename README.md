@@ -26,6 +26,9 @@ See the [October 2026 Node.js security releases](https://nodejs.org/en/blog/vuln
 The deployment workflow uses Node.js 24.22.1. Update local Node.js installations
 before you run project commands.
 
+Pull requests run `npm run ci` and build to `tmp/quality-dist`.
+These checks do not publish deployment files.
+
 ## Stack
 
 - Vite builds and serves the static site.
