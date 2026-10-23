@@ -48,12 +48,25 @@ These checks do not publish deployment files.
 The exact dependency versions are in [package.json](package.json).
 
 The `markdownlint-cli2` dependency overrides select security fixes that its
-current release does not include. `markdown-it` 15.0.2 fixes quadratic processing
-in smartquotes ([advisory](https://github.com/advisories/GHSA-r7fv-28h4-cvq7)).
-`smol-toml` 1.9.1 includes the key-parsing fix
-([advisory](https://github.com/advisories/GHSA-r4xh-jqrq-34v2)). Remove each override
-when `markdownlint-cli2` requires a safe version. Use `npm audit` to check both
+current release does not include. `markdown-it` 15.0.3 fixes excessive processing
+in [multiline links](https://github.com/advisories/GHSA-gfr2-rv44-r23c) and
+[inline HTML](https://github.com/advisories/GHSA-vfgh-jcmw-g37q). It also includes
+the earlier [smartquotes fix](https://github.com/advisories/GHSA-r7fv-28h4-cvq7).
+`smol-toml` 1.9.1 includes the
+[key-parsing fix](https://github.com/advisories/GHSA-r4xh-jqrq-34v2).
+
+The `micromark-extension-math@3.1.0` override selects KaTeX 0.18.2 to fix
+[inherited option handling](https://github.com/advisories/GHSA-238p-pmpm-9mq7).
+This overrides the parent package's older version range. Remove each override
+when its parent dependency requires a safe version. Use `npm audit` to check
 direct dependencies and their dependencies after an update.
+
+`braces` 3.0.3 remains in the Markdown linting dependency chain.
+[GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) has no
+published patch as of 2026-10-23. The lint command uses three fixed patterns
+from `package.json`. These patterns contain no braces. Keep lint patterns and
+configuration under review. Recheck upstream releases before changing this
+dependency. This development dependency finding remains unresolved.
 
 The application has no frontend framework. It uses semantic HTML, a TypeScript
 browser runtime, and the Gravitational Press CSS system. Tailwind CSS and daisyUI
