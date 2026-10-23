@@ -18,8 +18,13 @@ Product facts are in [PRODUCT.md](PRODUCT.md). Repository rules are in
 
 ## Runtime
 
-Use Node.js 24.19.0 or a later Node.js 24 release. The repository supports
+Use Node.js 24.22.1 or a later Node.js 24 release. The repository supports
 Node.js 24 for local development, tests, and production builds.
+
+This minimum version includes the Brotli decoder fix for CVE-2026-111497.
+See the [October 2026 Node.js security releases](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases).
+The deployment workflow uses Node.js 24.22.1. Update local Node.js installations
+before you run project commands.
 
 ## Stack
 
