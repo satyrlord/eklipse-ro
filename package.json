@@ -28,7 +28,7 @@
     "@types/jsdom": "^30.0.0",
     "@types/node": "26.2.0",
     "@vitest/coverage-v8": "5.0.5",
-    "fallow": "3.17.0",
+    "fallow": "3.34.0",
     "jsdom": "30.0.1",
     "markdownlint-cli2": "0.23.3",
     "nyc": "18.0.0",
